@@ -1,90 +1,120 @@
 
-import React, { useState, useEffect } from 'react';
-import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
+import React, {Component } from 'react';
+import PropTypes from 'prop-types';
+import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, AsyncStorage} from 'react-native';
 import background from '../assets/fundo2.png';
 import logo from '../assets/beautymenu1.png';
 import { TextInput } from 'react-native-gesture-handler';
-
+import { StackActions, NavigationActions } from 'react-navigation';
 import api from '../services/api';
-export default function Login({ navigation }) {
 
 
-    const[email,setEmail] = useState('');
-    const[password, setPassword] = useState('');
+export default class Login extends Component {
 
 
-    useEffect(()=>{
-        AsyncStorage.getItem('user').then(user =>{
-            if(user){
-                navigation.navigate('Dashboard');
-            }
-        })
-    },[]);
-    async function handleSubmit(){
+    static navigationOptions = {
+        header: null,
+      };
+      static propTypes = {
+        navigation: PropTypes.shape({
+          navigate: PropTypes.func,
+          dispatch: PropTypes.func,
+        }).isRequired,
+      };
+      
+      state = {
+        email: 'aryastark_nasc@gmail.com',
+        password: '12345688',
+        error: '',
+      };
 
-        const response = await api.post('/auth',{
-            email,
-            password,
-        })
-        const {_id} = response.data;
-        await AsyncStorage.setItem('user', _id);
+      handleEmailChange = (email) => {
+        this.setState({ email });
+      };
+      handlePasswordChange = (password) => {
+        this.setState({ password });
+      };
+      handleCreateAccountPress = () => {
+        this.props.navigation.navigate('Dashboard');
+      };
 
-        navigation.navigate('Dashboard');
-        
-    }
-   /* async function handleSubmit() {
-        navigation.navigate('Dashboard');
-    }*/
-
-    return (
-        <ImageBackground source={background} style={styles.body}>
-            <View style={styles.container}>
-                <Image source={logo} style={styles.logo} />
-                <View style={styles.form}>
-                    <View style={styles.formTop}></View>
-                    <TextInput 
-                        style={styles.Input}
-                        placeholder="CPF ou E-MAIL"
-                        placeholderTextColor="#A5A5A5"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        value={email}
-                        onChangeText={setEmail}
-                    />
-                    <View style={styles.borderContainer}>
-                        <View style={styles.border}></View>
+      handleSignInPress = async () => {
+        if (this.state.email.length === 0 || this.state.password.length === 0) {
+          this.setState({ error: 'Preencha usuário e senha para continuar!' }, () => false);
+        } else {
+          try {
+            const response = await api.post('/auth', {
+              email: this.state.email,
+              password: this.state.password,
+            });
+    
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({ routeName: 'Main', params: { token: response.data.token } }),
+              ],
+            });
+            this.props.navigation.dispatch(resetAction);
+          } catch (_err) {
+            this.setState({ error: 'Houve um problema com o login, verifique suas credenciais!' });
+          }
+        }
+      };
+      render(){
+        return (
+            <ImageBackground source={background} style={styles.body}>
+                <View style={styles.container}>
+                    <Image source={logo} style={styles.logo} />
+                    <View style={styles.form}>
+                        <View style={styles.formTop}></View>
+                        <TextInput 
+                            style={styles.Input}
+                            placeholder="CPF ou E-MAIL"
+                            placeholderTextColor="#A5A5A5"
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            value={this.state.email}
+                            onChangeText={this.handleEmailChange}
+                           // value={email}
+                            //onChangeText={setEmail}
+                        />
+                        <View style={styles.borderContainer}>
+                            <View style={styles.border}></View>
+                        </View>
+                        <TextInput 
+                            style={styles.Input}
+                            placeholder="SENHA"
+                            placeholderTextColor="#A5A5A5"
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            secureTextEntry={true}
+                            value={this.state.password}
+                            onChangeText={this.handlePasswordChange}
+                            //value={password}
+                            //onChangeText={setPassword}
+                        />
+                        <TouchableOpacity onPress={this.handleCreateAccountPress} style={styles.btn}>
+                            <Text style={styles.btnText}>LOGIN</Text>
+                        </TouchableOpacity>
                     </View>
-                    <TextInput 
-                        style={styles.Input}
-                        placeholder="SENHA"
-                        placeholderTextColor="#A5A5A5"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        secureTextEntry={true}
-                        value={password}
-                        onChangeText={setPassword}
-                    />
-                    <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
-                        <Text style={styles.btnText}>LOGIN</Text>
-                    </TouchableOpacity>
+                    <View style={styles.alternatives}>
+                        <View style={styles.divide}>
+                            <View style={styles.divideLine}/>
+                            <Text style={styles.divideText}>ou</Text>
+                            <View style={styles.divideLine}/>
+                        </View>
+                        <TouchableOpacity onPress={this.handleCreateAccountPress} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
+                        <View style={styles.footer}>
+                            <TouchableOpacity onPress={this.handleCreateAccountPress}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
+                            <TouchableOpacity onPress={this.handleCreateAccountPress}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.alternatives}>
-                    <View style={styles.divide}>
-                        <View style={styles.divideLine}/>
-                        <Text style={styles.divideText}>ou</Text>
-                        <View style={styles.divideLine}/>
-                    </View>
-                    <TouchableOpacity onPress={handleSubmit} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
-                    <View style={styles.footer}>
-                        <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
-                        <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        </ImageBackground>
-    )
+            </ImageBackground>
+        )
+      }
+
 }
 
 const styles = StyleSheet.create({
