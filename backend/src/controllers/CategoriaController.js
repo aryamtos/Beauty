@@ -24,7 +24,16 @@ module.exports = {
         const categorias = await CategoriaModel.find({ categoriaServico: categoriaServico })
         return res.json(categorias);
     },
-    
+    async listarBarba(req,res){
+
+        const {categoriaServico} = req.query;
+        const arrayCategoria = await CategoriaModel.find({categoriaServico:categoriaServico})
+        for (let i = 0; i< arrayCategoria.length; i++)
+        {
+            console.log(arrayCategoria[i]);
+        }
+
+    },
     async store(req, res) {
 
         const { filename } = req.file;
@@ -130,6 +139,12 @@ module.exports = {
             .catch(error => {
                 return res.status(500).json(error);
             })
+    },
+    async list(req, res) {
+        let categorias = CategoriaModel.filter((item)=>{
+            return item.categoriaServico == 'Barba';
+        })
+        return res.json(categorias);
     },
     async delete(req, res) {
         await CategoriaModel.deleteOne({ '_id': req.params.id })

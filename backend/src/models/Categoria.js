@@ -23,7 +23,7 @@ const Categoria = new schema({ //definição de campos
     },
 
 
-    user:{
+   user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserAcess',
     },
