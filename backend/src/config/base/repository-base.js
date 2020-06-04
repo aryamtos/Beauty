@@ -20,7 +20,7 @@ class repositoryBase {
         return resultado;
     }
 
-    async getAll() {
+   async getAll() {
         return await this._model.find();
     }
 

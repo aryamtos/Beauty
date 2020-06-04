@@ -1,60 +1,35 @@
 'use strict'
 
+require('../models/Service');
 const repository = require('./repository/serviceRepository');
-const ctrlBase = require('../config/base/controller-base');
-const validation = require('../config/helpers/validation');
-const _repo = new repository();
-const Service = require('../models/Service');
 
-function serviceController() {
+function produtoController() {
 
 }
 
-serviceController.prototype.post = async (req, res) => {
-    let _validationContract = new validation();
-    _validationContract.isRequired(req.body.nome, 'O nome do produto é obrigatorio');
-    _validationContract.isRequired(req.body.descricao, 'A descrição do produto é obrigatoria');
-    _validationContract.isRequired(req.body.preco, 'O preço do produto é obrigatorio');
-
-    if (req.body.preco)
-        _validationContract.isTrue(req.body.preco == 0, 'O preço do produto deve ser maior que Zero.');
-
-    // ctrlBase.post(_repo, _validationContract, req, res);
-    const { nome, descricao, preco } = req.body;
-    const {user_id} = req.headers;
-
-    const service = await Service.create({
-        user: user_id,
-        nome,
-        descricao,
-        preco
-    })
-    return res.json(service);
+produtoController.prototype.post = async (req, res) => {
+    let resultado = await new repository().create(req.body);
+    res.status(201).send(resultado);
 };
 
-serviceController.prototype.put = async (req, res) => {
-    let _validationContract = new validation();
-
-    _validationContract.isRequired(req.body.nome, 'O nome do produto é obrigatorio');
-    _validationContract.isRequired(req.body.descricao, 'A descrição do produto é obrigatoria');
-    _validationContract.isRequired(req.body.preco, 'O preço do produto é obrigatorio');
-
-    if (req.body.preco)
-        _validationContract.isTrue(req.body.preco <= 0, 'O preço do produto deve ser maior que Zero.');
-
-    ctrlBase.put(_repo, _validationContract, req, res);
+produtoController.prototype.put = async (req, res) => {
+    let resultado = await new repository().update(req.params.id, req.body);
+    res.status(202).send(resultado);
 };
 
-serviceController.prototype.get = async (req, res) => {
-    ctrlBase.get(_repo, req, res);
+produtoController.prototype.get = async (req, res) => {
+    let lista = await new repository().show();
+    res.status(200).send(lista);
 };
 
-serviceController.prototype.getById = async (req, res) => {
-    ctrlBase.getById(_repo, req, res);
+produtoController.prototype.getById = async (req, res) => {
+    let produto = await new repository().getById(req.params.id);
+    res.status(200).send(produto);
 };
 
-serviceController.prototype.delete = async (req, res) => {
-    ctrlBase.delete(_repo, req, res);
+produtoController.prototype.delete = async (req, res) => {
+    let deletado = await new repository().delete(req.params.id);
+    res.status(204).send(deletado);
 };
 
-module.exports = serviceController;
+module.exports = produtoController;

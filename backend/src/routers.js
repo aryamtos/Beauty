@@ -36,9 +36,9 @@ routes.get('/dashboard', DashboardController.show);
 
 routes.post('/service/register',upload.single('foto'), _product.post);
 
-routes.put('/service/register/:id',_product.put);
+routes.put('/service/register/:id', _product.put);
 
-routes.get('/service/showservices',_product.get);
+routes.get('/service/showservices', _product.get);
 
 routes.get('/service/:id', _product.getById);
 

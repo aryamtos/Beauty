@@ -38,8 +38,9 @@ exports.put = async (repository, validationContract, req, res) => {
     }
 };
 
+
 exports.get = async (repository, req, res) => {
-    try {
+     try {
         let data = await repository.getAll();
         res.status(200).send(data);
     } catch (error) {
@@ -49,7 +50,7 @@ exports.get = async (repository, req, res) => {
 };
 
 exports.getById = async (repository, req, res) => {
-    try {
+    try{
         let id = req.params.id;
         if (id) {
             let data = await repository.getById(id);
