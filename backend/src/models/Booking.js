@@ -8,11 +8,11 @@ const BookingSchema = new mongoose.Schema({
     user:{
 
         type:mongoose.Schema.Types.ObjectId,
-        ref:'UserAcess'
+        ref:'User'
     },
-    category:{ //spot
+    service:{ //spot
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CategoriaModel'
+        ref: 'Service'
     }
 });
 

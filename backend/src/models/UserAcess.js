@@ -10,6 +10,8 @@ const UserAcess = new schema({
     nome : {type: String, required: true, trim: true},
     cpf:{type:Number, required:true},
     telefone:{type:Number},
+    foto: { type: String },
+    ativo: { type: Boolean, required: true },
     email:{type: String,unique:true,  required:true, lowercase:true},
     dataCriacao: { type: Date, default: Date.now },
     senha:{type:String, required: true},
@@ -23,5 +25,5 @@ UserAcess.pre('save', next =>{
     next();
 })
 
-module.exports = mongoose.model('UserAcess', UserAcess);
+module.exports = mongoose.model('User', UserAcess);
 

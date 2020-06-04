@@ -2,10 +2,10 @@ require('../../models/UserAcess');
 const base = require('../../config/base/repository-base');
 const md5 = require('md5');
 
-class userAcessRepository {
+class userRepository {
 
     constructor() {
-        this._base = new base('UserAcess');
+        this._base = new base('User');
         this._projection = 'nome email _id';
     }
 
@@ -46,4 +46,4 @@ class userAcessRepository {
 
 }
 
-module.exports = userAcessRepository;
+module.exports = userRepository;

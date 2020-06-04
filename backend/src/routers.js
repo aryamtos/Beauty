@@ -1,75 +1,56 @@
 const express = require('express');
 const multer = require('multer');
 const uploadConfig = require('./config/upload');
-const categoryConfig = require('./bin/categoryUpload');
 const auth = require('./middleware/authentification');
-//const userValidation = require('./middlewares/auth');
-//const categoryController = require('./controllers/category-controller');
 
-const userController = require('./controllers/SignUp');
-const servicoController = require('./controllers/ServicoController');
-const categoriaController = require('./controllers/CategoriaController');
-const dashboardController = require('./controllers/DashboardController');
-const bookingController = require('./controllers/BookingController');
+
+const UserController = require('./controllers/UserRegisController');
+const ServiceController = require('./controllers/ServiceControllers');
+const DashboardController = require('./controllers/DashboardController');
+const BookingController = require('./controllers/BookingController');
 const ApprovalController = require('./controllers/ApprovalController');
 const RejectionController = require('./controllers/RejectionController');
-const enderecoController = require('./controllers/enderecoController');
-const localidadeController =require('./controllers/LocalidadeController');
+
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
 
 
+let _user = new UserController();
+let _product = new ServiceController();
 
 
-//routes.post('/User', userController.store); //SessionController
+//ROTAS CLIENTES
 
+routes.post('/auth', _user.authentification);
+routes.post('/user/register', _user.post);
+routes.put('/user/register/:id',_user.put);
+routes.get('/user/showusers', _user.get);
+routes.get('/user/:id', _user.getById);
+routes.delete('/user/deleteuser/:id',_user.delete);
 
-let _ctrl = new userController();
+//DASHBOARD
+routes.get('/dashboard', DashboardController.show);
 
+//ROTAS SERVIÇOS
 
-//ROTAS USUÁRIOS
-routes.post('/auth',_ctrl.authentification)
-routes.get('/', _ctrl.get);
-routes.get('/:id', _ctrl.getById);
-routes.post('/', _ctrl.post);
-routes.put('/:id', _ctrl.put);
-routes.delete('/:id', _ctrl.delete);
+routes.post('/service/register',upload.single('foto'), _product.post);
 
+routes.put('/service/register/:id',_product.put);
 
+routes.get('/service/showservices',_product.get);
 
-//routes.post('/Category',upload.single('foto'),categoryController.store); //SpotController
-routes.get('/CategoriaModel', categoriaController.index);
+routes.get('/service/:id', _product.getById);
 
-routes.get('/CategoriaModel/:id', categoriaController.show);
-//routes.get('/Servico/:id', servicoController.show);
+routes.delete('/service/deleteservice/:id', _product.delete);
 
+//ROTAS BOOKING
 
+routes.post('/service/:id/bookings', BookingController.store);
+routes.get('/bookings', BookingController.show);
 
-//routes.get('/filter/year/:user', categoriaController.year);
-//routes.get('/filter/month/:user', categoriaController.month);
-//routes.get('/filter/week/:user', categoriaController.week);
-//routes.get('/filter/today/:user', categoriaController.today);
-
-//routes.get('/filter/all/:user',categoriaController.all);
-routes.delete('/filter/:id', categoriaController.delete);
-
-
-routes.get('/Barba', categoriaController.list);
-//
-routes.post('/CategoriaModel',upload.single('foto'),categoriaController.store); //SpotController
-routes.put('/CategoriaModel/:id', categoriaController.update);
-
-routes.post('/Estabelecimento',localidadeController.store); //estabelecimento
-routes.post('/EnderecoModel',enderecoController.store);
-routes.get('/dashboard', dashboardController.show);
-routes.post('/CategoriaModel/:category_id/bookings', bookingController.store);
-//routes.post('/bookings:)
-routes.get('/bookings',bookingController.show);
-routes.post('/bookings/:booking_id/approvals', ApprovalController.store);
-//aprovar solictação de reserva
+//SOLICITAÇÃO DE RESERVA
 routes.post('/bookings/:booking_id/rejections', RejectionController.store);
-
-
+routes.post('/bookings/:booking_id/approvals', ApprovalController.store);
 
 module.exports = routes;

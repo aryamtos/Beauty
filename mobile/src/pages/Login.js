@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { useState,useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native';
 import background from '../assets/fundo2.png';
@@ -8,37 +8,26 @@ import { TextInput } from 'react-native-gesture-handler';
 import { StackActions, StackNavigator, NavigationActions } from 'react-navigation';
 import api from '../services/api';
 
-export default class Login extends Component {
+export default function Login({history}){
 
 
-  state = {
-    email: '',
-    senha: '',
-  }
-  handleEmailChange = (email) => {
-    this.setState({ email });
-  };
-  handlePasswordChange = (senha) => {
-    this.setState({ senha });
-  };
-
-  handleSignInPress = async () => {
- 
-    try {
-      alert(this.handleEmailChange);
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  
+  async function handleSubmit(){
       const response = await api.post('/auth', {
-        email: this.state.email,
-        senha: this.state.senha,
-      })
-      
-    console.log(response);
-    console.log('ok');
-    }catch(_err){
-      this.setState({ error: 'Houve um problema com o login, verifique suas credenciais!' });
-    }
+        email,
+        senha,
+    })  
+    //console.log(response);
+    //const {_id} = response.data;
+    //await AsyncStorage.setItem('user', _id);
+   
+    navigation.navigate('Dashboard');
+    //const pushAction = StackActions.push('Dashboard', { user: 'Indyra' });
 
-  };
-  render() {
+    //navigation.dispatch(pushAction);
+}
     return (
       <ImageBackground source={background} style={styles.body}>
         <View style={styles.container}>
@@ -52,8 +41,8 @@ export default class Login extends Component {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
-              value={this.state.email}
-              onChangeText={this.handleEmailChange}
+              value={email}
+              onChangeText={setEmail}
             // value={email}
             //onChangeText={setEmail}
             />
@@ -67,12 +56,12 @@ export default class Login extends Component {
               autoCapitalize="none"
               autoCorrect={false}
               secureTextEntry={true}
-              value={this.state.senha}
-              onChangeText={this.handlePasswordChange}
+              value={senha}
+              onChangeText={setSenha}
             //value={senha}
             //onChangeText={setPassword}
             />
-            <TouchableOpacity onPress={this.handleSignInPress} style={styles.btn}>
+            <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
               <Text style={styles.btnText}>LOGIN</Text>
             </TouchableOpacity>
           </View>
@@ -82,10 +71,10 @@ export default class Login extends Component {
               <Text style={styles.divideText}>ou</Text>
               <View style={styles.divideLine} />
             </View>
-            <TouchableOpacity onPress={this.handleSignInPress} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
+            <TouchableOpacity onPress={handleSubmit} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
             <View style={styles.footer}>
-              <TouchableOpacity onPress={this.handleSignInPress}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
-              <TouchableOpacity onPress={this.handleSignInPress}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
+              <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
+              <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
             </View>
           </View>
         </View>
@@ -93,7 +82,6 @@ export default class Login extends Component {
     )
   }
 
-}
 
 const styles = StyleSheet.create({
   body: {

@@ -1,68 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { withNavigationFocus } from 'react-navigation';
-import { SafeAreaView, ScrollView, Image, AsyncStorage, View, StyleSheet, FlatList,List} from 'react-native';
-import CategoryCard from '../components/CategoryCard';
-//import logo from '../assets/blogoh.png'
-//import GlobalStyles from '../assets/GlobalStyles'
-import SpotList from '../components/SpotList';
-import api from '../services/api';
+  import React, { useState, useEffect } from 'react'
+import { TouchableOpacity, Text } from 'react-native'
+import PropTypes from 'prop-types'
 
-export default function CategoryPage({isFocused}) {
+import api from '../services/api'
+import ProductItem from '../components/ProductItem'
 
+import { Container, Title, Button, ButtonText, ProductList } from './styles'
 
-    const [categoriaServico, setCategories] = useState([]);
+export default function CategoryPage() {
 
+  const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-    async function loadCategories(){
+  useEffect(() => {
+    async function loadProducts() {
 
-        const response = await api.get('/CategoriaModel');
+      const response = await api.get('/service/showservices')
 
-        setCategories(response.data);
-        //console.log(response)
+      console.log(response.data)
+
+      setData(response.data.products);
     }
-    useEffect(() =>{
 
-       if(isFocused){
+    loadProducts();
+  }, []);
 
-        loadCategories();
-       }
-    },[isFocused]);
+  renderListItem = ({ item }) => <ProductItem product={item} />
 
-
-    return (
-
-        <SafeAreaView>
-        
-        </SafeAreaView>
-    )
-
-
+  return (
+    <Container>
+      <ProductList
+        data={data}
+        keyExtractor={item => String(item.id)}
+        renderItem={renderListItem}
+        // onRefresh={loadProducts}
+        // refreshing={refreshing}
+      />
+    </Container>
+  );
 }
-const styles = StyleSheet.create({
 
-    container: {
-        flex: 1,
-    },
-
-    logo: {
-
-        height: 32,
-        resizeMode: "contain",
-        alignSelf: 'center',
-        marginBottom: 100,
-    },
-
-    list: {
-        paddingHorizontal: 20,
-    },
-    listItem: {
-        marginRight: 15,
-    },
-    thumbmail: {
-        width: 200,
-        height: 120,
-        resizeMode: 'cover',
-        borderRadius: 2,
-    },
-
-});
+CategoryPage.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+  }).isRequired,
+};
