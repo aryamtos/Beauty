@@ -11,6 +11,7 @@ const serviceModel = new mongoose.Schema({ //definição de campos
     nome: { type: String, required: true},//nome do servico
     company: String,//nome do local
     preco:{type:Number, required:true,default:0},
+    categoria:{type:String},
     descricao: {type: String, required: true},
     user:{
         type: mongoose.Schema.Types.ObjectId,
