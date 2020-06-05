@@ -32,6 +32,8 @@ class repositoryBase {
         return await this._model.findByIdAndRemove(id);
     }
 
+    
+
 }
 
 module.exports = repositoryBase;

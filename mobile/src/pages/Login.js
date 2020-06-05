@@ -1,5 +1,5 @@
 
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native';
 import background from '../assets/fundo2.png';
@@ -8,79 +8,83 @@ import { TextInput } from 'react-native-gesture-handler';
 import { StackActions, StackNavigator, NavigationActions } from 'react-navigation';
 import api from '../services/api';
 
-export default function Login({history}){
+export default function Login({history}) {
 
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  
-  async function handleSubmit(){
-      const response = await api.post('/auth', {
-        email,
-        senha,
-    })  
-    //console.log(response);
-    //const {_id} = response.data;
-    //await AsyncStorage.setItem('user', _id);
-   
-    navigation.navigate('Dashboard');
-    //const pushAction = StackActions.push('Dashboard', { user: 'Indyra' });
 
-    //navigation.dispatch(pushAction);
-}
-    return (
-      <ImageBackground source={background} style={styles.body}>
-        <View style={styles.container}>
-          <Image source={logo} style={styles.logo} />
-          <View style={styles.form}>
-            <View style={styles.formTop}></View>
-            <TextInput
-              style={styles.Input}
-              placeholder="CPF ou E-MAIL"
-              placeholderTextColor="#A5A5A5"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-              value={email}
-              onChangeText={setEmail}
-            // value={email}
+  async function handleSubmit(event) {
+
+    event.preventDefault();
+
+    const response = await api.post('/auth', {email,senha});
+    const {token} = response.data;
+    const {user} = response.data;
+    const {_id} = user;
+    //localStorage.setItem('user', _id);
+    //localStorage.setItem('token-access',token);
+
+     history.push('Dashboard');
+    
+    //history.push('/Dashboard');
+  }
+
+  return (
+    <ImageBackground source={background} style={styles.body}>
+      <View style={styles.container}>
+        <Image source={logo} style={styles.logo} />
+        <View style={styles.form}>
+          <View style={styles.formTop}></View>
+          <TextInput
+            style={styles.Input}
+            placeholder="CPF ou E-MAIL"
+            placeholderTextColor="#A5A5A5"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            value={email}
+            onChange={event => setEmail(event.target.value)}
             //onChangeText={setEmail}
-            />
-            <View style={styles.borderContainer}>
-              <View style={styles.border}></View>
-            </View>
-            <TextInput
-              style={styles.Input}
-              placeholder="SENHA"
-              placeholderTextColor="#A5A5A5"
-              autoCapitalize="none"
-              autoCorrect={false}
-              secureTextEntry={true}
-              value={senha}
-              onChangeText={setSenha}
-            //value={senha}
-            //onChangeText={setPassword}
-            />
-            <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
-              <Text style={styles.btnText}>LOGIN</Text>
-            </TouchableOpacity>
+          // value={email}
+          //onChangeText={setEmail}
+          />
+          <View style={styles.borderContainer}>
+            <View style={styles.border}></View>
           </View>
-          <View style={styles.alternatives}>
-            <View style={styles.divide}>
-              <View style={styles.divideLine} />
-              <Text style={styles.divideText}>ou</Text>
-              <View style={styles.divideLine} />
-            </View>
-            <TouchableOpacity onPress={handleSubmit} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
-            <View style={styles.footer}>
-              <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
-              <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
-            </View>
+          <TextInput
+            style={styles.Input}
+            placeholder="SENHA"
+            placeholderTextColor="#A5A5A5"
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry={true}
+            value={senha}
+            onChange={event => setSenha(event.target.value)}
+            //onChangeText={setSenha}
+          //value={senha}
+          //onChangeText={setPassword}
+          />
+          <TouchableOpacity onPress={event => handleSubmit(event)} style={styles.btn}>
+            <Text style={styles.btnText}>LOGIN</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.alternatives}>
+          <View style={styles.divide}>
+            <View style={styles.divideLine} />
+            <Text style={styles.divideText}>ou</Text>
+            <View style={styles.divideLine} />
+          </View>
+          <TouchableOpacity onPress={handleSubmit} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
+          <View style={styles.footer}>
+            <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
+            <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
           </View>
         </View>
-      </ImageBackground>
-    )
-  }
+      </View>
+    </ImageBackground>
+  )
+}
 
 
 const styles = StyleSheet.create({

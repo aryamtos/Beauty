@@ -3,13 +3,13 @@ import { withNavigation } from 'react-navigation';
 import {View, Text, FlatList, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import api from '../services/api';
 
-export default function SpotList(){
+export default function SpotList({categoria, navigation}){
     const [categories,setCategories] = useState([]);
 
     useEffect(() =>{
         async function loadCategories(){
-            const response = await api.get('/CategoriaModel', {
-                params: {categories}
+            const response = await api.get('/service/showservices', {
+                params: {categoria}
             })
             setCategories(response.data);
             console.log(response.data)
@@ -17,12 +17,27 @@ export default function SpotList(){
         loadCategories();
     },[]);
 
-    /*function handleNavigate(id ){
-        navigation.navigate('Book', {id});
-    }*/
-
     return (
-        <Text></Text>
+        <View style={styles.container}>
+            <Text style={styles.title}><Text style={styles.bold}>{categoria}</Text></Text>
+            <FlatList
+
+                style={styles.list}
+                data={categories}
+                keyExtractor={category => category._id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) => (
+                    <View style={styles.listItem}>
+                        <TouchableOpacity onPress={() => handleNavigate(item._id)}>
+                            <Image style={styles.thumbnail} source={{ uri: item.foto_url }} />
+                        </TouchableOpacity>
+
+                    </View>
+                )}
+            />
+
+        </View> 
     )
     
 }

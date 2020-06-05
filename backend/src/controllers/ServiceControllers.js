@@ -1,5 +1,5 @@
 'use strict'
-
+const Service = require('../models/Service');
 require('../models/Service');
 const repository = require('./repository/serviceRepository');
 
@@ -18,8 +18,22 @@ produtoController.prototype.put = async (req, res) => {
 };
 
 produtoController.prototype.get = async (req, res) => {
-    let lista = await new repository().show();
-    res.status(200).send(lista);
+   /* let lista = await new repository().show();
+    res.status(200).send(lista);*/
+    /*const filter = req.query.filter || '';
+    const filterQuery ={
+        user: filter()
+    }
+    const {categoria} = req.query
+    const services = await Service.find({categoria:categoria});
+    return res.json(services);*/
+    
+    const {categoria} = req.query;
+    const filter = req.query.filter;
+     const services = Service.find({categoria: categoria });
+     return res.json(services);
+  
+    
 };
 
 produtoController.prototype.getById = async (req, res) => {
