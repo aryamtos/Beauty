@@ -1,11 +1,36 @@
-import React from 'react';
-import { StyleSheet, Text, TextInput, View, StatusBar } from 'react-native';
+import React, {useEffect,useState} from 'react';
+import { StyleSheet, Text, TextInput, View,AsyncStorage ,StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import api from '../services/api';
 export default function Search({ navigation }) {
-    async function handleNavigation() {
+
+    const [servicos,setServicos] = useState('');
+    const [cidade, setCidade] = useState('');
+    
+        useEffect(()=> {
+            AsyncStorage.getItem('nome').then(nome =>{
+               if(nome){
+                    navigation.navigate('SearchResult');
+                }
+            })
+        }, []);
+
+        async function handleNavigation() {
+        const response = await api.post('/service/register', {
+            servicos,
+            cidade
+        })
+        const {_id} = response.data;
+        console.log(response);
+        await AsyncStorage.setItem('cidade', _id);
+        await AsyncStorage.setItem('nome', servicos);
+
+        //navigation.navigate('List');
         navigation.navigate('SearchResult');
     }
+
+    
 
     return (
         <View style={styles.container}>
@@ -14,11 +39,17 @@ export default function Search({ navigation }) {
                 <TextInput 
                     style={styles.input}
                     placeholder="Serviço ou estabelecimento"
+                    autoCorrect={false}
+                    value={servicos}
+                    onChangeText={setServicos}
+
                 />
                 <View style={styles.containerDivide}>
                     <TextInput 
                         style={[styles.input, styles.inputDivide]}
                         placeholder="Cidade"
+                        value={cidade}
+                    onChangeText={setCidade}
                     />
                     <TextInput 
                         style={[styles.input, styles.inputDivide]}

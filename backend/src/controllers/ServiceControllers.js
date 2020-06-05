@@ -18,8 +18,11 @@ produtoController.prototype.put = async (req, res) => {
 };
 
 produtoController.prototype.get = async (req, res) => {
-   /* let lista = await new repository().show();
-    res.status(200).send(lista);*/
+   
+   let lista = await new repository().show();
+    res.status(200).send(lista);
+    /*var _ = require('undesrcore');
+    var filtered =  _.where()*/
     /*const filter = req.query.filter || '';
     const filterQuery ={
         user: filter()
@@ -28,10 +31,10 @@ produtoController.prototype.get = async (req, res) => {
     const services = await Service.find({categoria:categoria});
     return res.json(services);*/
     
-    const {categoria} = req.query;
+   /*const {categoria} = req.query;
     const filter = req.query.filter;
      const services = Service.find({categoria: categoria });
-     return res.json(services);
+     return res.json(services);*/
   
     
 };

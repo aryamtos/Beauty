@@ -8,7 +8,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { StackActions, StackNavigator, NavigationActions } from 'react-navigation';
 import api from '../services/api';
 
-export default function Login({history}) {
+export default function Login({navigation}) {
 
 
   const [email, setEmail] = useState('');
@@ -18,14 +18,19 @@ export default function Login({history}) {
 
     event.preventDefault();
 
-    const response = await api.post('/auth', {email,senha});
-    const {token} = response.data;
+    const response = await api.post('/auth',{
+      email,
+      senha
+    })
+    console.log(response);
+    navigation.navigate('Dashboard');
+    /*const {token} = response.data;
     const {user} = response.data;
     const {_id} = user;
-    //localStorage.setItem('user', _id);
-    //localStorage.setItem('token-access',token);
+    localStorage.setItem('user', _id);
+    localStorage.setItem('token-access',token);
 
-     history.push('Dashboard');
+     navigation.navigate('Dashboard');*/
     
     //history.push('/Dashboard');
   }
@@ -44,7 +49,8 @@ export default function Login({history}) {
             autoCapitalize="none"
             autoCorrect={false}
             value={email}
-            onChange={event => setEmail(event.target.value)}
+            onChangeText= {setEmail}
+           // onChange={event => setEmail(event.target.value)}
             //onChangeText={setEmail}
           // value={email}
           //onChangeText={setEmail}
@@ -60,12 +66,13 @@ export default function Login({history}) {
             autoCorrect={false}
             secureTextEntry={true}
             value={senha}
-            onChange={event => setSenha(event.target.value)}
+            onChangeText ={setSenha}
+            //onChange={event => setSenha(event.target.value)}
             //onChangeText={setSenha}
           //value={senha}
           //onChangeText={setPassword}
           />
-          <TouchableOpacity onPress={event => handleSubmit(event)} style={styles.btn}>
+          <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
             <Text style={styles.btnText}>LOGIN</Text>
           </TouchableOpacity>
         </View>

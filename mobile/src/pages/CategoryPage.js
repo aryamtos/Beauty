@@ -1,29 +1,63 @@
-
 import React, { useState, useEffect } from 'react';
-//import socketio from 'socket.io-client';
-
-import { Alert, SafeAreaView, Text, Image, AsyncStorage, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
-
-import logo from '../../assets/logo1.png'
-
-
-import SpotList from '../components/SpotList';
-
+import { TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import api from '../services/api';
 
+import ProductItem from '../components/ProdutoItem';
 
+import { Container, Title, Button, ButtonText, ProductList } from './styles';
 
-export default function CategoryPage({navigation}) {
-
-  const [services, setServices] = useState([]);
+export default function CategoryPagex() {
+  const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  useEffect(() => {
+    async function loadProducts() {
 
+      const response = await api.get('/service/showservices');
+
+      console.log(response.data);
+
+      setData(response.data);
+    }
+
+    loadProducts();
+  }, []);
+
+  renderListItem = ({ item }) => <ProductItem product={item} />
 
   return (
-   <Text></Text>
-
-  )
+    <Container>
+      <ProductList
+        data={data}
+        keyExtractor={item => String(item.id)}
+        renderItem={renderListItem}
+        // onRefresh={loadProducts}
+        // refreshing={refreshing}
+      />
+    </Container>
+  );
 }
+
+CategoryPagex.navigationOptions = ({ navigation }) => {
+
+  return {
+    title: 'CategoryPage',
+    headerBackTitleVisible: true,
+    headerRight: () => (
+      <TouchableOpacity>
+     
+      
+      </TouchableOpacity>
+    ),
+  };
+  
+};
+
+CategoryPagex.propTypes = {
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+  }).isRequired,
+};
+

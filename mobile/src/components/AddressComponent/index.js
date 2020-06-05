@@ -1,52 +1,51 @@
-import React, {useEffect,useState} from 'react';
-import { Image, StyleSheet, Text, TextInput, View, StatusBar,AsyncStorage, ScrollView} from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, FlatList, Text, TextInput, View, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 
 import lupa from '../assets/BUSCAR_cinza.png';
-import logoLoja from '../assets/logo_loja.jpg';
-import api from '../services/api';
-import AddressComponent from '../components/AddressComponent';
+import api from '../../services/api';
 
-export default function SearchResult({ navigation }) {
+export default function AdrresComponent({ service, navigation }) {
 
-    const [servico,setServicos] = useState([]);
+    const [servicos, setServicos] = useState([])
+    useEffect(() => {
+        async function loadServices() {
+            const response = api.get('/service/showservices', {
+                params: { service },
+            })
+            setServicos(response.data);
+        }
+        loadServices();
+    }, []);
+    return (
+        <FlatList
+            style={styles.resultData}
+            data={servicos}
+            keyExtractor={service => service._id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+                <Image style={styles.thumbnail} source={{ uri: item.foto_url }} />
+                <View style={styles.resultData}>
+                    <Text style={styles.resultNameText}>{item.nome}</Text>
+                    <Text style={styles.resultText}>{item.cidade}</Text>
+                    <View style={styles.resultDataRate}>
+                        <Icon name="star-o" type="font-awesome" size={10} style={{ marginTop: 2, marginRight: 2 }} />
+                        <Text style={styles.resultText}>4,0</Text>
+                        <Text style={styles.resultText}>{item.categoria}</Text>
+                    </View>
+                </View>
+            )}
 
-    useEffect(() =>{
-        AsyncStorage.getItem('nome').then(storagedServico =>{
-            const servicosArray = storagedServico.map(nome=>nome.trim());
-            setServicos(servicosArray);
-        })
-    },[]);
 
-    function handleNavigation() {
-        navigation.navigate('StoreProfile');
-    }
-    return(
-        <View style={styles.container}>
-            <View style={styles.busca}>
-                <TouchableOpacity onPress={() => {navigation.navigate('Search')}} style={styles.btnLupa}>
-                    <Image source={lupa} style={styles.buscaIcon}/>
-                </TouchableOpacity>
-                <TextInput
-                    style={styles.buscaText}
-                    placeholder="Buscar serviços ou estabelecimentos"
-                    onSubmitEditing={() => {navigation.navigate('Search')}}
-                />
-            </View>
-            <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
-            <TouchableOpacity onPress={handleNavigation} style={styles.result}>
-                <ScrollView>
-                    
-                {servico.map(nome =><AddressComponent key={nome} nome={nome}/>)}
-           
-                </ScrollView>
-            </TouchableOpacity>
-        </View>
-    );
+        />
+
+    )
+
 }
-
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         paddingBottom: 10,
         width: '100%',
-    },  
+    },
     resultNameText: {
         fontSize: 16,
         fontWeight: 'normal',
@@ -121,4 +120,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
     },
+
 });
