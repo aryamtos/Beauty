@@ -1,5 +1,5 @@
-import React from 'react';
-import { ImageBackground, StyleSheet,View, StatusBar,SafeAreaView,TextInput,TouchableOpacity,Alert, AsyncStorage, Text } from 'react-native';
+import React, {useState,useEffect} from 'react';
+import { ImageBackground, StyleSheet, View, StatusBar, SafeAreaView, TextInput, Alert, AsyncStorage, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -17,11 +17,11 @@ const TopTab = createMaterialTopTabNavigator();
 function StoreNav() {
     return (
         <TopTab.Navigator
-            tabBarOptions={{ 
-                activeTintColor: '#511D68', 
-                inactiveTintColor: '#A8A8A8', 
-                indicatorStyle: { 
-                    backgroundColor: '#511D68' 
+            tabBarOptions={{
+                activeTintColor: '#511D68',
+                inactiveTintColor: '#A8A8A8',
+                indicatorStyle: {
+                    backgroundColor: '#511D68'
                 },
                 labelStyle: {
                     fontSize: 11,
@@ -37,9 +37,21 @@ function StoreNav() {
 
 export default function StoreProfile({ navigation }) {
 
-    
-    const [date, setDate]= useState('');
-    const id = navigation.getParam('id');
+
+    const [date, setDate] = useState('');
+    //const id = navigation.getParam('id');
+    const [servicos, setServicos] = useState([]);
+
+    useEffect(() => {
+        async function loadProducts() {
+
+            const response = await api.get(`/service/${id}`);//showservices
+            console.log(response.data);
+            setDate(response.data);
+        }
+
+        loadProducts();
+    }, []);
 
     return (
         <>
@@ -52,7 +64,7 @@ export default function StoreProfile({ navigation }) {
                     <Text style={styles.resultNameText}>Barberia do João</Text>
                     <Text style={styles.resultText}>Av. São Rafael, 174 - Ponto Central</Text>
                     <View style={styles.resultDataRate}>
-                        <Icon name="star-o" type="font-awesome" size={12} style={{ marginTop: 2, marginRight: 2 }}/>
+                        <Icon name="star-o" type="font-awesome" size={12} style={{ marginTop: 2, marginRight: 2 }} />
                         <Text style={styles.resultText}>4,0</Text>
                         <Text style={styles.resultText}>Barba - Cabelo</Text>
                     </View>
@@ -89,7 +101,7 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginTop: 15,
         width: '100%',
-    },  
+    },
     resultNameText: {
         fontSize: 22,
         fontWeight: 'bold',

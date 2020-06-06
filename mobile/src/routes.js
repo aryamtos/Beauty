@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PartnerLogin from './pages/PartnerLogin';
 import CategoryPage from './pages/CategoryPage';
+import BeardPage from './pages/BeardPage';
 import PartnerRegister from './pages/PartnerRegister';
 import PartnerDashboard from './pages/PartnerDashboard';
 import PartnerProfile from './pages/PartnerProfile';
@@ -214,6 +215,7 @@ function Routes({ navigation }) {
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="PartnerLogin" component={PartnerLogin} />
                 <Stack.Screen name="CategoryPage" component={categoryNave} />
+                <Stack.Screen name="BeardPage" component={categoryNave} />
                 <Stack.Screen name="PartnerRegister" component={PartnerRegister} />
                 <Stack.Screen name="Dashboard" component={dashboardNav} />
                 <Stack.Screen name="Search" component={Search} />

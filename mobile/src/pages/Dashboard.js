@@ -20,7 +20,9 @@ export default function Dashboard ({ navigation }) {
 
     const [categoriaServico, setCategoria] = useState([]);
 
-    
+    async function handleBarba(){
+        navigation.navigate('BeardPage');
+    }
 
     async function handleNavigation() {
         navigation.navigate('CategoryPage');
@@ -46,7 +48,7 @@ export default function Dashboard ({ navigation }) {
                     </LinearGradient>
                 </ImageBackground>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleNavigation} style={styles.categoria}>
+            <TouchableOpacity onPress={handleBarba} style={styles.categoria}>
                 <ImageBackground source={barba} style={styles.categoriaImage}>
                     <LinearGradient colors={['transparent', 'white']} style={styles.gradientEffect}>
                         <Text style={styles.categoriaText}>Barba</Text>
