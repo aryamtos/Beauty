@@ -9,11 +9,13 @@ export default function ProductItem({ product }) {
       <ProductImage
         source={{ uri: product.url }}
       />
-      <InfoContainer>
-        <ProductName>{product.nome}</ProductName>
-        <Text>Preço: {product.preco}</Text>
-        <Text>Descrição: {product.descricao}</Text>
-      </InfoContainer>  
+     
     </Container>
   );
 }
+/*
+ <InfoContainer>
+        <ProductName>{product.nome}</ProductName>
+        <Text>Preço: {product.preco}</Text>
+        <Text>Descrição: {product.descricao}</Text>
+      </InfoContainer>  */

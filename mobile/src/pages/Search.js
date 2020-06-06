@@ -5,26 +5,26 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import api from '../services/api';
 export default function Search({ navigation }) {
 
-    const [servicos,setServicos] = useState('');
+    const [nome,setServicos] = useState('');
     const [cidade, setCidade] = useState('');
     
         useEffect(()=> {
             AsyncStorage.getItem('nome').then(nome =>{
                if(nome){
-                    navigation.navigate('SearchResult');
+                    //navigation.navigate('SearchResult');
                 }
             })
         }, []);
 
         async function handleNavigation() {
-        const response = await api.post('/service/register', {
-            servicos,
+        const response = await api.post('/user/list', {
+            nome,
             cidade
         })
         const {_id} = response.data;
         console.log(response);
         await AsyncStorage.setItem('cidade', _id);
-        await AsyncStorage.setItem('nome', servicos);
+        await AsyncStorage.setItem('nome', nome);
 
         //navigation.navigate('List');
         navigation.navigate('SearchResult');
@@ -40,7 +40,7 @@ export default function Search({ navigation }) {
                     style={styles.input}
                     placeholder="Serviço ou estabelecimento"
                     autoCorrect={false}
-                    value={servicos}
+                    value={nome}
                     onChangeText={setServicos}
 
                 />

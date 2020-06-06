@@ -1,51 +1,85 @@
-import React from 'react';
-import { Image, StyleSheet, FlatList, Text, TextInput, View, StatusBar } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Icon } from 'react-native-elements';
+import React, { useEffect, useState } from 'react';
+import { withNavigation } from 'react-navigation';
+import { View, Text, FlatList, Image,TextInput,StatusBar, StyleSheet } from 'react-native';
 
-import lupa from '../assets/BUSCAR_cinza.png';
-import api from '../../services/api';
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Icon } from 'react-native-elements'
 
-export default function AdrresComponent({ service, navigation }) {
+import lupa from '../../assets/BUSCAR_cinza.png'
 
-    const [servicos, setServicos] = useState([])
+import api from '../../services/api'
+
+
+export default function AdrresComponent({ nome, navigation }) {
+
+    const [servicos, setServicos] = useState([]);
+
     useEffect(() => {
-        async function loadServices() {
-            const response = api.get('/service/showservices', {
-                params: { service },
+        async function loadSpots() {
+            const response = await api.get('/spots/servicos', {
+                params: { nome }
             })
             setServicos(response.data);
         }
-        loadServices();
+        loadSpots();
     }, []);
+
+    function handleNavigation() {
+
+        navigation.navigate('StoreProfile');
+    }
+
+
     return (
-        <FlatList
-            style={styles.resultData}
-            data={servicos}
-            keyExtractor={service => service._id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-                <Image style={styles.thumbnail} source={{ uri: item.foto_url }} />
-                <View style={styles.resultData}>
-                    <Text style={styles.resultNameText}>{item.nome}</Text>
-                    <Text style={styles.resultText}>{item.cidade}</Text>
-                    <View style={styles.resultDataRate}>
-                        <Icon name="star-o" type="font-awesome" size={10} style={{ marginTop: 2, marginRight: 2 }} />
-                        <Text style={styles.resultText}>4,0</Text>
-                        <Text style={styles.resultText}>{item.categoria}</Text>
-                    </View>
+
+
+        <View style={styles.container}>
+            <View style={styles.busca}>
+                <TouchableOpacity onPress={() => { navigation.navigate('Search') }} style={styles.btnLupa}>
+                    <Image source={lupa} style={styles.buscaIcon} />
+                </TouchableOpacity>
+                <TextInput
+                    style={styles.buscaText}
+                    placeholder="Buscar serviços ou estabelecimentos"
+                    onSubmitEditing={() => { navigation.navigate('Search') }}
+                />
+            </View>
+            <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
+            <TouchableOpacity onPress={handleNavigation} style={styles.result}>
+                <FlatList
+                    style={styles.list}
+                    data={servicos}
+                    keyExtractor={nome => nome._id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item }) => (
+                        <Image source={{ uri: item.foto_url }} style={styles.thumbnail} />
+
+
+                    )}
+                />
+            </TouchableOpacity>
+        </View>
+        /*
+            <View style={styles.resultData}>
+                <Text style={styles.resultNameText}>Barberia do João</Text>
+                <Text style={styles.resultText}>Av. São Rafael, 174 - Ponto Central</Text>
+                <View style={styles.resultDataRate}>
+                    <Icon name="star-o" type="font-awesome" size={10} style={{ marginTop: 2, marginRight: 2 }}/>
+                    <Text style={styles.resultText}>4,0</Text>
+                    <Text style={styles.resultText}>Barba - Cabelo</Text>
                 </View>
-            )}
+            </View>
+   
 
+    </View>*/
 
-        />
-
-    )
-
+    );
 }
-const styles = StyleSheet.create({
 
+
+
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -120,5 +154,4 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
     },
-
 });

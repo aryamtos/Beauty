@@ -6,6 +6,7 @@ const auth = require('./middleware/authentification');
 
 const UserController = require('./controllers/UserRegisController');
 const ServiceController = require('./controllers/ServiceControllers');
+const Service = require('./controllers/ListController');
 const DashboardController = require('./controllers/DashboardController');
 const BookingController = require('./controllers/BookingController');
 const ApprovalController = require('./controllers/ApprovalController');
@@ -31,6 +32,29 @@ routes.delete('/user/deleteuser/:id',_user.delete);
 
 //DASHBOARD
 routes.get('/dashboard', DashboardController.show);
+
+
+//ROTA CATEGORIAS
+
+
+routes.post('/user/list',upload.single('foto'), Service.store);
+routes.get('/spots', Service.index);
+routes.get('/all', Service.getAll);
+
+routes.get('/list/depil',Service.indexDepil);
+routes.get('/list/manicure',Service.indexManicure);
+routes.get('/list/barba', Service.indexBarba);
+routes.get('/list/cortes', Service.indexCorte);
+
+//ROTA TESTE 
+
+routes.get('/listAll', Service.indexSobrancelha);
+
+
+//ROTA SERVIÇOS
+routes.get('/spots/servicos', Service.listServico);
+
+
 
 //ROTAS SERVIÇOS
 

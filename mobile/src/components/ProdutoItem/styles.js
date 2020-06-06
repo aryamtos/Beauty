@@ -1,7 +1,8 @@
 import styled from 'styled-components/native'
 
 export const Container = styled.View`
-  flex: 1;
+
+flex: 1;
   background-color: #eeeeee;
   elevation: 3;
   flex-direction: row;
@@ -11,10 +12,12 @@ export const Container = styled.View`
 `;
 
 export const ProductImage = styled.Image`
-  height: 50px;
-  width: 50px;
-  border-radius: 50px;
-  align-self: center;
+
+height: 50px;
+width: 50px;
+border-radius: 50px;
+align-self: center;;
+
 `;
 
 export const InfoContainer = styled.View`

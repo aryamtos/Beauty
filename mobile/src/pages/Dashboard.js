@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { Image, ImageBackground, StyleSheet, Text, TextInput, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -15,28 +15,27 @@ import manicure from '../assets/manicure.png';
 // API
 import api from '../services/api';
 
-export default function Dashboard({ navigation }) {
+export default function Dashboard ({ navigation }) {
 
 
     const [categoriaServico, setCategoria] = useState([]);
 
-  
-        async function handleNavigation() {
-            navigation.navigate('CategoryPage');
+    
 
+    async function handleNavigation() {
+        navigation.navigate('CategoryPage');
     }
-   
 
     return (
         <View style={styles.container}>
             <View style={styles.busca}>
-                <TouchableOpacity onPress={() => {navigation.navigate('Buscar')}} style={styles.btnLupa}>
-                    <Image source={lupa} style={styles.buscaIcon}/>
+                <TouchableOpacity onPress={() => { navigation.navigate('Buscar') }} style={styles.btnLupa}>
+                    <Image source={lupa} style={styles.buscaIcon} />
                 </TouchableOpacity>
                 <TextInput
                     style={styles.buscaText}
                     placeholder="Buscar serviços ou estabelecimentos"
-                    onSubmitEditing={() => {navigation.navigate('Buscar')}}
+                    onSubmitEditing={() => { navigation.navigate('Buscar') }}
                 />
             </View>
             <Text style={styles.containerText}>Categorias</Text>

@@ -1,52 +1,51 @@
-import React, {useEffect,useState} from 'react';
-import { Image, StyleSheet, Text, TextInput, View, StatusBar,AsyncStorage, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, TextInput, View, StatusBar, AsyncStorage, ScrollView , SafeAreaView,} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
-
+import PropTypes from 'prop-types';
 import lupa from '../assets/BUSCAR_cinza.png';
 import logoLoja from '../assets/logo_loja.jpg';
 import api from '../services/api';
 import AddressComponent from '../components/AddressComponent';
 
-export default function SearchResult({ navigation }) {
+export default function SearchResult() {
 
-    const [servico,setServicos] = useState([]);
+    const [nome, setServicos] = useState([]);
 
     useEffect(() =>{
-        AsyncStorage.getItem('nome').then(storagedServico =>{
-            const servicosArray = storagedServico.map(nome=>nome.trim());
+        AsyncStorage.getItem('nome').then(storagedServicos => {
+            const servicosArray = storagedServicos.split(',').map(nome=>nome.trim());
             setServicos(servicosArray);
         })
     },[]);
+    /*useEffect(() => {
+        async function loadSpots() {
+            const response = await api.get('/spots/servicos', {
+                params: { nome }
+            })
+            setServicos(response.data);
+        }
+        loadSpots();
+    }, []);*/
+    /*/
+    /*useEffect(() =>{
 
-    function handleNavigation() {
-        navigation.navigate('StoreProfile');
-    }
-    return(
-        <View style={styles.container}>
-            <View style={styles.busca}>
-                <TouchableOpacity onPress={() => {navigation.navigate('Search')}} style={styles.btnLupa}>
-                    <Image source={lupa} style={styles.buscaIcon}/>
-                </TouchableOpacity>
-                <TextInput
-                    style={styles.buscaText}
-                    placeholder="Buscar serviços ou estabelecimentos"
-                    onSubmitEditing={() => {navigation.navigate('Search')}}
-                />
-            </View>
-            <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
-            <TouchableOpacity onPress={handleNavigation} style={styles.result}>
-                <ScrollView>
-                    
-                {servico.map(nome =><AddressComponent key={nome} nome={nome}/>)}
-           
-                </ScrollView>
-            </TouchableOpacity>
-        </View>
+        AsyncStorage.getItem('nome').then(nome=>{
+            setServicos(nome);
+        })
+    },[]);*/
+    
+    return (
+        <ScrollView>
+      
+        </ScrollView>
+        
     );
 }
 
+    //  {nome.map(nome=><AddressComponent key={nome} nome = {nome} />)}
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -55,11 +54,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginTop: StatusBar.currentHeight,
         paddingTop: 20,
-    },
-    containerText: {
-        fontSize: 14,
-        color: '#aaa',
-        paddingVertical: 10,
     },
     busca: {
         flexDirection: 'row',
@@ -77,48 +71,15 @@ const styles = StyleSheet.create({
         padding: 0,
         margin: -40,
     },
-    btnLupa: {
-        flex: 1,
-        alignSelf: 'flex-start',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     buscaText: {
         fontSize: 14,
         color: '#444',
         padding: 0,
     },
-    result: {
-        flexDirection: 'row',
-        marginBottom: 10,
-    },
-    thumbnail: {
-        height: 72,
-        resizeMode: 'contain',
-        marginRight: 10,
-    },
-    resultData: {
-        flexDirection: 'column',
-        alignSelf: 'stretch',
-        justifyContent: 'flex-end',
-        borderColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingBottom: 10,
-        width: '100%',
-    },  
-    resultNameText: {
-        fontSize: 16,
-        fontWeight: 'normal',
-        color: '#999',
-    },
-    resultText: {
-        fontSize: 10,
-        fontWeight: 'normal',
-        color: '#999',
-        marginRight: 15,
-    },
-    resultDataRate: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-    },
+    containerText: {
+        fontSize: 14,
+        color: '#aaa',
+        paddingVertical: 10,
+    }
+
 });

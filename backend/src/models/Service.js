@@ -4,15 +4,17 @@ const mongoose = require('mongoose'); //importamos o mongoose
 
 const serviceModel = new mongoose.Schema({ //definição de campos
 
+
+    //localidade - endereco, contato, horários de funcionamento - profissionais
     foto:{
         type: String,
          required:false,
     },
-    nome: { type: String, required: false},//nome do servico
+    nome: { type: [String], required: false},//nome do servico
     //company: String,//nome do local
     cidade: {type: String},
     preco:{type:Number, required:false,default:0},
-    categoria:{type:String},
+    categoria:{type:[String]},
     descricao: {type: String, required: false},
     indicacao:{ type : Number},
     user:{

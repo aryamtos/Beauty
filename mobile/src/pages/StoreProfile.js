@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Text, View, StatusBar } from 'react-native';
+import { ImageBackground, StyleSheet,View, StatusBar,SafeAreaView,TextInput,TouchableOpacity,Alert, AsyncStorage, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -10,6 +10,7 @@ import StoreDetails from '../pages/StoreDetails';
 import StoreEmployees from '../pages/StoreEmployees';
 
 import barba from '../assets/barba.png';
+import api from '../services/api';
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -35,6 +36,11 @@ function StoreNav() {
 }
 
 export default function StoreProfile({ navigation }) {
+
+    
+    const [date, setDate]= useState('');
+    const id = navigation.getParam('id');
+
     return (
         <>
             <ImageBackground source={barba} style={styles.resultHeader}>
