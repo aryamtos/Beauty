@@ -10,18 +10,29 @@ const serviceModel = new mongoose.Schema({ //definição de campos
         type: String,
          required:false,
     },
-    nome: { type: [String], required: false},//nome do servico
-    //company: String,//nome do local
-    cidade: {type: String},
-    preco:{type:Number, required:false,default:0},
+    nome: { type: [String], required: false},//nome do Local
     categoria:{type:[String]},
     descricao: {type: String, required: false},
     indicacao:{ type : Number},
+    tipos: {type: [ String], required: true},
+    preco: {type: Number},
+    /*tipos:{
+        type: mongoose.Schema.Types.ObjectId,
+        require:true,
+        ref:'items'
+    },*/
     user:{
         type: mongoose.Schema.Types.ObjectId,
         require:true,
         ref:'UserAcess'
     },
+    endereco:{
+
+        type: mongoose.Schema.Types.ObjectId,
+        require:true,
+        ref: 'EnderecoModel'
+    },
+
     createdAt:{
         type: Date,
         default: Date.now(),

@@ -42,7 +42,46 @@ const Tab = createMaterialBottomTabNavigator();
  *  em baixo da tela do usuário logado
  *  (sem ser parceiro)
  ***/
+function beardNav() {
+    return (
 
+        <Tab.Navigator
+            activeColor="#511D68"
+            inactiveColor="#FFF"
+            barStyle={styles.tabBar}
+            tabBarOptions={{ showIcon: true }}
+        >
+            <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoInicio} style={styles.tabIcon} />
+                    ))
+                }}
+               name="Início"
+                component={BeardPage}
+            />
+             <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoClientes} style={styles.tabIcon} />
+                    ))
+                }}
+                name="Buscar"
+                component={searchNav}
+            />
+             <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoPerfil} style={styles.tabIcon} />
+                    ))
+                }}
+                name="Perfil"
+                component={UserProfile}
+            />
+        </Tab.Navigator>
+    );
+
+}
 function categoryNave() {
     return (
 
@@ -215,7 +254,7 @@ function Routes({ navigation }) {
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="PartnerLogin" component={PartnerLogin} />
                 <Stack.Screen name="CategoryPage" component={categoryNave} />
-                <Stack.Screen name="BeardPage" component={categoryNave} />
+                <Stack.Screen name="BeardPage" component={beardNav} />
                 <Stack.Screen name="PartnerRegister" component={PartnerRegister} />
                 <Stack.Screen name="Dashboard" component={dashboardNav} />
                 <Stack.Screen name="Search" component={Search} />

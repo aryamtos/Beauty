@@ -42,7 +42,6 @@ module.exports ={
         const { categoria } = req.query;
         const servicos = await Service.find();
         return res.json(servicos);
-
     },
     async listServico(req,res){
 
@@ -53,17 +52,21 @@ module.exports ={
 
     async store(req, res){
         const {filename} = req.file;
-        const {cidade,preco,descricao,nome,indicacao,categoria} = req.body;
+        const {descricao,nome,indicacao,categoria,tipos} = req.body;
+        const {localidade_id} = req.headers;
         const {user_id} = req.headers;
 
+
+
         const servico = await Service.create({
+
             user: user_id,
             foto: filename,
-            cidade,
-            preco,
+            nome:nome,
+            endereco: localidade_id,
+            tipos:  tipos.split(',').map(tipos=> tipos.trim()),
             descricao,
             indicacao,
-            nome: nome.split(',').map(nome => nome.trim()),
             categoria: categoria.split(',').map(categoria=> categoria.trim()),
      
         })

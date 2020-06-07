@@ -3,6 +3,7 @@ import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList, Image, SafeAre
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 
+import GlobalStyles from '../assets/GlobalStyles';
 import lupa from '../assets/BUSCAR_cinza.png';
 import logoLoja from '../assets/logo_loja.jpg';
 import PropTypes from 'prop-types';
@@ -55,7 +56,8 @@ export default function CategoryPage({ navigation }) {
           //horizontal
           showsHorizontalScrollIndicator={true}
           renderItem={({ item }) => (
-            <SafeAreaView>
+
+            <SafeAreaView style={[GlobalStyles.droidSafeArea, styles.container]} >
               <ScrollView>
               <Image source={{ uri: item.foto_url }} style={styles.thumbnail}></Image>
                 <TouchableOpacity onPress={() => handleNavigate(item._id)}style={styles.result} >

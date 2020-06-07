@@ -39,19 +39,33 @@ export default function StoreProfile({ navigation }) {
 
 
     const [date, setDate] = useState('');
+    const [id, setId] = useState();
+    const[categoria, setCategoria] = useState();
+    const[cidade,setCidade] = useState();
+    const[preco,setPreco] = useState();
+    const[descricao,setDescricao] = useState();
     //const id = navigation.getParam('id');
     const [servicos, setServicos] = useState([]);
 
-    useEffect(() => {
+  
         async function loadProducts() {
-
-            const response = await api.get(`/service/${id}`);//showservices
-            console.log(response.data);
-            setDate(response.data);
+            await api.get(`/service/${id}`).then(response =>{
+                console.log(response.data);
+                setServicos(response.data.nome);
+                setCategoria(response.data.categoria);
+                setCidade(response.data.cidade);
+                setDescricao(response.data.descricao);
+                setPreco(response.data.preco);
+                
+            });
         }
+        useEffect(() =>{
+         
+                loadProducts();
+            
+        },[]);
 
-        loadProducts();
-    }, []);
+ 
 
     return (
         <>

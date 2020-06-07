@@ -12,12 +12,6 @@ const Endereco = new schema({
     bairro:{type: String, required: true,trim:true},
     cidade:{type: String,trim:true},
     cep: {type: Number, required: true},
-    localidade:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'localidadeModel',
-    }
-
-
 });
 
 module.exports = mongoose.model('EnderecoModel',Endereco );
