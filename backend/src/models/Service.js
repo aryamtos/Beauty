@@ -14,7 +14,7 @@ const serviceModel = new mongoose.Schema({ //definição de campos
     categoria:{type:[String]},
     descricao: {type: String, required: false},
     indicacao:{ type : Number},
-    tipos: {type: [ String], required: true},
+    tipos: {type: [ String], required: false},
     preco: {type: Number},
     /*tipos:{
         type: mongoose.Schema.Types.ObjectId,
@@ -23,13 +23,13 @@ const serviceModel = new mongoose.Schema({ //definição de campos
     },*/
     user:{
         type: mongoose.Schema.Types.ObjectId,
-        require:true,
+        require:false,
         ref:'UserAcess'
     },
     endereco:{
 
         type: mongoose.Schema.Types.ObjectId,
-        require:true,
+        require:false,
         ref: 'EnderecoModel'
     },
 

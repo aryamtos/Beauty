@@ -4,6 +4,7 @@ const uploadConfig = require('./config/upload');
 const auth = require('./middleware/authentification');
 
 
+const SearchController = require('./controllers/SearchController');
 const UserController = require('./controllers/UserRegisController');
 const ServiceController = require('./controllers/ServiceControllers');
 const TiposController = require('./controllers/itemsController');
@@ -53,11 +54,15 @@ routes.get('/list/cortes', Service.indexCorte);
 
 routes.get('/listAll', Service.indexSobrancelha);
 
-
+routes.get('/service/:id', Service.show);
 //ROTA SERVIÇOS
 routes.get('/spots/servicos', Service.listServico);
 
 
+
+//ROTAS DE BUSCA
+
+routes.post('/search',SearchController.store );
 
 //ROTAS TIPOS DE SERVIÇOS
 /*
