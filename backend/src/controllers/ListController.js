@@ -6,8 +6,8 @@ module.exports ={
         const { categoria } = req.query;
         const servicos = await Service.find({ categoria: categoria });
         return res.json(servicos);
-  
     },
+ 
     async indexDepil(req,res){
 
         let query = {categoria: 'Depilação'};
@@ -59,11 +59,45 @@ module.exports ={
     
     async listServico(req,res){
 
-        const {nome} = req.query;
-        const categorias = await Service.find({ nome : nome});
-        return res.json(categorias);
-    },
+        const {tipo} = req.query;
+        const{nome} = req.query;
+        const spots = await Service.find({ tipos : tipo});
+        const local = await Service.find({nome:nome});
 
+        return res.json(spots,local);
+    },
+    async update(req, res){
+        await Service.findByIdAndUpdate({'_id': req.params.id}, req.body, { new: true })
+        .then(response => {
+          return res.status(200).json(response);
+        })
+        .catch(error => {
+          return res.status(500).json(error);
+        });
+    
+      },
+    async delete(req, res){
+        await Service.deleteOne({'_id': req.params.id})
+              .then(response => {
+                return res.status(200).json(response);
+              })
+              .catch(error => {
+                return res.status(500).json(error);
+              });
+      },
+      async done(req, res){
+        await Service.findByIdAndUpdate(
+          {'_id': req.params.id},
+          {new: true})
+          .then(response => {
+            return res.status(200).json(response);
+          })
+          .catch(error => {
+            return res.status(500).json(error);
+          });
+      },
+    
+    
     async store(req, res){
         const {filename} = req.file;
         const {descricao,nome,indicacao,categoria,preco,tipos} = req.body;
@@ -78,11 +112,11 @@ module.exports ={
             foto: filename,
             nome:nome,
             endereco: localidade_id,
-            tipos:  tipos.split(',').map(tipos=> tipos.trim()),
+            tipos:  tipos.split(',').map(tipo=> tipo.trim()),
             descricao,
             preco,
             indicacao,
-            categoria: categoria.split(',').map(categoria=> categoria.trim()),
+            categoria: categoria.split(',').map(categorias=> categorias.trim()),
      
         })
 

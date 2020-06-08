@@ -5,31 +5,39 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import api from '../services/api';
 export default function Search({ navigation }) {
 
-    const [nome,setServicos] = useState('');
+    const [tipos,setCategoria] = useState('');
+    const [nome, setNome] = useState('');
+    const[rua, setRua] = useState('');
+    const [bairro,setBairro] = useState('');
     const [cidade, setCidade] = useState('');
     
-        useEffect(()=> {
-            AsyncStorage.getItem('nome').then(nome =>{
-               if(nome){
-                    //navigation.navigate('SearchResult');
-                }
-            })
-        }, []);
+    const [endereco, setEndereco] = useState('')
+    
+   /*useEffect(() =>{
 
-        async function handleNavigation() {
-        const response = await api.post('/user/list', {
-            nome,
-            cidade
-        })
-        const {_id} = response.data;
-        console.log(response);
-        await AsyncStorage.setItem('cidade', _id);
-        await AsyncStorage.setItem('nome', nome);
+    AsyncStorage.getItem('user').then(user =>{
+        if(user){
+            navigation.navigation('SearchResult');
+        }
+    })
+   },[]);*/
 
-        //navigation.navigate('List');
-        navigation.navigate('SearchResult');
-    }
+   
+   async function handleSubmit(){
+       const response = await api.post('/search',{
+           tipos,
+           nome,
+        
+     })
+       const {_id} = response.data;
+       await AsyncStorage.setItem('user', _id);
+       await AsyncStorage.setItem('tipos', tipos);
+       await AsyncStorage.setItem('nome', nome);
+     
 
+       console.log(response.data);
+       navigation.navigate('SearchResult');
+   }
     
 
     return (
@@ -40,16 +48,17 @@ export default function Search({ navigation }) {
                     style={styles.input}
                     placeholder="Serviço ou estabelecimento"
                     autoCorrect={false}
-                    value={nome}
-                    onChangeText={setServicos}
+                    value={tipos}
+                    onChangeText={setCategoria}
 
                 />
                 <View style={styles.containerDivide}>
                     <TextInput 
                         style={[styles.input, styles.inputDivide]}
                         placeholder="Cidade"
-                        value={cidade}
-                    onChangeText={setCidade}
+                        value={nome}
+                    onChangeText={setNome}
+                        
                     />
                     <TextInput 
                         style={[styles.input, styles.inputDivide]}
@@ -61,7 +70,7 @@ export default function Search({ navigation }) {
                     placeholder="Bairro"
                 />
             </View>
-            <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
+            <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
                 <Text style={styles.btnText}>Buscar</Text>
             </TouchableOpacity>
         </View>

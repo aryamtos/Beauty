@@ -32,7 +32,6 @@ const serviceModel = new mongoose.Schema({ //definição de campos
         require:false,
         ref: 'EnderecoModel'
     },
-
     createdAt:{
         type: Date,
         default: Date.now(),

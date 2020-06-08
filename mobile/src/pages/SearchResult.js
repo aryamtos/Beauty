@@ -1,48 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View, StatusBar, AsyncStorage, ScrollView , SafeAreaView,} from 'react-native';
+import { Image, StyleSheet, Text, TextInput, View, StatusBar, VirtualizedList,AsyncStorage, ScrollView , SafeAreaView,} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import lupa from '../assets/BUSCAR_cinza.png';
 import logoLoja from '../assets/logo_loja.jpg';
 import api from '../services/api';
-import AddressComponent from '../components/AddressComponent';
+import SpotList from '../components/SpotList';
+import GlobalStyles from '../assets/GlobalStyles';
 
 export default function SearchResult() {
 
-    const [nome, setServicos] = useState([]);
+    const [tipos, setCategoria] = useState([]);
+    const [nome, setNome] = useState([]);
+    
 
     useEffect(() =>{
-        AsyncStorage.getItem('nome').then(storagedServicos => {
-            const servicosArray = storagedServicos.split(',').map(nome=>nome.trim());
-            setServicos(servicosArray);
+        AsyncStorage.getItem('tipos').then(storagedServicos => {
+            const servicosArray = storagedServicos.split(',').map(tipo=>tipo.trim());
+            setCategoria(servicosArray);
+        })
+        AsyncStorage.getItem('nome').then(storagedNome => {
+            const localArray = storagedNome.split(',').map(nome=>nome.trim());
+            setNome(localArray);
         })
     },[]);
-    /*useEffect(() => {
-        async function loadSpots() {
-            const response = await api.get('/spots/servicos', {
-                params: { nome }
-            })
-            setServicos(response.data);
-        }
-        loadSpots();
-    }, []);*/
-    /*/
-    /*useEffect(() =>{
 
-        AsyncStorage.getItem('nome').then(nome=>{
-            setServicos(nome);
-        })
-    },[]);*/
     
     return (
-        <ScrollView>
-      
-        </ScrollView>
+        <SafeAreaView style={GlobalStyles.droidSafeArea}>
         
-    );
+    <ScrollView>
+        {tipos.map(tipo =><SpotList key={tipo} tipos={tipo}/>)}
+    </ScrollView>
+    </SafeAreaView>
+    )
 }
 
+const styles = StyleSheet.create({
+
+logo: {
+    height: 32,
+    resizeMode: "contain",
+    alignSelf: 'center',
+    marginTop: 10,
+},
+});
+        
+   
+
+/*
     //  {nome.map(nome=><AddressComponent key={nome} nome = {nome} />)}
 const styles = StyleSheet.create({
 
@@ -82,4 +89,4 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     }
 
-});
+});*/

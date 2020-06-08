@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, View, StatusBar, SafeAreaView, TextInput, Alert, AsyncStorage, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +8,7 @@ import { Icon } from 'react-native-elements';
 import StoreServices from '../pages/StoreServices';
 import StoreDetails from '../pages/StoreDetails';
 import StoreEmployees from '../pages/StoreEmployees';
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import barba from '../assets/barba.png';
 import api from '../services/api';
@@ -35,37 +36,32 @@ function StoreNav() {
     );
 }
 
-export default function StoreProfile({ navigation }) {
+export default function StoreProfile({ navigation}) {
 
 
-    const [date, setDate] = useState('');
-    const [id, setId] = useState();
-    const[categoria, setCategoria] = useState();
-    const[cidade,setCidade] = useState();
-    const[preco,setPreco] = useState();
-    const[descricao,setDescricao] = useState();
-    //const id = navigation.getParam('id');
-    const [servicos, setServicos] = useState([]);
-
-  
-        async function loadProducts() {
-            await api.get(`/service/${id}`).then(response =>{
-                console.log(response.data);
-                setServicos(response.data.nome);
-                setCategoria(response.data.categoria);
-                setCidade(response.data.cidade);
-                setDescricao(response.data.descricao);
-                setPreco(response.data.preco);
-                
-            });
-        }
-        useEffect(() =>{
-         
-                loadProducts();
-            
-        },[]);
+    const [date, setDate]= useState('');
 
  
+
+    /*async function handleSubmit(){
+        const nome = await AsyncStorage.getItem('nome');
+
+        await api.post(`/service/${id}`,{
+            date
+        }, {
+            headers: {nome}
+        })
+        console.log(nome);
+
+    }*/
+    useEffect(() =>{
+        AsyncStorage.getItem('nome').then(storagedItem =>{
+
+            
+        })
+        
+    },[]);
+
 
     return (
         <>
@@ -75,7 +71,7 @@ export default function StoreProfile({ navigation }) {
             </ImageBackground>
             <View style={styles.container}>
                 <View style={styles.resultData}>
-                    <Text style={styles.resultNameText}>Barberia do João</Text>
+                    <Text style={styles.resultNameText}></Text>
                     <Text style={styles.resultText}>Av. São Rafael, 174 - Ponto Central</Text>
                     <View style={styles.resultDataRate}>
                         <Icon name="star-o" type="font-awesome" size={12} style={{ marginTop: 2, marginRight: 2 }} />

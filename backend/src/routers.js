@@ -34,12 +34,13 @@ routes.get('/user/showusers', _user.get);
 routes.get('/user/:id', _user.getById);
 routes.delete('/user/deleteuser/:id',_user.delete);
 
+
+// =============ROTAS TESTE============================>
+
+//************************************************************ */
+
 //DASHBOARD
 routes.get('/dashboard', DashboardController.show);
-
-
-//ROTA CATEGORIAS
-
 
 routes.post('/user/list',upload.single('foto'), Service.store);
 routes.get('/spots', Service.index);
@@ -50,9 +51,10 @@ routes.get('/list/manicure',Service.indexManicure);
 routes.get('/list/barba', Service.indexBarba);
 routes.get('/list/cortes', Service.indexCorte);
 
-//ROTA TESTE 
-
 routes.get('/listAll', Service.indexSobrancelha);
+routes.delete('/delete/service/:id', Service.delete);
+routes.put('/update/service/:id', Service.update);
+routes.put('/done/:id', Service.done);
 
 routes.get('/service/:id', Service.show);
 //ROTA SERVIÇOS
@@ -63,6 +65,7 @@ routes.get('/spots/servicos', Service.listServico);
 //ROTAS DE BUSCA
 
 routes.post('/search',SearchController.store );
+routes.post('/seach/Address', SearchController.storeAddress);
 
 //ROTAS TIPOS DE SERVIÇOS
 /*
@@ -72,12 +75,12 @@ routes.get('tipo/index', TiposController.index);
 //ROTAS ENDEREÇO
 routes.post('/address/post',AddressController.store);
 
-routes.get('/address/:id', AddressController.index);
+routes.get('/address', AddressController.index);
 
 routes.get('/address/show',AddressController.getAll);
 
 
-
+//************************************************************ */
 
 //ROTAS SERVIÇOS
 

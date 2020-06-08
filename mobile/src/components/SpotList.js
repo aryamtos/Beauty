@@ -1,54 +1,55 @@
 import React, {useState, useEffect} from 'react'
 import { withNavigation } from 'react-navigation';
-import {View, Text, FlatList, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, FlatList, VirtualizedList,Image, TouchableOpacity, StyleSheet} from 'react-native';
 import api from '../services/api';
 
-export default function SpotList({categoria, navigation}){
-    const [categories,setCategories] = useState([]);
+export default function SpotList({tipo, navigation}){
+    const [spots,settipo] = useState([]);
+    const [nome,setNome] = useState([]);
 
     useEffect(() =>{
         async function loadCategories(){
-            const response = await api.get('/service/showservices', {
-                params: {categoria}
+            const response = await api.get('/spots/servicos', {
+                params: {tipo,nome}
             })
-            setCategories(response.data);
+            settipo(response.data);
+            setNome(response.data);
             console.log(response.data)
         }
         loadCategories();
     },[]);
+    function handleNavigate(id ){
+       
+    }
+
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}><Text style={styles.bold}>{categoria}</Text></Text>
-            <FlatList
-
-                style={styles.list}
-                data={categories}
-                keyExtractor={category => category._id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => (
-                    <View style={styles.listItem}>
-                        <TouchableOpacity onPress={() => handleNavigate(item._id)}>
-                            <Image style={styles.thumbnail} source={{ uri: item.foto_url }} />
-                        </TouchableOpacity>
-
-                    </View>
-                )}
-            />
-
-        </View> 
-    )
-    
-}
-
-/*
-
+        <View style = {StyleSheet.container}>
+            <Text style={styles.tittle}>Empresas que usam <Text style={styles.bold}>{tipo}</Text></Text>
+        
+        <FlatList
+        style={styles.list}
+        data={spots}
+        keyExtractor={spot=> spot._id}
+      
+        showsHorizontalScrollIndicator={false}
+        renderItem={({item})=> (
+            <View style={styles.listItem}>
+            <Image style={styles.thumbmail} source={{uri:item.foto_url}}/> 
+            <Text style={styles.company}>{item.nome}</Text>
+            <Text style={styles.price}>{item.preco?`R$${item.preco}/dia`: 'GRATUITO'}</Text>
             <TouchableOpacity onPress={() =>handleNavigate(item._id)} style={styles.button}>
                 <Text style={styles.buttonText}>Solicitar reserva</Text>
             </TouchableOpacity>
-        
-*/
+            
+            </View>
+        )}
+        />
+
+        </View>
+    )
+}
+
 const styles = StyleSheet.create({
     container:{
         marginTop: 30,
@@ -104,5 +105,3 @@ const styles = StyleSheet.create({
     },
     
 });
-
-//export default withNavigation(SpotList);

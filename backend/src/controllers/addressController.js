@@ -3,9 +3,13 @@ var array = require('lodash');
 module.exports ={
 
     async index(req, res) {
-        const { rua } = req.query;
-        const address = await endereco.find({ rua: rua });
-        return res.json(address);
+        const { bairro } = req.query;
+        const {cidade} = req.query;
+        const {rua} = req.query;
+        const address = await endereco.find({ bairro: bairro });
+        const city = await endereco.find({cidade:cidade});
+        const local = await endereco.find({rua:rua});
+        return res.json(address,city,local);
   
     },
     async store(req, res){

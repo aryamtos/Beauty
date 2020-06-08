@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList, Image, SafeAreaView, TextInput } from 'react-native';
+import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList, Image, SafeAreaView, Alert, TextInput, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 
@@ -10,29 +10,42 @@ import PropTypes from 'prop-types';
 
 import api from '../services/api';
 
-//import ServiceList from '../components/ServiceList';
+//import ServiceList from '../components/ServiceList';x'
 
 import { Container, Title, Button, ButtonText, ProductList } from './styles';
 
 export default function CategoryPage({ navigation }) {
 
 
-  const [servicos, setServicos] = useState([]);
+  const [servicos, setServicos] = useState('');
+
   useEffect(() => {
-    async function loadProducts() {
 
-      const response = await api.get('/list/cortes');//showservices
-
-      console.log(response.data);
-
-      setServicos(response.data);
-    }
+    AsyncStorage.getItem('nome');
 
     loadProducts();
   }, []);
 
+  async function loadProducts() {
+
+    const response = await api.get('/list/cortes');//showservices
+    setServicos(response.data);
+
+    console.log(response.data);
+    //setServicos()
+    
+    /*setServicos(response.data);
+    console.log(response.data);*/
+
+    //console.log(response.data._id);
+  }
+
+
   function handleNavigate(id) {
-    navigation.navigate('StoreProfile',{id});
+
+    navigation.navigate('StoreProfile', { id });
+    Alert.alert(id);
+
   }
   //renderListItem = ({ item }) => <ProductItem product={item} />
 
@@ -49,32 +62,33 @@ export default function CategoryPage({ navigation }) {
         />
       </View>
       <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
-        <FlatList
-          style={styles.list}
-          data={servicos}
-          keyExtractor={servico => servico._id}
-          //horizontal
-          showsHorizontalScrollIndicator={true}
-          renderItem={({ item }) => (
+      <FlatList
+        style={styles.list}
+        data={servicos}
+        keyExtractor={servico => servico._id}
+        //horizontal
+        showsHorizontalScrollIndicator={true}
+        renderItem={({ item }) => (
 
-            <SafeAreaView style={[GlobalStyles.droidSafeArea, styles.container]} >
-              <ScrollView>
+          <SafeAreaView style={[GlobalStyles.droidSafeArea, styles.container]} >
+            <ScrollView>
               <Image source={{ uri: item.foto_url }} style={styles.thumbnail}></Image>
-                <TouchableOpacity onPress={() => handleNavigate(item._id)}style={styles.result} >
-              
-                  <View style={styles.resultData}>
-                    <Text style={styles.resultNameText}>{item.nome}</Text>
-                    <View style={styles.resultDataRate}>
-                      <Text style={styles.resultText}>{item.descricao}</Text>
-                    </View>
-                    <Text style={styles.resultText}>{`R$${item.preco}`}</Text>
-                    <Text style={styles.resultText}>{item.cidade}</Text>
+              <TouchableOpacity onPress={() => handleNavigate(item.id)} style={styles.result} >
+
+                <View style={styles.resultData}>
+                  <Text style={styles.resultNameText}>{item.nome}</Text>
+                  <View style={styles.resultDataRate}>
+                    <Text style={styles.resultText}>{item.descricao}</Text>
                   </View>
-                </TouchableOpacity>
-              </ScrollView>
-            </SafeAreaView>
-          )}
-        />
+                  <Text style={styles.resultText}>{`R$${item.preco}`}</Text>
+                  <Text style={styles.resultText}>{item.categoria}</Text>
+                  <Text style={styles.resultText}>{item.tipos}</Text>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          </SafeAreaView>
+        )}
+      />
 
     </View>
 
@@ -83,8 +97,8 @@ export default function CategoryPage({ navigation }) {
 
 
 const styles = StyleSheet.create({
-        container: {
-        flex: 1,
+  container: {
+    flex: 1,
     flexDirection: 'column',
     alignSelf: 'stretch',
     paddingHorizontal: 30,
@@ -93,12 +107,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   containerText: {
-        fontSize: 14,
+    fontSize: 14,
     color: '#aaa',
     paddingVertical: 10,
   },
   busca: {
-        flexDirection: 'row',
+    flexDirection: 'row',
     borderColor: '#ddd',
     borderWidth: 1,
     padding: 10,
@@ -108,34 +122,34 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   listItem: {
-        marginRight: 15,
+    marginRight: 15,
   },
   buscaIcon: {
-        height: 20,
+    height: 20,
     resizeMode: 'contain',
     padding: 0,
     margin: -40,
   },
   list: {
-        paddingHorizontal: 20,
+    paddingHorizontal: 20,
   },
   btnLupa: {
-        flex: 1,
+    flex: 1,
     alignSelf: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
   },
   buscaText: {
-        fontSize: 14,
+    fontSize: 14,
     color: '#444',
     padding: 0,
   },
   result: {
-        flexDirection: 'row',
+    flexDirection: 'row',
     marginBottom: 10,
   },
   thumbnail: {
-        height: 72,
+    height: 72,
     resizeMode: 'contain',
     marginRight: 10,
     /*width: 200,
@@ -144,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 2*/
   },
   resultData: {
-        flexDirection: 'column',
+    flexDirection: 'column',
     alignSelf: 'stretch',
     justifyContent: 'flex-end',
     borderColor: '#ccc',
@@ -153,18 +167,18 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   resultNameText: {
-        fontSize: 16,
+    fontSize: 16,
     fontWeight: 'normal',
     color: '#999',
   },
   resultText: {
-        fontSize: 10,
+    fontSize: 10,
     fontWeight: 'normal',
     color: '#999',
     marginRight: 15,
   },
   resultDataRate: {
-        flexDirection: 'row',
+    flexDirection: 'row',
     justifyContent: 'flex-start',
   },
 });
