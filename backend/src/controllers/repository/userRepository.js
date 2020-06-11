@@ -6,7 +6,7 @@ class userRepository {
 
     constructor() {
         this._base = new base('User');
-        this._projection = 'nome email _id';
+        this._projection = 'nome email _id senha';
     }
 
     async IsEmailExiste(Email) {

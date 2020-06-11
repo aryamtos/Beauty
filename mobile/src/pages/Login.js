@@ -26,8 +26,8 @@ export default function Login({navigation}) {
          
       const {_id} = user;
       const {token} = response.data;
-      localStorage.setItem('user', _id)
-      localStorage.setItem('token', response.data.token)
+      await AsyncStorage.setItem('user', _id)
+      await AsyncStorage.setItem('token',token)
 
       navigation.navigate('Dashboard');
 
@@ -82,7 +82,7 @@ export default function Login({navigation}) {
             autoCorrect={false}
             secureTextEntry={true}
             value={senha}
-            onChangeText = {(event) => setSenha(event.target.value)}
+            onChange = {(event) => setSenha(event.target.value)}
             //nChangeText ={setSenha}
             //onChange={event => setSenha(event.target.value)}
             //onChangeText={setSenha}
