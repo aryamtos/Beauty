@@ -16,6 +16,7 @@ import PartnerDashboard from './pages/PartnerDashboard';
 import PartnerProfile from './pages/PartnerProfile';
 import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
+
 import SearchResult from './pages/SearchResult';
 import UserProfile from './pages/UserProfile';
 import Customers from './pages/Customers';
@@ -27,6 +28,7 @@ import NewService from './pages/NewService';
 import StoreProfile from './pages/StoreProfile';
 import SpotList from './components/SpotList';
 
+import CategoriaTeste from './pages/CategoriaTeste';
 import logoInicio from './assets/INICIO.png';
 import logoBusca from './assets/buscaR.png';
 import logoPerfil from './assets/PERFIL.png';
@@ -266,6 +268,7 @@ function Routes({ navigation }) {
                 <Stack.Screen name="NewCustomer" component={NewCustomer} />
                 <Stack.Screen name="BusinessHours" component={BusinessHours} />
                 <Stack.Screen name="Services" component={Services} />
+                <Stack.Screen name="CategoriaTeste" component={CategoriaTeste} />
                 <Stack.Screen name="Location" component={Location} />
                 <Stack.Screen name="NewService" component={NewService} />
                 <Stack.Screen name="StoreProfile" component={StoreProfile} />

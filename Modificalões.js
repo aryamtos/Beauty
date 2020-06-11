@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component} from 'react';
 import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList, Image, SafeAreaView, Alert, TextInput, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
@@ -14,65 +14,37 @@ import api from '../services/api';
 
 //import { Container, Title, Button, ButtonText, ProductList } from './styles';
 
-export default function CategoryPage({ navigation }) {
+
+class CategoryPage extends Component({tipos, navigation }) {
 
 
-  const [servicos, setServicos] = useState([]);
-  const [tipos, setTipos] = useState(1);
-  
+constructor(props){
 
-  useEffect(() => {
+  super(props);
 
-   // AsyncStorage.getItem('nome');
+  this.state = {
 
-    loadProducts();
-  }, []);
+    servicos = [],
+  };
+  this.arrayholder = []
+}
 
+async componentDidMount(){
 
-  useEffect(() => {
-    AsyncStorage.getItem('tipos').then(storageCategoria => {
-        const categoriaArray = storageCategoria.split(',').map(tipos=> tipos.trim());
-        setTipos(categoriaArray);
+   await api.get('/list/cortes')
+    .then(res =>{
+      const servicos = res.data;
+      this.setState({
+        servicos,
+      });
+      console.log(servicos);
     })
-}, []);
 
-  async function loadProducts() {
-
-    const response = await api.get('/list/cortes',{
-      params:{tipos}
-    });//showservices
-    setServicos(response.data);
-
-    console.log(response.data);
-    //setServicos()
-    
-    /*setServicos(response.data);
-    console.log(response.data);*/
-
-    //console.log(response.data._id);
-  }
-
-/*
-  function handleNavigate(_id) {
-
-    navigation.navigate('StoreProfile', { _id });
-   
-
-  }*/
-  function handleNavigate(id) {
-
-    navigation.navigate('CategoriaTeste', {id});
-   
-
-  }
-  //renderListItem = ({ item }) => <ProductItem product={item} />
+}
 
   return (
     <View style={styles.container}>
       <View style={styles.busca}>
-        <TouchableOpacity onPress={() => { navigation.navigate('Search') }} style={styles.btnLupa}>
-          <Image source={lupa} style={styles.buscaIcon} />
-        </TouchableOpacity>
         <TextInput
           style={styles.buscaText}
           placeholder="Buscar serviços ou estabelecimentos"
@@ -82,25 +54,25 @@ export default function CategoryPage({ navigation }) {
       <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
       <FlatList
         style={styles.list}
-        data={servicos}
-        keyExtractor={servico => String(servico._id)}
+        data={this.state.servicos}
+        keyExtractor={servico => servico._id}
         //horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item:servico }) => (
+        renderItem={({ item }) => (
 
          
             <ScrollView>
-              <Image source={{ uri: servico.foto_url }} style={styles.thumbnail}></Image>
-              <TouchableOpacity onPress={() => handleNavigate(servico._id)} style={styles.result} >
+              <Image source={{ uri: item.foto_url }} style={styles.thumbnail}></Image>
+              <TouchableOpacity onPress={() =>this.props.navigation.navigate('CategoriaTeste',{data: this.state.servicos})} style={styles.result} >
 
                 <View style={styles.resultData}>
-                  <Text style={styles.resultNameText}>{servico.nome}</Text>
+                  <Text style={styles.resultNameText}>{item.nome}</Text>
                   <View style={styles.resultDataRate}>
-                    <Text style={styles.resultText}>{servico.descricao}</Text>
+                    <Text style={styles.resultText}>{item.descricao}</Text>
                   </View>
-                  <Text style={styles.resultText}>{`R$${servico.preco}`}</Text>
-                  <Text style={styles.resultText}>{servico.categoria}</Text>
-                  <Text style={styles.resultText}>{servico.tipos}</Text>
+                  <Text style={styles.resultText}>{`R$${item.preco}`}</Text>
+                  <Text style={styles.resultText}>{item.categoria}</Text>
+                  <Text style={styles.resultText}>{item.tipos}</Text>
                 </View>
               </TouchableOpacity>
             </ScrollView>

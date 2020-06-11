@@ -14,27 +14,17 @@ import api from '../services/api';
 
 //import { Container, Title, Button, ButtonText, ProductList } from './styles';
 
-export default function CategoryPage({ navigation }) {
+export default function CategoryPage({tipos, navigation }) {
 
 
-  const [servicos, setServicos] = useState([]);
-  const [tipos, setTipos] = useState(1);
-  
+  const [servicos, setServicos] = useState('');
 
   useEffect(() => {
 
-   // AsyncStorage.getItem('nome');
+    AsyncStorage.getItem('nome');
 
     loadProducts();
   }, []);
-
-
-  useEffect(() => {
-    AsyncStorage.getItem('tipos').then(storageCategoria => {
-        const categoriaArray = storageCategoria.split(',').map(tipos=> tipos.trim());
-        setTipos(categoriaArray);
-    })
-}, []);
 
   async function loadProducts() {
 
@@ -59,9 +49,9 @@ export default function CategoryPage({ navigation }) {
    
 
   }*/
-  function handleNavigate(id) {
+  function handleNavigate(_id) {
 
-    navigation.navigate('CategoriaTeste', {id});
+    navigation.navigate('CategoriaTeste', _id);
    
 
   }
@@ -83,24 +73,24 @@ export default function CategoryPage({ navigation }) {
       <FlatList
         style={styles.list}
         data={servicos}
-        keyExtractor={servico => String(servico._id)}
+        keyExtractor={servico => servico._id}
         //horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item:servico }) => (
+        renderItem={({ item }) => (
 
          
             <ScrollView>
-              <Image source={{ uri: servico.foto_url }} style={styles.thumbnail}></Image>
-              <TouchableOpacity onPress={() => handleNavigate(servico._id)} style={styles.result} >
+              <Image source={{ uri: item.foto_url }} style={styles.thumbnail}></Image>
+              <TouchableOpacity onPress={() => handleNavigate(item._id)} style={styles.result} >
 
                 <View style={styles.resultData}>
-                  <Text style={styles.resultNameText}>{servico.nome}</Text>
+                  <Text style={styles.resultNameText}>{item.nome}</Text>
                   <View style={styles.resultDataRate}>
-                    <Text style={styles.resultText}>{servico.descricao}</Text>
+                    <Text style={styles.resultText}>{item.descricao}</Text>
                   </View>
-                  <Text style={styles.resultText}>{`R$${servico.preco}`}</Text>
-                  <Text style={styles.resultText}>{servico.categoria}</Text>
-                  <Text style={styles.resultText}>{servico.tipos}</Text>
+                  <Text style={styles.resultText}>{`R$${item.preco}`}</Text>
+                  <Text style={styles.resultText}>{item.categoria}</Text>
+                  <Text style={styles.resultText}>{item.tipos}</Text>
                 </View>
               </TouchableOpacity>
             </ScrollView>

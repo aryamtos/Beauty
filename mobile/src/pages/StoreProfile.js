@@ -38,24 +38,24 @@ function StoreNav() {
 
 export default function StoreProfile({ navigation}) {
 
-
-    const [date, setDate]= useState('');
-
+    
+    const [date, setDate] = useState('');
+       // const _id = navigation.getParam('_id');
  
 
-    /*async function handleSubmit(){
-        const nome = await AsyncStorage.getItem('nome');
+    async function handleSubmit(){
+        const nome = await AsyncStorage.getItem('_id');
 
-        await api.post(`/service/${id}`,{
+        await api.get(`/service/${_id}`,{
             date
         }, {
             headers: {nome}
         })
         console.log(nome);
 
-    }*/
+    }
     useEffect(() =>{
-        AsyncStorage.getItem('nome').then(storagedItem =>{
+        AsyncStorage.getItem('_id').then(storagedItem =>{
 
             
         })

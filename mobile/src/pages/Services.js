@@ -1,93 +1,95 @@
-import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Services({ navigation }) {
-    function handleNavigation() {
-        navigation.goBack();
-    }
 
+import React, { Component } from 'react';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { ListItem, SearchBar } from 'react-native-elements';
+import api from '../services/api';
+
+class Services extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+     loading : false,
+      nameList: [],
+      error: null,
+    
+    };
+
+    this.arrayholder = [];
+  }
+
+  async componentDidMount() {
+     await api.get('/all')
+    .then(res =>{
+      const nameList = res.data;
+      this.setState({
+        nameList,
+        
+      });
+      console.log(nameList);
+    })
+  }
+  /*
+  renderSeparator = () => {
     return (
-        <View style={styles.container}>
-            <View style={styles.card}>
-                <View style={styles.cardData}>
-                    <Text style={styles.cardText}>Nome do Serviço</Text>
-                    <Text style={styles.cardText}>R$0,00</Text>
-                </View>
-                <View style={styles.cardData}>
-                    <Text style={styles.cardText}>Nome do Serviço</Text>
-                    <Text style={styles.cardText}>R$0,00</Text>
-                </View>
-                <View style={styles.cardData}>
-                    <Text style={styles.cardText}>Nome do Serviço</Text>
-                    <Text style={styles.cardText}>R$0,00</Text>
-                </View>
-                <View style={styles.cardData}>
-                    <Text style={styles.cardText}>Nome do Serviço</Text>
-                    <Text style={styles.cardText}>R$0,00</Text>
-                </View>
-                <View style={styles.cardData}>
-                    <Text style={styles.cardText}>Nome do Serviço</Text>
-                    <Text style={styles.cardText}>R$0,00</Text>
-                </View>
-                <View style={styles.cardData}>
-                    <Text style={styles.cardText}>Nome do Serviço</Text>
-                    <Text style={styles.cardText}>R$0,00</Text>
-                </View>
-                <View style={styles.cardData}>
-                    <Text style={styles.cardText}>Nome do Serviço</Text>
-                    <Text style={styles.cardText}>R$0,00</Text>
-                </View>
-            </View>
-            <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
-                <Text style={styles.btnText}>VOLTAR</Text>
-            </TouchableOpacity>
-        </View>
+      <View
+        style={{
+          height: 1,
+          width: '86%',
+          backgroundColor: '#CED0CE',
+          marginLeft: '14%',
+        }}
+      />
     );
-}
+  }
+  searchFilterFunction = text => {
+    this.setState({
+      value: text,
+    });
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignSelf: 'stretch',
-        paddingHorizontal: 30,
-        justifyContent: 'center',
-    },
-    card: {
-        alignSelf: 'stretch',
-        padding: 40,
-        borderColor: '#A5A5A5',
-        borderWidth: 1,
-        borderBottomWidth: 0,
-        borderTopStartRadius: 5,
-        borderTopEndRadius: 5,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    cardData: {
-        alignSelf: 'stretch',
-        borderColor: '#DEDEDE',
-        borderBottomWidth: 1,
-        paddingBottom: 5,
-        marginBottom: 20,
-    },
-    cardText: {
-        fontSize: 11,
-        fontWeight: 'normal',
-        color: '#A3A3A3',
-    },
-    btn: {
-        height: 42,
-        backgroundColor: '#707070',
-        marginBottom: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomStartRadius: 5,
-        borderBottomEndRadius: 5,
-    },
-    btnText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#fff',
-    }
-});
+    const newData = this.state.nameList.filter(item => {
+      const itemData = `${item.nome}`;
+      const textData = text;
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      nameList: newData,
+    });
+  };
+  renderHeader = () => {
+    return (
+      <SearchBar
+        placeholder="Type Here..."
+        lightTheme
+        round
+        onChangeText={text => this.searchFilterFunction(text)}
+        autoCorrect={false}
+        value={this.state.value}
+      />
+    );
+  };*/
+  render(){
+ 
+    return(
+      <View style={{ flex: 1 }}>
+      <FlatList
+        data={this.state.nameList}
+        keyExtractor={item => item._id}
+        renderItem={({ item }) => (
+          <ListItem
+            leftAvatar={{ source: { uri: item.foto_url } }}
+            title={`${item.nome}`}
+            subtitle={item.categoria}
+          />
+        )}
+      /*  ItemSeparatorComponent={this.renderSeparator}
+        ListHeaderComponent={this.renderHeader}*/
+      />
+    </View>
+    );
+  }
+
+}
+export default Services;

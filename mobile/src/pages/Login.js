@@ -18,12 +18,28 @@ export default function Login({navigation}) {
 
     event.preventDefault();
 
-    const response = await api.post('/auth',{
-      email,
-      senha
-    })
+    try {
+      const response = await api.post('/auth',{
+        email,
+        senha,
+      })
+         
+      const {_id} = user;
+      const {token} = response.data;
+      localStorage.setItem('user', _id)
+      localStorage.setItem('token', response.data.token)
+
+      navigation.navigate('Dashboard');
+
+    } catch (err) {
+      alert('Falha no login, tente novamente')
+    }
+    
     console.log(response);
-    navigation.navigate('Dashboard');
+    /*
+    await AsyncStorage.setItem('user', _id);
+    await AsyncStorage.setItem('token-access',token);
+    */
     /*const {token} = response.data;
     const {user} = response.data;
     const {_id} = user;
@@ -49,8 +65,8 @@ export default function Login({navigation}) {
             autoCapitalize="none"
             autoCorrect={false}
             value={email}
-            onChangeText= {setEmail}
-           // onChange={event => setEmail(event.target.value)}
+            //onChangeText= {setEmail}
+           onChange={(event) => setEmail(event.target.value)}
             //onChangeText={setEmail}
           // value={email}
           //onChangeText={setEmail}
@@ -66,7 +82,8 @@ export default function Login({navigation}) {
             autoCorrect={false}
             secureTextEntry={true}
             value={senha}
-            onChangeText ={setSenha}
+            onChangeText = {(event) => setSenha(event.target.value)}
+            //nChangeText ={setSenha}
             //onChange={event => setSenha(event.target.value)}
             //onChangeText={setSenha}
           //value={senha}

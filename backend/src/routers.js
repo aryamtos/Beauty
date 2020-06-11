@@ -7,8 +7,7 @@ const auth = require('./middleware/authentification');
 const SearchController = require('./controllers/SearchController');
 const UserController = require('./controllers/UserRegisController');
 const ServiceController = require('./controllers/ServiceControllers');
-const TiposController = require('./controllers/itemsController');
-const AddressController = require('./controllers/addressController');
+
 const Service = require('./controllers/ListController');
 const DashboardController = require('./controllers/DashboardController');
 const BookingController = require('./controllers/BookingController');
@@ -65,20 +64,13 @@ routes.get('/spots/servicos', Service.listServico);
 //ROTAS DE BUSCA
 
 routes.post('/search',SearchController.store );
-routes.post('/seach/Address', SearchController.storeAddress);
+
 
 //ROTAS TIPOS DE SERVIÇOS
 /*
 routes.post('/tipos/servicos', TiposController.store);
 routes.get('tipo/index', TiposController.index);
 */
-//ROTAS ENDEREÇO
-routes.post('/address/post',AddressController.store);
-
-routes.get('/address', AddressController.index);
-
-routes.get('/address/show',AddressController.getAll);
-
 
 //************************************************************ */
 

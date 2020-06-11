@@ -1,5 +1,5 @@
 const  Service = require('../models/Service');
-var array = require('lodash');
+var _ = require('lodash');
 module.exports ={
 
     async index(req, res) {
@@ -62,9 +62,9 @@ module.exports ={
         const {tipo} = req.query;
         const{nome} = req.query;
         const spots = await Service.find({ tipos : tipo});
-        const local = await Service.find({nome:nome});
+        //const local = await Service.find({nome:nome});
 
-        return res.json(spots,local);
+        return res.json(spots);
     },
     async update(req, res){
         await Service.findByIdAndUpdate({'_id': req.params.id}, req.body, { new: true })
@@ -96,23 +96,29 @@ module.exports ={
             return res.status(500).json(error);
           });
       },
+    async getServices(req,res){
+
     
+      const{nome} = req.query;
+      const{tipos} = req.query;
+      const results = await _.filter({nome:nome})
+      return res.json(results);
+     
+      
+    },
     
     async store(req, res){
         const {filename} = req.file;
-        const {descricao,nome,indicacao,categoria,preco,tipos} = req.body;
-        const {localidade_id} = req.headers;
+        const {descricao,nome,indicacao,categoria,address,tempo,preco,tipos} = req.body;
         const {user_id} = req.headers;
-
-
-
         const servico = await Service.create({
 
             user: user_id,
             foto: filename,
             nome:nome,
-            endereco: localidade_id,
-            tipos:  tipos.split(',').map(tipo=> tipo.trim()),
+            address,
+            tempo,
+            tipos: tipos.split(',').map(tipo=> tipo.trim()),
             descricao,
             preco,
             indicacao,

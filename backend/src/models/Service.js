@@ -14,8 +14,19 @@ const serviceModel = new mongoose.Schema({ //definição de campos
     categoria:{type:[String]},
     descricao: {type: String, required: false},
     indicacao:{ type : Number},
-    tipos: {type: [ String], required: false},
+    tipos: {type: [ String], trim:true, required: false},
     preco: {type: Number},
+    address: { type: String, required: false, trim: true },
+    tempo: { type: Number, required: false, default: 0 },
+    /*location:{
+
+        rua: {type: String, trim: true},
+        bairro { type: String, trim: true},
+        numero:{type: Number},
+        cep:{type:Number},
+        cidade: { type: String},
+
+    }* /
     /*tipos:{
         type: mongoose.Schema.Types.ObjectId,
         require:true,
@@ -26,12 +37,7 @@ const serviceModel = new mongoose.Schema({ //definição de campos
         require:false,
         ref:'UserAcess'
     },
-    endereco:{
-
-        type: mongoose.Schema.Types.ObjectId,
-        require:false,
-        ref: 'EnderecoModel'
-    },
+ 
     createdAt:{
         type: Date,
         default: Date.now(),

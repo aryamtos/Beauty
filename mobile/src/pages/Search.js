@@ -26,13 +26,13 @@ export default function Search({ navigation }) {
    async function handleSubmit(){
        const response = await api.post('/search',{
            tipos,
-           nome,
+      
         
      })
        const {_id} = response.data;
        await AsyncStorage.setItem('user', _id);
        await AsyncStorage.setItem('tipos', tipos);
-       await AsyncStorage.setItem('nome', nome);
+       //await AsyncStorage.setItem('nome', nome);
      
 
        console.log(response.data);

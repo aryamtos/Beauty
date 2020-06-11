@@ -24,6 +24,9 @@ export default function Dashboard ({ navigation }) {
         navigation.navigate('BeardPage');
     }
 
+    async function handleSearchable(){
+        navigation.navigate('Services');
+    }
     async function handleNavigation() {
         navigation.navigate('CategoryPage');
     }
@@ -55,7 +58,7 @@ export default function Dashboard ({ navigation }) {
                     </LinearGradient>
                 </ImageBackground>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleNavigation} style={styles.categoria}>
+            <TouchableOpacity onPress={handleSearchable} style={styles.categoria}>
                 <ImageBackground source={depila} style={styles.categoriaImage}>
                     <LinearGradient colors={['transparent', 'white']} style={styles.gradientEffect}>
                         <Text style={styles.categoriaText}>Depilação</Text>
