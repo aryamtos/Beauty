@@ -1,7 +1,9 @@
 const  Service = require('../models/Service');
+const Produtos = require('../models/Produtos');
 var _ = require('lodash');
 module.exports ={
 
+ 
     async index(req, res) {
         const { categoria } = req.query;
         const servicos = await Service.find({ categoria: categoria });
@@ -16,7 +18,10 @@ module.exports ={
     },
     async indexCorte(req,res){
         let query = {categoria: 'Corte'};
-        let reqs = await Service.find(query);
+        let reqs = await Service.find(query)
+        .populate('servicos')
+        .populate('user');
+
         return res.json(reqs);
     },
 
@@ -38,9 +43,15 @@ module.exports ={
         let reqs = await Service.find(query);
         return res.json(reqs);
     },
+
     async getAll(req, res){
+
         const { categoria } = req.query;
-        const servicos = await Service.find();
+        const {user_id} = req.headers;  
+        const {servicos_id} = req.headers;
+        const servicos = await Service.find()
+        .populate('servicos')
+        .populate('user');  
         return res.json(servicos);
     },
    
@@ -96,35 +107,43 @@ module.exports ={
             return res.status(500).json(error);
           });
       },
+
+      //NOME DO LOCAL 
     async getServices(req,res){
 
-    
       const{nome} = req.query;
-      const{tipos} = req.query;
       const results = await _.filter({nome:nome})
       return res.json(results);
-     
-      
     },
-    
+
+
+    //CRIAR -POST
     async store(req, res){
+
         const {filename} = req.file;
         const {descricao,nome,indicacao,categoria,address,tempo,preco,tipos} = req.body;
-        const {user_id} = req.headers;
+        const {user_id} = req.headers;  
+        const {servicos_id} = req.headers;
         const servico = await Service.create({
 
             user: user_id,
             foto: filename,
             nome:nome,
-            address,
+            //preco,
             tempo,
-            tipos: tipos.split(',').map(tipo=> tipo.trim()),
+            address,
+            servicos: servicos_id,
+            //tempo,
+            tipos,
+            //tipos: tipos.split(','),
             descricao,
             preco,
             indicacao,
-            categoria: categoria.split(',').map(categorias=> categorias.trim()),
-     
+            categoria: categoria.split(',').map(categorias => categorias.trim()),
+           //tipos: tipos.split(',').map(tipo => tipo.trim()),
+            
         })
+        await servico.populate('servicos').populate('user').execPopulate();
 
         return res.json(servico);
     }

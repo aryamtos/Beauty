@@ -8,6 +8,7 @@ const SearchController = require('./controllers/SearchController');
 const UserController = require('./controllers/UserRegisController');
 const ServiceController = require('./controllers/ServiceControllers');
 
+const ProdutosController = require('./controllers/ProdutosController');
 const Service = require('./controllers/ListController');
 const DashboardController = require('./controllers/DashboardController');
 const BookingController = require('./controllers/BookingController');
@@ -36,6 +37,11 @@ routes.delete('/user/deleteuser/:id',_user.delete);
 
 // =============ROTAS TESTE============================>
 
+routes.post('/produtos', ProdutosController.store); //Cadastrar Serviços
+
+routes.get('/listarServicos', ProdutosController.index);
+
+routes.get('/list', ProdutosController.getAll); //Listar Serviços e Local dos serviços e categoria
 //************************************************************ */
 
 //DASHBOARD
@@ -43,7 +49,7 @@ routes.get('/dashboard', DashboardController.show);
 
 routes.post('/user/list',upload.single('foto'), Service.store);
 routes.get('/spots', Service.index);
-routes.get('/all', Service.getAll);
+routes.get('/all', Service.getAll);//Listagem de todos os serviços
 
 routes.get('/list/depil',Service.indexDepil);
 routes.get('/list/manicure',Service.indexManicure);
@@ -89,7 +95,7 @@ routes.delete('/service/deleteservice/:id', _product.delete);
 //ROTAS BOOKING
 
 routes.post('/service/:id/bookings', BookingController.store);
-routes.get('/bookings', BookingController.show);
+routes.get('/bookings', BookingController.getAll);
 
 //SOLICITAÇÃO DE RESERVA
 routes.post('/bookings/:booking_id/rejections', RejectionController.store);

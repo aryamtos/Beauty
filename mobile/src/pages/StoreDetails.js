@@ -1,20 +1,34 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, StatusBar, ImageBackground, SafeAreaView, AsyncStorage } from 'react-native';
+import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { Icon } from 'react-native-elements';
+import { useNavigation, useRoute } from '@react-navigation/native'
+import api from '../services/api';
+
 
 export default function StoreDetails() {
+    const route = useRoute();
+    const [categoria, setCategoria] = useState([]);
+    const [tipos, setTipos] = useState([]);
+    const [date, setDate] = useState('');
+    const servico = route.params.servico;
+    console.log(servico)
+
     return(
         <View style={styles.container}>
             <View style={styles.session}>
                 <Text style={styles.sessionBoldText}>Sobre</Text>
-                <Text style={styles.sessionNormalText}>Fiquei com preguiça de copiar o lorem ipsum, então aqui está o meu próprio texto aleatório, com meu próprio conteúdo aleatório.</Text>
+    <Text style={styles.sessionNormalText}>{servico.descricao}</Text>
             </View>
             <View style={styles.session}>
                 <Text style={styles.sessionBoldText}>Endereço</Text>
-                <Text style={styles.sessionNormalText}>Av. São Rafael, 174 - Ponto Central - Salvador/BA</Text>
+    <Text style={styles.sessionNormalText}>{servico.address}</Text>
             </View>
             <View style={styles.session}>
                 <Text style={styles.sessionBoldText}>Contato</Text>
-                <Text style={styles.sessionNormalText}>leobob2000@gmail.com</Text>
+    <Text style={styles.sessionNormalText}>{servico.user.email}</Text>
             </View>
             <View style={styles.session}>
                 <Text style={styles.sessionBoldText}>Horário de Funcionamento</Text>

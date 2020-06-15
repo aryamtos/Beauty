@@ -3,8 +3,6 @@
 const mongoose = require('mongoose'); //importamos o mongoose
 
 const serviceModel = new mongoose.Schema({ //definição de campos
-
-
     //localidade - endereco, contato, horários de funcionamento - profissionais
     foto:{
         type: String,
@@ -14,10 +12,16 @@ const serviceModel = new mongoose.Schema({ //definição de campos
     categoria:{type:[String]},
     descricao: {type: String, required: false},
     indicacao:{ type : Number},
-    tipos: {type: [ String], trim:true, required: false},
+    tipos: {type: [ String],  required: false},
     preco: {type: Number},
+    servicos: {
+        type: mongoose.Schema.Types.ObjectId,
+       
+        ref:'Servicos',
+    },
+    tempo: {type: String},
     address: { type: String, required: false, trim: true },
-    tempo: { type: Number, required: false, default: 0 },
+    //tempo: { type: Number, required: false, default: 0 },
     /*location:{
 
         rua: {type: String, trim: true},
@@ -34,8 +38,8 @@ const serviceModel = new mongoose.Schema({ //definição de campos
     },*/
     user:{
         type: mongoose.Schema.Types.ObjectId,
-        require:false,
-        ref:'UserAcess'
+        
+        ref:'User'
     },
  
     createdAt:{

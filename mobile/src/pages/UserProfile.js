@@ -5,6 +5,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import thumbnail from '../assets/perfil_.png';
 
 export default function UserProfile({ navigation }) {
+
+
+    function handleNavigate() {
+        navigation.navigate('ListAgendamentos');
+    }
+    
+    function handlePerfil() {
+        navigation.navigate('Profile');
+    }
     return(
         <>
             <View style={styles.header}>
@@ -16,13 +25,13 @@ export default function UserProfile({ navigation }) {
                     <Text style={styles.name}>Leo Bob 2000</Text>
                 </View>
                 <Text style={styles.text}>Para o usuário</Text>
-                <TouchableOpacity style={styles.btn}>
+                <TouchableOpacity  onPress={() => handleNavigate()}style={styles.btn}>
                     <Text style={styles.btnText}>Seus agendamentos</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btn}>
                     <Text style={styles.btnText}>Histórico</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn}>
+                <TouchableOpacity onPress={() => handlePerfil()} style={styles.btn}>
                     <Text style={styles.btnText}>Alterar Perfil</Text>
                 </TouchableOpacity>
             </View>

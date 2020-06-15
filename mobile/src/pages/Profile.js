@@ -1,41 +1,43 @@
-
 import React, { useState, useEffect } from 'react';
+import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList,ImageBackground, Image, SafeAreaView, Alert, TextInput, AsyncStorage } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Icon } from 'react-native-elements';
+import socketio from 'socket.io-client';
+
+import GlobalStyles from '../assets/GlobalStyles';
+import lupa from '../assets/BUSCAR_cinza.png';
+import logoLoja from '../assets/logo_loja.jpg';
 import PropTypes from 'prop-types';
-import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native';
-import background from '../assets/fundo2.png';
-import logo from '../assets/beautymenu1.png';
-import { TextInput } from 'react-native-gesture-handler';
-import { StackActions, StackNavigator, NavigationActions } from 'react-navigation';
+import { useNavigation, useRoute } from '@react-navigation/native'
+
+
 import api from '../services/api';
 
-export default function Login({ props,navigation }) {
+export default function Profile({ navigation }) {
 
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null)
- 
-  async function saveUser(user){
-    await AsyncStorage.setItem('token', JSON.stringify(user))
-  }
-  async function handleSubmit(){
-    try{
-      const credentials ={
-        email: username,
-        senha: password,
-      }
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [confirmacao, setConfirmacao] = useState('');
+  const [date, setDate] = useState('');
 
-    //  const response = await api.post('/auth',credentials)
+  useEffect(() => {
+     updateSubmit();
+  }, []);
+  async function updateSubmit() {
 
-    
-      navigation.navigate('Dashboard')
-    }catch(err){
+    const response = await api.put(`/user/register/${id}`, {
+      email,
+      senha,
+      nome,
+      telefone,
+    })
+    setDate(response.data);
+    navigation.navigate('StoreService');
+    Alert.alert("Atualizado com sucesso!")
 
-      console.log(err)
-      setErrorMessage('Usuário não existe')
-
-
-    }
   }
 
   return (
@@ -46,17 +48,41 @@ export default function Login({ props,navigation }) {
           <View style={styles.formTop}></View>
           <TextInput
             style={styles.Input}
-            placeholder="CPF ou E-MAIL"
+            placeholder="NOME"
+            placeholderTextColor="#A5A5A5"
+            autoCapitalize="words"
+            autoCorrect={false}
+            value={nome}
+            onChangeText ={ nome => setNome(nome)}
+
+          />
+          <View style={styles.borderContainer}>
+            <View style={styles.border}></View>
+          </View>
+          <View style={styles.borderContainer}>
+            <View style={styles.border}></View>
+          </View>
+          <TextInput
+            style={styles.Input}
+            placeholder="TELEFONE"
+            placeholderTextColor="#A5A5A5"
+            autoCorrect={false}
+            value={telefone}
+            onChangeText ={ telefone => setTelefone(telefone)}
+
+          />
+          <View style={styles.borderContainer}>
+            <View style={styles.border}></View>
+          </View>
+          <TextInput
+            style={styles.Input}
+            placeholder="E-MAIL"
             placeholderTextColor="#A5A5A5"
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
-            value={username}
-            //onChangeText={setEmail}
-          onChangeText ={ username => setUsername(username)}
-          //onChangeText={setEmail}
-          // value={email}
-          //onChangeText={setEmail}
+            value={email}
+            onChangeText ={ email => setEmail(email)} 
           />
           <View style={styles.borderContainer}>
             <View style={styles.border}></View>
@@ -68,16 +94,25 @@ export default function Login({ props,navigation }) {
             autoCapitalize="none"
             autoCorrect={false}
             secureTextEntry={true}
-            value={password}
-            onChangeText = {password => setPassword(password)}
-            //onChangeText={setSenha}
-          //onChange={event => setSenha(event.target.value)}
-          //onChangeText={setSenha}
-          //value={senha}
-          //onChangeText={setPassword}
+            value={senha}
+            onChangeText ={ senha => setSenha(senha)}
+          />
+          <View style={styles.borderContainer}>
+            <View style={styles.border}></View>
+          </View>
+          <TextInput
+            style={styles.Input}
+            placeholder="CONFIRMAR SENHA"
+            placeholderTextColor="#A5A5A5"
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry={true}
+            value={confirmacao}
+            onChangeText ={confirmacao => setConfirmacao(confirmacao)}
+
           />
           <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
-            <Text style={styles.btnText}>LOGIN</Text>
+            <Text style={styles.btnText}>Atualizar perfil</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.alternatives}>
@@ -87,17 +122,11 @@ export default function Login({ props,navigation }) {
             <View style={styles.divideLine} />
           </View>
           <TouchableOpacity onPress={handleSubmit} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
-          <View style={styles.footer}>
-            <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
-            <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
-          </View>
         </View>
       </View>
     </ImageBackground>
   )
 }
-
-
 
 const styles = StyleSheet.create({
   body: {
@@ -113,9 +142,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    height: 180,
+    height: 50,
     resizeMode: 'contain',
-    marginBottom: 50,
+    marginBottom: 30,
   },
   form: {
     alignSelf: 'stretch',
@@ -195,17 +224,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal',
     color: '#A5A5A5',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 5,
-    paddingHorizontal: 20,
-  },
-  footerText: {
-    fontSize: 12,
-    fontWeight: 'normal',
-    color: '#511D68',
   },
 });

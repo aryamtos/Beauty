@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Icon } from 'react-native-elements';
-
+import { useNavigation, useRoute } from '@react-navigation/native'
 import StoreServices from '../pages/StoreServices';
 import StoreDetails from '../pages/StoreDetails';
 import StoreEmployees from '../pages/StoreEmployees';
@@ -16,6 +16,15 @@ import api from '../services/api';
 const TopTab = createMaterialTopTabNavigator();
 
 function StoreNav() {
+
+    const route = useRoute()
+    const [date, setDate] = useState('');
+    const [tipos, setTipos] = useState([]);
+   // const servico = route.params;
+   const servico = route.params.servico;
+   
+
+    
     return (
         <TopTab.Navigator
             tabBarOptions={{
@@ -29,54 +38,56 @@ function StoreNav() {
                 }
             }}
         >
-            <TopTab.Screen name="SERVIÇOS" component={StoreServices} />
-            <TopTab.Screen name="DETALHES" component={StoreDetails} />
+            <TopTab.Screen name="SERVIÇOS" initialParams={route.params} component={StoreServices} />
+            <TopTab.Screen name="DETALHES" initialParams={route.params} component={StoreDetails} />
             <TopTab.Screen name="PROFISSIONAIS" component={StoreEmployees} />
         </TopTab.Navigator>
     );
 }
 
-export default function StoreProfile({ navigation}) {
+export default function StoreProfile({ navigation }) {
 
-    
+
+    const route = useRoute()
     const [date, setDate] = useState('');
-       // const _id = navigation.getParam('_id');
- 
+    const [tipos, setTipos] = useState([]);
+    const servico = route.params.servico;
+    
+    //console.log(servico)
 
-    async function handleSubmit(){
-        const nome = await AsyncStorage.getItem('_id');
+    async function handleSubmit() {
 
-        await api.get(`/service/${_id}`,{
-            date
-        }, {
-            headers: {nome}
-        })
-        console.log(nome);
-
+        const response = await api.get(`/service/${servico._id}`)
+        setDate(response.data)
+        //console.log(response.data)
     }
-    useEffect(() =>{
-        AsyncStorage.getItem('_id').then(storagedItem =>{
+    /*useEffect(() => {
 
-            
+        AsyncStorage.getItem('tipos').then(storageServicos => {
+            const servicosArray = storageServicos.split(',').map(tipos => tipos.trim());
+            setTipos(servicosArray);
+            //console.log(setTipos)
         })
-        
-    },[]);
 
+    }, []);*/
+    useEffect(() => {
+        handleSubmit()
+    }, [])
 
     return (
         <>
-            <ImageBackground source={barba} style={styles.resultHeader}>
+            <ImageBackground source={{ uri: servico.foto_url }} style={styles.resultHeader}>
                 <LinearGradient colors={['transparent', 'rgba(255,255,255,0.8)']} style={styles.gradient}>
                 </LinearGradient>
             </ImageBackground>
             <View style={styles.container}>
                 <View style={styles.resultData}>
-                    <Text style={styles.resultNameText}></Text>
-                    <Text style={styles.resultText}>Av. São Rafael, 174 - Ponto Central</Text>
+                    <Text style={styles.resultNameText}>{servico.nome}</Text>
+                    <Text style={styles.resultText}>{servico.address}</Text>
                     <View style={styles.resultDataRate}>
                         <Icon name="star-o" type="font-awesome" size={12} style={{ marginTop: 2, marginRight: 2 }} />
                         <Text style={styles.resultText}>4,0</Text>
-                        <Text style={styles.resultText}>Barba - Cabelo</Text>
+                        <Text style={styles.resultText}>{servico.categoria}</Text>
                     </View>
                 </View>
                 <StoreNav />

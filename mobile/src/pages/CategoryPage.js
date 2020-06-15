@@ -18,12 +18,10 @@ export default function CategoryPage({ navigation }) {
 
 
   const [servicos, setServicos] = useState([]);
-  const [tipos, setTipos] = useState(1);
+  const [tipos, setTipos] = useState([]);
   
 
   useEffect(() => {
-
-   // AsyncStorage.getItem('nome');
 
     loadProducts();
   }, []);
@@ -40,28 +38,17 @@ export default function CategoryPage({ navigation }) {
 
     const response = await api.get('/list/cortes',{
       params:{tipos}
-    });//showservices
+    });
     setServicos(response.data);
+    //setServicos([...servicos, ...response.data]);
 
     console.log(response.data);
-    //setServicos()
-    
-    /*setServicos(response.data);
-    console.log(response.data);*/
-
-    //console.log(response.data._id);
+   
   }
 
-/*
-  function handleNavigate(_id) {
+  function handleNavigate(servico) {
 
-    navigation.navigate('StoreProfile', { _id });
-   
-
-  }*/
-  function handleNavigate(id) {
-
-    navigation.navigate('CategoriaTeste', {id});
+    navigation.navigate('StoreProfile', {servico});
    
 
   }
@@ -79,7 +66,7 @@ export default function CategoryPage({ navigation }) {
           onSubmitEditing={() => { navigation.navigate('Search') }}
         />
       </View>
-      <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
+  <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
       <FlatList
         style={styles.list}
         data={servicos}
@@ -91,16 +78,17 @@ export default function CategoryPage({ navigation }) {
          
             <ScrollView>
               <Image source={{ uri: servico.foto_url }} style={styles.thumbnail}></Image>
-              <TouchableOpacity onPress={() => handleNavigate(servico._id)} style={styles.result} >
+              <TouchableOpacity onPress={() => handleNavigate(servico)} style={styles.result} >
 
                 <View style={styles.resultData}>
                   <Text style={styles.resultNameText}>{servico.nome}</Text>
                   <View style={styles.resultDataRate}>
                     <Text style={styles.resultText}>{servico.descricao}</Text>
                   </View>
-                  <Text style={styles.resultText}>{`R$${servico.preco}`}</Text>
                   <Text style={styles.resultText}>{servico.categoria}</Text>
                   <Text style={styles.resultText}>{servico.tipos}</Text>
+                  
+                  
                 </View>
               </TouchableOpacity>
             </ScrollView>

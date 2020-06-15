@@ -26,6 +26,10 @@ import Services from './pages/Services';
 import Location from './pages/Location';
 import NewService from './pages/NewService';
 import StoreProfile from './pages/StoreProfile';
+import BookRequest from './pages/BookRequest';
+import ListAgendamentos from './pages/ListAgendamentos';
+import Profile from './pages/Profile';
+
 import SpotList from './components/SpotList';
 
 import CategoriaTeste from './pages/CategoriaTeste';
@@ -44,6 +48,7 @@ const Tab = createMaterialBottomTabNavigator();
  *  em baixo da tela do usuário logado
  *  (sem ser parceiro)
  ***/
+
 function beardNav() {
     return (
 
@@ -272,6 +277,10 @@ function Routes({ navigation }) {
                 <Stack.Screen name="Location" component={Location} />
                 <Stack.Screen name="NewService" component={NewService} />
                 <Stack.Screen name="StoreProfile" component={StoreProfile} />
+                <Stack.Screen name="BookRequest" component={BookRequest} />
+                <Stack.Screen name="ListAgendamentos" component={ListAgendamentos}/>
+                <Stack.Screen name="Profile" component={Profile} />
+                
             </Stack.Navigator>
         </NavigationContainer>
     )

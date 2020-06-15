@@ -15,7 +15,7 @@ export default function SpotList({ tipo, navigation }) {
             })
             settipo(response.data);
             //setNome(response.data);
-            console.log(response.data)
+            //console.log(response.data)
         }
         loadCategories();
     }, []);

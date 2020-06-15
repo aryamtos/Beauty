@@ -2,21 +2,20 @@
 
 const mongoose = require('mongoose'); //importamos o mongoose
 
-const itemModel = new mongoose.Schema({ //definição de campos
+const Servicos = new mongoose.Schema({ //definição de campos
 
-
-    tipo: { type: String, required: false },//nome do tipo
-    tempo:{ type: String, trim:true},
-    preco:{ type:Number, required:false,default:0},
-    servicos:{
+    servicos: { type: String,trim:true, required: false},//nome do serviço
+    preco: {type: Number},
+    tempo: { type: String, required: false},
+    locais:{
         type: mongoose.Schema.Types.ObjectId,
-        require:true,
+        require:false,
         ref:'Service'
     },
+    
     createdAt:{
         type: Date,
         default: Date.now(),
-
     },
 },{
     toJSON:{
@@ -24,14 +23,13 @@ const itemModel = new mongoose.Schema({ //definição de campos
     },
 });
 
-itemModel.pre('save', next => {
+Servicos.pre('save', next => {
     let now = new Date();
     if (!this.createdAt)
         this.createdAt = now;
     next();
 });
 
-
-module.exports = mongoose.model('items', itemModel);
+module.exports = mongoose.model('Servicos', Servicos);
 
 

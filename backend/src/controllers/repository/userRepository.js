@@ -6,14 +6,14 @@ class userRepository {
 
     constructor() {
         this._base = new base('User');
-        this._projection = 'nome email _id senha';
+        this._projection = 'nome email _id';
     }
 
     async IsEmailExiste(Email) {
         return await this._base._model.findOne({ email: Email }, this._projection);
     }
     async authenticate(Email, Senha) {
-        let _hashSenha = md5(Senha);
+        let _hashSenha = md5(Senha); 
         return await this._base._model.findOne({ email: Email, senha: _hashSenha }, this._projection);
     }
 
@@ -27,7 +27,6 @@ class userRepository {
             {
                 nome: data.nome,
                 email: data.email
-
             });
         return this._base._model.findById(usuarioAtualizado._id, this._projection)
     }

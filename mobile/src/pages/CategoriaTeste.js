@@ -1,5 +1,5 @@
 
-import React, { useState} from 'react';
+import React, { useEffect,useState} from 'react';
 import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList, Image, SafeAreaView, Alert, TextInput, AsyncStorage, ActivityIndicator } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -20,15 +20,9 @@ export default function CategoriaTeste({ navigation }) {
     const [date, setDate] = useState('');
     const route = useRoute();
     const {servico} = route.params;
+
     //const id = navigation.getParam('id');
     async function handleSubmit(){
-
-    
-        const response = await api.get(`/servico/${servico}`);
-        setDate(response);
-        
-    
-        //navigation.navigate('list');
     
     }
       
