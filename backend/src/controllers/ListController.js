@@ -57,6 +57,8 @@ module.exports ={
    
   async show(req, res){
     await Service.findById(req.params.id)
+    .populate('servicos')
+    .populate('user')
     .then(response => {
       if(response)
         return res.status(200).json(response);

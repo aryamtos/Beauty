@@ -45,7 +45,7 @@ export default function StoreServices({ navigation }) {
 
             <View style={styles.service}>
                 <View style={styles.leftSide}>
-                    <Text style={styles.serviceBoldText}>{servico.tipos}</Text>
+                    <Text style={styles.serviceBoldText}>{servico.servicos.servicos}</Text>
                     <Text style={styles.serviceNormalText}>{servico.servicos.tempo}</Text>
                     <Text style={styles.serviceNormalText}>{servico.categoria}</Text>
                 </View>
