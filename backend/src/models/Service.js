@@ -16,7 +16,6 @@ const serviceModel = new mongoose.Schema({ //definição de campos
     preco: {type: Number},
     servicos: {
         type: mongoose.Schema.Types.ObjectId,
-       
         ref:'Servicos',
     },
     tempo: {type: String},

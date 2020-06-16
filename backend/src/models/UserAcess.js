@@ -12,7 +12,7 @@ const UserAcess = new schema({
     telefone:{type:Number},
     foto: { type: String },
     ativo: { type: Boolean, required: true },
-    email:{type: String,unique:true,  required:true, lowercase:true},
+    email:{type: String, required:true},
     dataCriacao: { type: Date, default: Date.now },
     senha:{type:String, required: true},
 }, {versionKey: false});

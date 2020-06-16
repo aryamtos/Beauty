@@ -3,7 +3,7 @@ const variables ={
         port: process.env.port || 3000
     },
     Security: {
-        secretKey: '709BBF8826E6FEA077391C92F264F88D|B442E3C83359698933990857EF80E30F'
+        secretKey: 'd41d8cd98f00b204e9800998ecf8427e|7aef61337bcee2fe773aa78b40afacbc'
     }
 }
 

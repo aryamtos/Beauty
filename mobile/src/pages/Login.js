@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native';
 import background from '../assets/fundo2.png';
@@ -8,93 +8,97 @@ import { TextInput } from 'react-native-gesture-handler';
 import { StackActions, StackNavigator, NavigationActions } from 'react-navigation';
 import api from '../services/api';
 
-export default function Login({ props,navigation }) {
+export default function Login({navigation}){
 
+  const [email, setEmail] = useState('')
+  const [ senha, setSenha] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [ errorMessage, setErrorMessage] = useState(null)
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null)
  
-  async function saveUser(user){
-    await AsyncStorage.setItem('token', JSON.stringify(user))
-  }
-  async function handleSubmit(){
-    try{
-      const credentials ={
-        email: username,
-        senha: password,
+  async function signIn(){
+
+   //try{
+
+      const credentials = {
+
+        email,
+        senha
       }
+      const response = await api.post('/auth',{
+        email,
+        senha
+      })
 
-    //  const response = await api.post('/auth',credentials)
+      const {user} = response.data
+      const {token} = response.data
+      console.log(response.data)
+      await AsyncStorage.setItem('user',JSON.stringify(user));
+      await AsyncStorage.setItem('token',JSON.stringify(token));
 
-    
       navigation.navigate('Dashboard')
-    }catch(err){
 
-      console.log(err)
+    //}
+    /*catch(err){
+      Alert.alert('Usuário não existe')
       setErrorMessage('Usuário não existe')
+    }*/
 
-
-    }
   }
-
-  return (
-    <ImageBackground source={background} style={styles.body}>
-      <View style={styles.container}>
-        <Image source={logo} style={styles.logo} />
-        <View style={styles.form}>
-          <View style={styles.formTop}></View>
-          <TextInput
-            style={styles.Input}
-            placeholder="CPF ou E-MAIL"
-            placeholderTextColor="#A5A5A5"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            value={username}
-            //onChangeText={setEmail}
-          onChangeText ={ username => setUsername(username)}
-          //onChangeText={setEmail}
-          // value={email}
-          //onChangeText={setEmail}
-          />
-          <View style={styles.borderContainer}>
-            <View style={styles.border}></View>
-          </View>
-          <TextInput
-            style={styles.Input}
-            placeholder="SENHA"
-            placeholderTextColor="#A5A5A5"
-            autoCapitalize="none"
-            autoCorrect={false}
-            secureTextEntry={true}
-            value={password}
-            onChangeText = {password => setPassword(password)}
+    return (
+      <ImageBackground source={background} style={styles.body}>
+        <View style={styles.container}>
+          <Image source={logo} style={styles.logo} />
+          <View style={styles.form}>
+            <View style={styles.formTop}></View>
+            <TextInput
+              style={styles.Input}
+              placeholder="CPF ou E-MAIL"
+              placeholderTextColor="#A5A5A5"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={email}
+              onChangeText={setEmail}
+            />
+            <View style={styles.borderContainer}>
+              <View style={styles.border}></View>
+            </View>
+            <TextInput
+              style={styles.Input}
+              placeholder="SENHA"
+              placeholderTextColor="#A5A5A5"
+              autoCapitalize="none"
+              autoCorrect={false}
+              secureTextEntry={true}
+              value={senha}
+              //onChangeText={senha => setPassword({password})}
+              onChangeText={setSenha}
+            //onChange={event => setSenha(event.target.value)}
             //onChangeText={setSenha}
-          //onChange={event => setSenha(event.target.value)}
-          //onChangeText={setSenha}
-          //value={senha}
-          //onChangeText={setPassword}
-          />
-          <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
-            <Text style={styles.btnText}>LOGIN</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.alternatives}>
-          <View style={styles.divide}>
-            <View style={styles.divideLine} />
-            <Text style={styles.divideText}>ou</Text>
-            <View style={styles.divideLine} />
+            //value={senha}
+            //onChangeText={setPassword}
+            />
+            <TouchableOpacity onPress={signIn} style={styles.btn}>
+              <Text style={styles.btnText}>LOGIN</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={handleSubmit} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
-          <View style={styles.footer}>
-            <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
-            <TouchableOpacity onPress={handleSubmit}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
+          <View style={styles.alternatives}>
+            <View style={styles.divide}>
+              <View style={styles.divideLine} />
+              <Text style={styles.divideText}>ou</Text>
+              <View style={styles.divideLine} />
+            </View>
+            <TouchableOpacity onPress={signIn} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
+            <View style={styles.footer}>
+              <TouchableOpacity onPress={signIn}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
+              <TouchableOpacity onPress={signIn}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </ImageBackground>
-  )
+      </ImageBackground>
+    )
+  
 }
 
 

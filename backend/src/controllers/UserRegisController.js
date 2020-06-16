@@ -71,7 +71,7 @@ userController.prototype.authentification= async(req, res) =>{
     _validationContract.isEmail(req.body.email, 'O e-mail informado é inválido');
     _validationContract.isRequired(req.body.senha, 'Informe sua senha');
 
-    if (!_validationContract) {
+    if (!_validationContract.isValid()) {
         res.status(400).send({messsage: "Não foi possível efetuar o login", validation: _validationContract.errors()});
     }
     

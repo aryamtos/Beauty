@@ -26,7 +26,8 @@ class userRepository {
         let usuarioAtualizado = await this._base.update(id,
             {
                 nome: data.nome,
-                email: data.email
+                email: data.email,
+                senha: data.senha
             });
         return this._base._model.findById(usuarioAtualizado._id, this._projection)
     }
