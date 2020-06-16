@@ -16,18 +16,24 @@ export default function StoreServices({ navigation }) {
     const [tipos, setTipos] = useState([]);
     const [date, setDate] = useState('');
     const servico = route.params.servico;
-    console.log(servico)
+    //console.log(servico._id)
    /* useEffect(() => {
 
-        async function handleSubmit() {
-            const response = await api.get(`/service/${servico._id}`,{
-                params: servico.tipos
-            })
-            setTipos(response.data)
-
-        }
         handleSubmit();
     }, []);*/
+    async function handleSubmit() {
+        const response = await api.get(`/service/${servico._id}`)
+        const {user} = response.data
+        const {_id} = response.data
+        const {servicos} = response.data
+        //console.log(response.data)
+        await AsyncStorage.setItem('user',JSON.stringify(user));
+        await AsyncStorage.setItem('_id',JSON.stringify(_id));
+        await AsyncStorage.setItem('servicos', JSON.stringify(servicos))
+        navigation.navigate('BookRequest', {_id,servicos,user});
+            //params: servico.tipos
+        //setTipos(response.data)
+    }
     useEffect(() => {
         AsyncStorage.getItem('tipos').then(storageCategoria => {
             const categoriaArray = storageCategoria.split(",").map(tipos => tipos.trim());
@@ -36,9 +42,9 @@ export default function StoreServices({ navigation }) {
 
     }, []);
 
-    function handleNavigate(_id,servicos,user) {
+    /*function handleNavigate(_id,servicos,user) {
         navigation.navigate('BookRequest', {_id,servicos,user});
-    }
+    }*/
     return (
 
 <View style={styles.container}>
@@ -53,7 +59,7 @@ export default function StoreServices({ navigation }) {
                     <Text style={styles.servicePrice}>R${servico.servicos.preco}</Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={() => handleNavigate(servico._id,servico.servicos._id,servico.user)} style={styles.button}>
+            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                 <Text style={styles.buttonText}>Solicitar Serviço</Text>
             </TouchableOpacity>
 
@@ -61,7 +67,7 @@ export default function StoreServices({ navigation }) {
                   
     );
 }
-
+//servico._id,servico.servicos._id,servico.user   <TouchableOpacity onPress={() => handleNavigate()} style={styles.button}>
 const styles = StyleSheet.create({
     container: {
         flex: 1,
