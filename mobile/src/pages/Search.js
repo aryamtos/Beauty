@@ -14,7 +14,6 @@ export default function Search({ navigation }) {
     const [endereco, setEndereco] = useState('')
     
    /*useEffect(() =>{
-
     AsyncStorage.getItem('user').then(user =>{
         if(user){
             navigation.navigation('SearchResult');

@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
 /*
     //  {nome.map(nome=><AddressComponent key={nome} nome = {nome} />)}
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -107,5 +106,5 @@ const styles = StyleSheet.create({
         color: '#aaa',
         paddingVertical: 10,
     }
-
 });*/
+

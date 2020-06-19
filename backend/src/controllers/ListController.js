@@ -6,7 +6,9 @@ module.exports ={
  
     async index(req, res) {
         const { categoria } = req.query;
-        const servicos = await Service.find({ categoria: categoria });
+        const servicos = await Service.find({ categoria: categoria })
+        .populate('servicos')
+        .populate('user'); 
         return res.json(servicos);
     },
  
@@ -72,10 +74,12 @@ module.exports ={
     
     async listServico(req,res){
 
-        const {tipo} = req.query;
-        const{nome} = req.query;
-        const spots = await Service.find({ tipos : tipo});
+        const {nome} = req.query;
+        const spots = await Service.find({nome:nome})
+        .populate('servicos');
+       // .populate('user'); 
         //const local = await Service.find({nome:nome});
+
 
         return res.json(spots);
     },
@@ -111,12 +115,12 @@ module.exports ={
       },
 
       //NOME DO LOCAL 
-    async getServices(req,res){
+   /* async getServices(req,res){
 
       const{nome} = req.query;
       const results = await _.filter({nome:nome})
       return res.json(results);
-    },
+    },*/
 
 
     //CRIAR -POST

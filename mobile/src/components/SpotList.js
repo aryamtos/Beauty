@@ -58,12 +58,10 @@ export default function SpotList({ tipo, navigation }) {
         /*
         <View style={StyleSheet.container}>
             <Text style={styles.tittle}>Empresas que usam <Text style={styles.bold}>{tipo}</Text></Text>
-
             <FlatList
                 style={styles.list}
                 data={spots}
                 keyExtractor={spot => spot._id}
-
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <View style={styles.listItem}>
@@ -183,9 +181,6 @@ const styles = StyleSheet.create({
   });
   
 /*
-
-
-
    /*
             <TouchableOpacity onPress={() =>handleNavigate(item._id)} style={styles.button}>
                 <Text style={styles.buttonText}>Solicitar reserva</Text>
@@ -194,7 +189,6 @@ const styles = StyleSheet.create({
 /*
 const styles = StyleSheet.create({
     container: {
-
         flex: 1,
         flexDirection: 'column',
         alignSelf: 'center',
@@ -217,7 +211,6 @@ const styles = StyleSheet.create({
     bold: {
         fontWeight: 'bold',
     },
-
     list: {
         paddingHorizontal: 20,
     },
@@ -252,7 +245,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'flex-start',
     },
-
     company: {
         fontSize: 24,
         fontWeight: 'bold',
@@ -264,7 +256,6 @@ const styles = StyleSheet.create({
         color: '#999',
         marginTop: 5,
     },
-
     button: {
         height: 42,
         backgroundColor: '#f05a5b',
@@ -292,5 +283,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 15,
     },
-
 });*/

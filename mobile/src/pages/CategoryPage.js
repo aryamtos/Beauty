@@ -17,12 +17,13 @@ import api from '../services/api';
 export default function CategoryPage({ navigation }) {
 
 
+  //const route = useRoute();
   const [servicos, setServicos] = useState([]);
   const [tipos, setTipos] = useState([]);
-  
+  //const servico = route.params.servico;
+  //console.log(servico._id)
 
   useEffect(() => {
-
     loadProducts();
   }, []);
 
@@ -36,13 +37,17 @@ export default function CategoryPage({ navigation }) {
 
   async function loadProducts() {
 
-    const response = await api.get('/list/cortes',{
-      params:{tipos}
-    });
+    const response = await api.get('/list/cortes');
     setServicos(response.data);
-    //setServicos([...servicos, ...response.data]);
 
-    console.log(response.data);
+    const { _id} = response.data;
+    const {tipos} = response.data;
+    const {id} = response.data
+    await AsyncStorage.setItem('_id', id)
+    //await AsyncStorage.setItem('servicos', _id);
+    await AsyncStorage.setItem('tipos', tipos);
+
+    //console.log(response.data);
    
   }
 
@@ -75,7 +80,6 @@ export default function CategoryPage({ navigation }) {
         showsHorizontalScrollIndicator={false}
         renderItem={({ item:servico }) => (
 
-         
             <ScrollView>
               <Image source={{ uri: servico.foto_url }} style={styles.thumbnail}></Image>
               <TouchableOpacity onPress={() => handleNavigate(servico)} style={styles.result} >
@@ -86,7 +90,7 @@ export default function CategoryPage({ navigation }) {
                     <Text style={styles.resultText}>{servico.descricao}</Text>
                   </View>
                   <Text style={styles.resultText}>{servico.categoria}</Text>
-                  <Text style={styles.resultText}>{servico.tipos}</Text>
+                  <Text style={styles.resultText}>{servico.address}</Text>
                   
                   
                 </View>
