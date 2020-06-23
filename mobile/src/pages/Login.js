@@ -53,7 +53,7 @@ export default function Login({navigation}){
             <View style={styles.formTop}></View>
             <TextInput
               style={styles.Input}
-              placeholder="CPF ou E-MAIL"
+              placeholder="E-MAIL"
               placeholderTextColor="#A5A5A5"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -84,12 +84,12 @@ export default function Login({navigation}){
             </TouchableOpacity>
           </View>
           <View style={styles.alternatives}>
-            <View style={styles.divide}>
+            {/* <View style={styles.divide}>
               <View style={styles.divideLine} />
               <Text style={styles.divideText}>ou</Text>
               <View style={styles.divideLine} />
             </View>
-            <TouchableOpacity onPress={signIn} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
+            <TouchableOpacity onPress={signIn} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity> */}
             <View style={styles.footer}>
               <TouchableOpacity onPress={signIn}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
               <TouchableOpacity onPress={signIn}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>

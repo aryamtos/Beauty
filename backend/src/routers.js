@@ -22,6 +22,9 @@ const upload = multer(uploadConfig);
 
 let _user = new UserController();
 let _product = new ServiceController();
+let _partner = new PartnerController();
+// let _user = new UserController();
+// let _product = new ServiceController();
 
 
 
@@ -100,5 +103,25 @@ routes.get('/bookings', BookingController.getAll);
 //SOLICITAÇÃO DE RESERVA
 routes.post('/bookings/:booking_id/rejections', RejectionController.store);
 routes.post('/bookings/:booking_id/approvals', ApprovalController.store);
+
+
+//ROTAS DO ADMIN
+routes.get('/admin/showpartners',auth, _partner.get); //exibindo parceiros
+routes.get('/admin/showusers',auth, _user.get); //exibindo clientes
+
+
+//ROTAS DO PARCEIRO
+routes.post('/authentification', _partner.authentification);
+routes.post('/partner/register', _partner.post); //criando um usuário de Parceiro
+routes.put('/partner/register/:id',auth, _partner.put); //atualizando informações
+routes.get('/partner/:id',auth, _partner.getById);//pegando um único parceiro
+routes.delete('/partner/deletepartner/:id',auth, _partner.delete);//deletando algum parceiro
+//produtos parceiro
+routes.post('/partner/service/registrationservice',auth, _product.post);
+routes.get('/partner/service/index',auth, DashboardController.show);
+routes.put('/partner/service/:id',auth, _product.put);
+routes.delete('/partner/service/delete/:id', auth, _product.delete);
+routes.get('/partner/service/showuservices', DashboardController.getAll);
+
 
 module.exports = routes;

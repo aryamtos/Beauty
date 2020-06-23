@@ -1,0 +1,25 @@
+.link{
+    margin-top: -70px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+a{  
+    text-align: center;
+    margin-right: 10px;
+    border: 100px;
+    font-weight: bold;
+   
+    cursor: pointer;
+    background-color: white;
+}
+a:link {
+    color:#993399;
+    text-decoration:none;
+}
+  
+a:hover {
+    color:#000000;
+    text-decoration:underline;
+}
+ 

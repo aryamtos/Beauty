@@ -14,9 +14,13 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
-mongoose.connect('mongodb+srv://Beauty:@r1adn3123@cluster0-k2kw0.mongodb.net/test?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+// mongoose.connect('mongodb+srv://Beauty:@r1adn3123@cluster0-k2kw0.mongodb.net/test?retryWrites=true&w=majority', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+// })
+mongoose.connect('mongodb+srv://BeautyMenu:carneiro2008@beautymenu-8o3sz.mongodb.net/aplicacion?retryWrites=true&w=majority',{
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
 })
 
 const connectedUsers ={};
@@ -41,4 +45,4 @@ app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use(routes);
 
 //local host
-server.listen(3000);
+server.listen(4444);

@@ -1,4 +1,7 @@
-{
+{ "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon"
+  },
   "dependencies": {
     "date-fns": "^2.13.0",
     "lodash": "^4.17.15",
@@ -6,5 +9,8 @@
     "node-filter": "0.0.1",
     "socket.io": "^2.3.0",
     "underscore": "^1.10.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

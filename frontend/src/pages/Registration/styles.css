@@ -1,0 +1,120 @@
+a{  
+    text-align: center;
+    margin-right: 10px;
+    /* border: 100px; */
+    font-weight: bold;
+    margin-top: 100px !important;
+    cursor: pointer;
+    background-color: white;
+}
+a:link {
+    color:#993399;
+    text-decoration:none;
+}
+  
+a:hover {
+    color:#000000;
+    text-decoration:underline;
+}
+
+p.descricao {
+    color: #e296e2;
+    margin-bottom: 10px;
+    font-size: smaller;
+}
+ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+  }
+  
+  ul li{
+    color: #AAAAAA;
+    display: block;
+    position: relative;
+    float: left;
+    margin-top: -20px;
+    margin-bottom: 10px;
+    width: 45%;
+    height: 70px;
+  }
+  
+  ul li input[type=radio]{
+    position: absolute;
+    visibility: hidden;   
+  }
+  
+  ul li label{
+    display: block;
+    position: relative;
+    font-weight: 300;
+    font-size: 1.35em;
+    padding: 25px 25px 25px 60px;
+    margin: 10px auto;
+    height: 20px;
+    z-index: 9;
+    cursor: pointer;
+
+  }
+  
+  ul li:hover label{
+      color: #e296e2;
+  }
+  
+  ul li .check{
+    display: block;
+    position: absolute;
+    border: 5px solid #AAAAAA;
+    border-radius: 100%;
+    height: 20px;
+    width: 20px;
+    top: 35px;
+    left: 20px;
+      z-index: 5;
+      transition: border .25s linear;
+      -webkit-transition: border .25s linear;
+  }
+  
+  ul li:hover .check {
+    border: 5px solid #993399b9;
+  }
+  
+  ul li .check::before {
+    display: block;
+    position: absolute;
+      content: '';
+    border-radius: 100%;
+    height: 8px;
+    width: 8px;
+    top: 1px;
+	left: 1px;
+    margin: auto;
+    transition: background 0.25s linear;
+    -webkit-transition: background 0.25s linear;
+  }
+  
+  input[type=radio]:checked ~ .check {
+    border: 5px solid #993399b9;
+  }
+  
+  input[type=radio]:checked ~ .check::before{
+    background: #993399b9;
+  }
+  
+  input[type=radio]:checked ~ label{
+    color: #993399b9;
+  }
+
+  textarea{
+    margin: 10px 10px 10px 0px;
+    border: 1px solid #dddddd;
+    border-radius: 2px;
+    height: 45px;
+    padding: 0 15px;
+    font-size: 16px;
+    outline: none;
+    resize: none;
+    overflow: auto;
+  }
+  
