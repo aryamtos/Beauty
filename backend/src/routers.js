@@ -27,15 +27,15 @@ let _partner = new PartnerController();
 // let _product = new ServiceController();
 
 
+// de leo que não usa
+// //ROTAS CLIENTES
 
-//ROTAS CLIENTES
-
-routes.post('/auth', _user.authentification);
-routes.post('/user/register', _user.post);
-routes.put('/user/register/:id',_user.put);
-routes.get('/user/showusers', _user.get);
-routes.get('/user/:id', _user.getById);
-routes.delete('/user/deleteuser/:id',_user.delete);
+// routes.post('/auth', _user.authentification);
+// routes.post('/user/register', _user.post);
+// routes.put('/user/register/:id',_user.put);
+// routes.get('/user/showusers', _user.get);
+// routes.get('/user/:id', _user.getById);
+// routes.delete('/user/deleteuser/:id',_user.delete);
 
 
 // =============ROTAS TESTE============================>
