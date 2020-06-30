@@ -45,4 +45,4 @@ app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use(routes);
 
 //local host
-server.listen(4444);
+server.listen(variables.Api.port);
