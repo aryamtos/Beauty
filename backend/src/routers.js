@@ -8,13 +8,11 @@ const SearchController = require('./controllers/SearchController');
 const UserController = require('./controllers/UserRegisController');
 const ServiceController = require('./controllers/ServiceControllers');
 
-const ProdutosController = require('./controllers/ProdutosController');
+// const ProdutosController = require('./controllers/ProdutosController');
 const Service = require('./controllers/ListController');
 const DashboardController = require('./controllers/DashboardController');
 const BookingController = require('./controllers/BookingController');
-const ApprovalController = require('./controllers/ApprovalController');
-const RejectionController = require('./controllers/RejectionController');
-
+const PartnerController = require('./controllers/PartnerRegisController');
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -24,7 +22,6 @@ let _user = new UserController();
 let _product = new ServiceController();
 let _partner = new PartnerController();
 // let _user = new UserController();
-// let _product = new ServiceController();
 
 
 // de leo que não usa
@@ -40,11 +37,11 @@ let _partner = new PartnerController();
 
 // =============ROTAS TESTE============================>
 
-routes.post('/produtos', ProdutosController.store); //Cadastrar Serviços
+// routes.post('/produtos', ProdutosController.store); //Cadastrar Serviços
 
-routes.get('/listarServicos', ProdutosController.index);
+// routes.get('/listarServicos', ProdutosController.index);
 
-routes.get('/list', ProdutosController.getAll); //Listar Serviços e Local dos serviços e categoria
+// routes.get('/list', ProdutosController.getAll); //Listar Serviços e Local dos serviços e categoria
 //************************************************************ */
 
 //DASHBOARD
@@ -99,11 +96,6 @@ routes.delete('/service/deleteservice/:id', _product.delete);
 
 routes.post('/service/:id/bookings', BookingController.store);
 routes.get('/bookings', BookingController.getAll);
-
-//SOLICITAÇÃO DE RESERVA
-routes.post('/bookings/:booking_id/rejections', RejectionController.store);
-routes.post('/bookings/:booking_id/approvals', ApprovalController.store);
-
 
 //ROTAS DO ADMIN
 routes.get('/admin/showpartners',auth, _partner.get); //exibindo parceiros

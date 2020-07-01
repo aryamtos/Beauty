@@ -16,10 +16,6 @@ export default function Login({history}){
     localStorage.setItem('partner', _id);
     localStorage.setItem('token-access', token);
 
-    if(!response){
-      alert("deu erro");
-    }
-
      if(!isAdmin){
      history.push('/dashboard');}
      else{

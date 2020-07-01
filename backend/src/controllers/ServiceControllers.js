@@ -1,6 +1,6 @@
 'use strict'
 
-const repository = require('./repositories/serviceRepository');
+const repository = require('./repository/serviceRepository');
 const ctrlBase = require('../config/base/controller-base');
 const validation = require('../config/helpers/validation');
 const _repo = new repository();

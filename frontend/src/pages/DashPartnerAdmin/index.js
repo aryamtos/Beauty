@@ -9,7 +9,7 @@ export default function Dashboard(){
 
     useEffect(()=>{
         async function loadPartners(){
-             const token_access = localStorage.getItem('token-access');
+            const token_access = localStorage.getItem('token-access');
             const response = await api.get('/admin/showpartners', {
                 headers: { token_access}
             });

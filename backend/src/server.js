@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
 const routes = require('./routers');
+const variables = require('../src/config/variables');
 
 //importando o express
 

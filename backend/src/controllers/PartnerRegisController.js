@@ -1,11 +1,6 @@
-//index = listar uma série de itens
-//show =  mostrar uma única coisa
-//store= criar uma sessão
-//update = alterar uma sessão
-//destroy = deletar uma sessão
 
 //importando o model de parceiros
-const repository = require('./repositories/partnerRepository');
+const repository = require('./repository/partnerRepository');
 const ctrlBase = require('../config/base/controller-base');
 const validation = require('../config/helpers/validation');
 const _repo = new repository();
@@ -22,6 +17,7 @@ partnerController.prototype.post = async (req, res) => {
     let _validationContract = new validation();
 
     _validationContract.isRequired(req.body.responsibleName, 'Informe seu nome');
+    _validationContract.isRequired(req.body.interpriseName, 'Informe seu nome');
     _validationContract.isRequired(req.body.phone, 'Informe seu telefone');
     _validationContract.isRequired(req.body.cpf, 'Informe seu cpf');
     _validationContract.isRequired(req.body.adress, 'Informe seu endereço');
