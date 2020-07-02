@@ -70,6 +70,14 @@ routes.get('/bookings', BookingController.getAll);
 
 //ROTAS DO ADMIN
 routes.get('/admin/showpartners',auth, _partner.get); //exibindo parceiros
+
+routes.post('/auth', _user.authentification);
+
+routes.post('/user/register', _user.post);
+routes.put('/user/register/:id',_user.put);
+//routes.get('/user/showusers', _user.get);
+routes.get('/user/:id', _user.getById);
+routes.delete('/user/deleteuser/:id',_user.delete);
 routes.get('/admin/showusers',auth, _user.get); //exibindo clientes
 
 
