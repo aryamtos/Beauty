@@ -31,6 +31,7 @@ serviceController.prototype.post = async (req, res) => {
         tempo,
         preco
     })
+    await service.populate('user').execPopulate();
     return res.json(service);
 };
 

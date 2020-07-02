@@ -26,7 +26,11 @@ let _partner = new PartnerController();
 //DASHBOARD
 routes.get('/dashboard', DashboardController.show);
 
-routes.post('/user/list',upload.single('foto'), Service.store);
+//routes.post('/user/list',upload.single('foto'), Service.store);
+//routes.delete('/delete/service/:id', Service.delete);
+//routes.put('/update/service/:id', Service.update);
+
+/*--------------*/
 routes.get('/spots', Service.index);
 routes.get('/all', Service.getAll);//Listagem de todos os serviços
 
@@ -36,8 +40,7 @@ routes.get('/list/barba', Service.indexBarba);
 routes.get('/list/cortes', Service.indexCorte);
 
 routes.get('/listAll', Service.indexSobrancelha);
-routes.delete('/delete/service/:id', Service.delete);
-routes.put('/update/service/:id', Service.update);
+
 routes.put('/done/:id', Service.done);
 
 routes.get('/service/:id', Service.show);
