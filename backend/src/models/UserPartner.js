@@ -7,11 +7,12 @@ const UserPartnerSchema = new mongoose.Schema({
 
     logo: { type: String },
     responsibleName: { type: String, required: true, trim: true, index: true },
+    category: {trim: true, type:String},
     interpriseName: { type: String, trim: true, index: true },
+    cpf: {type: String, required: true},
     phone: {type: Number, required: true},
     adress: { type: String, required: true },
     about: String,
-    category:  {trim: true, type:String},
     email: { type: String, required: true },
     senha: { type: String, required: true },
     dataCriacao: { type: Date, default: Date.now },

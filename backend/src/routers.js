@@ -23,27 +23,6 @@ let _product = new ServiceController();
 let _partner = new PartnerController();
 // let _user = new UserController();
 
-
-// de leo que não usa
-// //ROTAS CLIENTES
-
-// routes.post('/auth', _user.authentification);
-// routes.post('/user/register', _user.post);
-// routes.put('/user/register/:id',_user.put);
-// routes.get('/user/showusers', _user.get);
-// routes.get('/user/:id', _user.getById);
-// routes.delete('/user/deleteuser/:id',_user.delete);
-
-
-// =============ROTAS TESTE============================>
-
-// routes.post('/produtos', ProdutosController.store); //Cadastrar Serviços
-
-// routes.get('/listarServicos', ProdutosController.index);
-
-// routes.get('/list', ProdutosController.getAll); //Listar Serviços e Local dos serviços e categoria
-//************************************************************ */
-
 //DASHBOARD
 routes.get('/dashboard', DashboardController.show);
 
@@ -72,14 +51,6 @@ routes.get('/spots/servicos', Service.listServico);
 routes.post('/search',SearchController.store );
 
 
-//ROTAS TIPOS DE SERVIÇOS
-/*
-routes.post('/tipos/servicos', TiposController.store);
-routes.get('tipo/index', TiposController.index);
-*/
-
-//************************************************************ */
-
 //ROTAS SERVIÇOS
 
 routes.post('/service/register',upload.single('foto'), _product.post);
@@ -104,7 +75,7 @@ routes.get('/admin/showusers',auth, _user.get); //exibindo clientes
 
 //ROTAS DO PARCEIRO
 routes.post('/authentification', _partner.authentification);
-routes.post('/partner/register', _partner.post); //criando um usuário de Parceiro
+routes.post('/partner/register',upload.single('logo'), _partner.post); //criando um usuário de Parceiro
 routes.put('/partner/register/:id',auth, _partner.put); //atualizando informações
 routes.get('/partner/:id',auth, _partner.getById);//pegando um único parceiro
 routes.delete('/partner/deletepartner/:id',auth, _partner.delete);//deletando algum parceiro

@@ -17,6 +17,7 @@ class userPartnerRepository {
         return await this._base._model.findOne({ email: Email, senha: _hashSenha }, this._projection);
     }
 
+
     async create(data) {
         let usuarioCriado = await this._base.create(data);
         return this._base._model.findById(usuarioCriado._id, this._projection);

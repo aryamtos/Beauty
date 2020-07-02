@@ -35,7 +35,6 @@ partnerController.prototype.post = async (req, res) => {
 
     //Criptografa a senha do usuário
     req.body.senha = md5(req.body.senha);
-
     ctrlBase.post(_repo, _validationContract, req, res);
 };
 

@@ -20,10 +20,11 @@ serviceController.prototype.post = async (req, res) => {
         _validationContract.isTrue(req.body.preco == 0, 'O preço do produto deve ser maior que Zero.');
 
     // ctrlBase.post(_repo, _validationContract, req, res);
-    const { nome, parte,tempo,  preco } = req.body;
+    const {nomeService, nome, parte,tempo,  preco } = req.body;
     const {user_id} = req.headers;
 
     const service = await Service.create({
+        nomeService,
         user: user_id,
         nome,
         parte,

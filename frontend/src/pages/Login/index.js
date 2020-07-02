@@ -36,6 +36,7 @@ export default function Login({history}){
           placeholder="Seu email"
           value= {email}
           onChange={event => setEmail(event.target.value)}
+          required
           />
           <label htmlFor="senha">Senha</label>
           <input type="password" 
@@ -43,6 +44,7 @@ export default function Login({history}){
           placeholder="Sua senha"
            value= {senha}
            onChange={event => setSenha(event.target.value)}
+           required
           />
          <button type="submit" className= "btn">ENTRAR</button>
         </form>
