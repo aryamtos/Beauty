@@ -1,52 +1,56 @@
 const  Service = require('../models/Service');
+const Partner = require('../models/UserPartner')
 // const Produtos = require('../models/Produtos');
 var _ = require('lodash');
 module.exports ={
 
  
     async index(req, res) {
-        const { categoria } = req.query;
-        const servicos = await Service.find({ categoria: categoria })
+        const { category } = req.query;
+        const servicos = await Service.find({ category: category })
         .populate('user'); 
         return res.json(servicos);
     },
  
     async indexDepil(req,res){
 
-        let query = {categoria: 'Depilação'};
-        let reqs = await Service.find(query);
+        let query = {category: 'Depilação'};
+        let reqs = await Partner.find(query)
+        .populate('servicos');
         return res.json(reqs);
     },
     async indexCorte(req,res){
-        let query = {categoria: 'Corte'};
-        let reqs = await Service.find(query)
-        .populate('user');
-
+        let query = {category: 'Corte'};
+        let reqs = await Partner.find(query)
+        .populate('servicos');
         return res.json(reqs);
     },
 
     async indexBarba(req,res){
 
-        let query = {categoria: 'Barba'};
-        let reqs = await Service.find(query);
+        let query = {category: 'Barba'};
+        let reqs = await Partner.find(query)
+        .populate('servicos');
         return res.json(reqs);
     },
     async indexManicure(req,res){
 
-        let query = {categoria: 'manicure'};
-        let reqs = await Service.find(query);
+        let query = {category: 'manicure'};
+        let reqs = await Partner.find(query)
+        .populate('servicos');
         return res.json(reqs);
     },
     async indexSobrancelha( req,res){
 
-        let query = {categoria: 'Sobrancelha'};
-        let reqs = await Service.find(query);
+        let query = {category: 'Sobrancelha'};
+        let reqs = await Service.find(query)
+        .populate('servicos');
         return res.json(reqs);
     },
 
     async getAll(req, res){
 
-        const { categoria } = req.query;
+        const { category } = req.query;
         const {user_id} = req.headers;  
         const {servicos_id} = req.headers;
         const servicos = await Service.find()
@@ -71,7 +75,7 @@ module.exports ={
     async listServico(req,res){
 
         const {nome} = req.query;
-        const spots = await Service.find({nome:nome})
+        const spots = await Service.find({nomeService:nomeService})
         .populate('user');
 
         return res.json(spots);

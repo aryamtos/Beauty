@@ -17,6 +17,10 @@ const UserPartnerSchema = new mongoose.Schema({
     senha: { type: String, required: true },
     dataCriacao: { type: Date, default: Date.now },
     isAdmin: {type: Boolean, default: false},
+    servicos:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service'
+    }
 }, { versionKey: false });
 
 UserPartnerSchema.pre('save', next => {
