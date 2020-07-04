@@ -1,12 +1,38 @@
-import React from 'react';
+import React ,{ useState, useEffect, Component }from 'react';
 import { Alert, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import background from '../assets/fundo2.png';
 import logo from '../assets/beautymenu0.png';
 import { TextInput } from 'react-native-gesture-handler';
 
+
+import api from '../services/api';
+
 export default function Register({ navigation }) {
+
+
+    const [email, setEmail] = useState('')
+    const [ senha, setSenha] = useState('')
+    const [cpf, setCpf] = useState('')
+    const [nome, setNome] = useState('')
+    const [telefone, setPhone] = useState('')
+    const [ senhaConfirmacao, setConfirmacao] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [ errorMessage, setErrorMessage] = useState(null)
+
     async function handleSubmit() {
+        
+            const response = await api.post('/user/register',{
+              nome,
+              cpf,
+              telefone,
+              email,
+              senha,
+              senhaConfirmacao,
+              
+            })
+            
+    Alert.alert('Cadastrado com sucesso!');
         navigation.navigate('Index');
     }
 
@@ -22,6 +48,8 @@ export default function Register({ navigation }) {
                         placeholderTextColor="#A5A5A5"
                         autoCapitalize="words"
                         autoCorrect={false}
+                        value ={nome}
+                        onChangeText = {setNome}
                     />
                     <View style={styles.borderContainer}>
                         <View style={styles.border}></View>
@@ -31,6 +59,8 @@ export default function Register({ navigation }) {
                         placeholder="CPF"
                         placeholderTextColor="#A5A5A5"
                         autoCorrect={false}
+                        value ={cpf}
+                        onChangeText = {setCpf}
                     />
                     <View style={styles.borderContainer}>
                         <View style={styles.border}></View>
@@ -40,6 +70,8 @@ export default function Register({ navigation }) {
                         placeholder="TELEFONE"
                         placeholderTextColor="#A5A5A5"
                         autoCorrect={false}
+                        value = {telefone}
+                        onChangeText = {setPhone}
                     />
                     <View style={styles.borderContainer}>
                         <View style={styles.border}></View>
@@ -51,6 +83,8 @@ export default function Register({ navigation }) {
                         keyboardType="email-address"
                         autoCapitalize="none"
                         autoCorrect={false}
+                        value = {email}
+                        onChangeText = {setEmail}
                     />
                     <View style={styles.borderContainer}>
                         <View style={styles.border}></View>
@@ -62,6 +96,8 @@ export default function Register({ navigation }) {
                         autoCapitalize="none"
                         autoCorrect={false}
                         secureTextEntry={true}
+                        value = {senha }
+                        onChangeText = {setSenha}
                     />
                     <View style={styles.borderContainer}>
                         <View style={styles.border}></View>
@@ -73,10 +109,14 @@ export default function Register({ navigation }) {
                         autoCapitalize="none"
                         autoCorrect={false}
                         secureTextEntry={true}
+                        value = { senhaConfirmacao}
+                        onChangeText = {setConfirmacao}
                     />
                     <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
+                        
                         <Text style={styles.btnText}>CRIAR CONTA</Text>
                     </TouchableOpacity>
+                  
                 </View>
                 <View style={styles.alternatives}>
                     <View style={styles.divide}>

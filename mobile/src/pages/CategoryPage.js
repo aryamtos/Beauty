@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList, Image, SafeAreaView, Alert, TextInput, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Icon } from 'react-native-elements';
 
 import GlobalStyles from '../assets/GlobalStyles';
@@ -17,42 +18,28 @@ import api from '../services/api';
 export default function CategoryPage({ navigation }) {
 
 
-  //const route = useRoute();
+  const route = useRoute();
   const [servicos, setServicos] = useState([]);
   const [tipos, setTipos] = useState([]);
-  //const servico = route.params.servico;
+  const servico = route.params;
   //console.log(servico._id)
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-
-  useEffect(() => {
-    AsyncStorage.getItem('tipos').then(storageCategoria => {
-        const categoriaArray = storageCategoria.split(',').map(tipos=> tipos.trim());
-        setTipos(categoriaArray);
-    })
-}, []);
 
   async function loadProducts() {
 
-    const response = await api.get('/list/cortes');
+    const response = await api.get('/partner/service/showuservices');
     setServicos(response.data);
 
     const { _id} = response.data;
-    const {tipos} = response.data;
-    const {id} = response.data
-    await AsyncStorage.setItem('_id', id)
+  
+    await AsyncStorage.setItem('_id', _id)
     //await AsyncStorage.setItem('servicos', _id);
-    await AsyncStorage.setItem('tipos', tipos);
-
-    //console.log(response.data);
-   
+   // await AsyncStorage.setItem('tipos', tipos);
   }
-
+  useEffect(() => {
+    loadProducts();
+  }, []);
   function handleNavigate(servico) {
-
+    
     navigation.navigate('StoreProfile', {servico});
    
 
@@ -81,16 +68,16 @@ export default function CategoryPage({ navigation }) {
         renderItem={({ item:servico }) => (
 
             <ScrollView>
-              <Image source={{ uri: servico.foto_url }} style={styles.thumbnail}></Image>
+              <Image style={styles.thumbnail}></Image>
               <TouchableOpacity onPress={() => handleNavigate(servico)} style={styles.result} >
 
                 <View style={styles.resultData}>
-                  <Text style={styles.resultNameText}>{servico.nome}</Text>
+                  <Text style={styles.resultNameText}>{servico.user.interpriseName}</Text>
                   <View style={styles.resultDataRate}>
-                    <Text style={styles.resultText}>{servico.descricao}</Text>
+                   
                   </View>
-                  <Text style={styles.resultText}>{servico.categoria}</Text>
-                  <Text style={styles.resultText}>{servico.address}</Text>
+                  <Text style={styles.resultText}>{servico.user.category}</Text>
+                  <Text style={styles.resultText}>{servico.user.adress}</Text>
                   
                   
                 </View>
@@ -208,3 +195,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 });
+
+
+/*
+ source={{ uri: servico.foto_url }}
+
+
+*/

@@ -5,6 +5,7 @@ const ctrlBase = require('../config/base/controller-base');
 const _repo = new repository();
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
+const Client = require('../models/UserAcess');
 const variables = require('../config/variables');
 
 
@@ -17,6 +18,8 @@ userController.prototype.post = async (req, res) => {
     let _validationContract = new validation();
 
     _validationContract.isRequired(req.body.nome, 'Informe seu nome');
+    _validationContract.isRequired(req.body.telefone, 'Informe seu telefone');
+    _validationContract.isRequired(req.body.cpf, 'Informe seu cpf');
     _validationContract.isRequired(req.body.email, 'Informe seu e-mail');
     _validationContract.isEmail(req.body.email, 'O e-mail informado é inválido');
     _validationContract.isRequired(req.body.senha, 'A senha informada é obrigatória');
@@ -27,13 +30,20 @@ userController.prototype.post = async (req, res) => {
     if (usuarioIsEmailExiste) {
         _validationContract.isTrue((usuarioIsEmailExiste.nome != undefined), `Já existe o e-mail ${req.body.email} cadastrado em nossa base.`);
     }
-
-    //Criptografa a senha do usuário
     req.body.senha = md5(req.body.senha);
-
-    ctrlBase.post(_repo, _validationContract, req, res);
+    const {nome,cpf,telefone,email,senha} = req.body;
+    const userClient = await Client.create({
+        nome,
+        cpf,
+        telefone,
+        email,
+        cpf,
+        senha
+    })
+  
+    return res.json(userClient);
+    //ctrlBase.post(_repo, _validationContract, req, res);
 };
-
 userController.prototype.put = async (req, res) => {
     let _validationContract = new validation();
 

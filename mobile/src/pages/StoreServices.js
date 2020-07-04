@@ -16,31 +16,21 @@ export default function StoreServices({ navigation }) {
     const [tipos, setTipos] = useState([]);
     const [date, setDate] = useState('');
     const servico = route.params.servico;
-    //console.log(servico._id)
+   
    /* useEffect(() => {
 
         handleSubmit();
     }, []);*/
     async function handleSubmit() {
-        const response = await api.get(`/service/${servico._id}`)
-        const {user} = response.data
-        const {_id} = response.data
-        const {servicos} = response.data
-        //console.log(response.data)
-        await AsyncStorage.setItem('user',JSON.stringify(user));
-        await AsyncStorage.setItem('_id',JSON.stringify(_id));
-        await AsyncStorage.setItem('servicos', JSON.stringify(servicos))
-        navigation.navigate('BookRequest', {_id,servicos,user});
-            //params: servico.tipos
-        //setTipos(response.data)
+      const response = await api.get(`/service/${servico._id}`);
+      setTipos(response.data)
+      const { _id} = response.data;
+      const {user} = response.data
+      await AsyncStorage.setItem('_id', _id)
+      await AsyncStorage.setItem('user',JSON.stringify(user));
+      navigation.navigate('BookRequest', {_id});
     }
-    useEffect(() => {
-        AsyncStorage.getItem('tipos').then(storageCategoria => {
-            const categoriaArray = storageCategoria.split(",").map(tipos => tipos.trim());
-            setTipos(categoriaArray);
-        })
-
-    }, []);
+  
 
     /*function handleNavigate(_id,servicos,user) {
         navigation.navigate('BookRequest', {_id,servicos,user});
@@ -51,12 +41,13 @@ export default function StoreServices({ navigation }) {
 
             <View style={styles.service}>
                 <View style={styles.leftSide}>
-                    <Text style={styles.serviceBoldText}>{servico.servicos.servicos}</Text>                      
-                    <Text style={styles.serviceNormalText}>{servico.servicos.tempo}</Text>
-                    <Text style={styles.serviceNormalText}>{servico.categoria}</Text>
+                    <Text style={styles.serviceBoldText}>{servico.nomeService}</Text>                      
+    <Text style={styles.serviceNormalText}>{servico.parte}</Text>
+                    <Text style={styles.serviceNormalText}></Text>
                 </View>
                 <View style={styles.rightSide}>
-                    <Text style={styles.servicePrice}>R${servico.servicos.preco}</Text>
+    <Text style={styles.servicePrice}>R${servico.preco}</Text>
+    <Text style={styles.servicePrice}>R${servico.tempo}</Text>
                 </View>
             </View>
             <TouchableOpacity onPress={handleSubmit} style={styles.button}>

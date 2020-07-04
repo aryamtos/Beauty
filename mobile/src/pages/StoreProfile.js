@@ -51,43 +51,34 @@ export default function StoreProfile({ navigation }) {
     const route = useRoute()
     const [date, setDate] = useState('');
     const [tipos, setTipos] = useState([]);
-    const servico = route.params.servico;
-    
-    //console.log(servico)
-
+   const servico = route.params.servico;
+ 
     async function handleSubmit() {
 
-        const response = await api.get(`/service/${servico._id}`)
-        setDate(response.data)
+    const response = await api.get(`/service/${servico._id}`)
+     setDate(response.data)
+     
         //console.log(response.data)
     }
-    /*useEffect(() => {
 
-        AsyncStorage.getItem('tipos').then(storageServicos => {
-            const servicosArray = storageServicos.split(',').map(tipos => tipos.trim());
-            setTipos(servicosArray);
-            //console.log(setTipos)
-        })
-
-    }, []);*/
     useEffect(() => {
         handleSubmit()
     }, [])
 
     return (
         <>
-            <ImageBackground source={{ uri: servico.foto_url }} style={styles.resultHeader}>
+            <ImageBackground style={styles.resultHeader}>
                 <LinearGradient colors={['transparent', 'rgba(255,255,255,0.8)']} style={styles.gradient}>
                 </LinearGradient>
             </ImageBackground>
             <View style={styles.container}>
-                <View style={styles.resultData}>
-                    <Text style={styles.resultNameText}>{servico.nome}</Text>
-                    <Text style={styles.resultText}>{servico.address}</Text>
+            <View style={styles.resultData}>
+                    <Text style={styles.resultNameText}>{servico.user.interpriseName}</Text>
+                    <Text style={styles.resultText}>{servico.user.adress}</Text>
                     <View style={styles.resultDataRate}>
                         <Icon name="star-o" type="font-awesome" size={12} style={{ marginTop: 2, marginRight: 2 }} />
                         <Text style={styles.resultText}>4,0</Text>
-                        <Text style={styles.resultText}>{servico.categoria}</Text>
+                        <Text style={styles.resultText}>{servico.user.category}</Text>
                     </View>
                 </View>
                 <StoreNav />
@@ -139,3 +130,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
 });
+/*
+
+
+
+*/

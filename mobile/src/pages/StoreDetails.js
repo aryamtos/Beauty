@@ -14,21 +14,22 @@ export default function StoreDetails() {
     const [tipos, setTipos] = useState([]);
     const [date, setDate] = useState('');
     const servico = route.params.servico;
-    console.log(servico)
+   
 
     return(
         <View style={styles.container}>
             <View style={styles.session}>
                 <Text style={styles.sessionBoldText}>Sobre</Text>
-    <Text style={styles.sessionNormalText}>{servico.descricao}</Text>
+    <Text style={styles.sessionNormalText}>{servico.user.about}</Text>
             </View>
             <View style={styles.session}>
                 <Text style={styles.sessionBoldText}>Endereço</Text>
-    <Text style={styles.sessionNormalText}>{servico.address}</Text>
+    <Text style={styles.sessionNormalText}>{servico.user.adress}</Text>
             </View>
             <View style={styles.session}>
                 <Text style={styles.sessionBoldText}>Contato</Text>
     <Text style={styles.sessionNormalText}>{servico.user.email}</Text>
+    <Text style={styles.sessionNormalText}>{servico.user.phone}</Text>
             </View>
             <View style={styles.session}>
                 <Text style={styles.sessionBoldText}>Horário de Funcionamento</Text>
@@ -93,3 +94,21 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
 });
+
+/*
+
+<View style={styles.session}>
+                <Text style={styles.sessionBoldText}>Sobre</Text>
+    <Text style={styles.sessionNormalText}>{servico.descricao}</Text>
+            </View>
+            <View style={styles.session}>
+                <Text style={styles.sessionBoldText}>Endereço</Text>
+    <Text style={styles.sessionNormalText}>{servico.address}</Text>
+            </View>
+            <View style={styles.session}>
+                <Text style={styles.sessionBoldText}>Contato</Text>
+    <Text style={styles.sessionNormalText}>{servico.user.email}</Text>
+            </View>
+
+
+*/

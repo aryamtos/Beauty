@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Component } from 'react';
-import { Image, ImageBackground, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, TextInput, View, AsyncStorage} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient';
 
 import lupa from '../assets/BUSCAR_cinza.png';
@@ -17,17 +18,21 @@ import api from '../services/api';
 
 export default function Dashboard ({ navigation }) {
 
-
+    
+  const route = useRoute();
     const [categoriaServico, setCategoria] = useState([]);
-
+ 
     async function handleBarba(){
-        navigation.navigate('BeardPage');
+
+        navigation.navigate('BeardPage',_id);
     }
 
     async function handleSearchable(){
         navigation.navigate('Services');
     }
     async function handleNavigation() {
+        const value = await AsyncStorage.getItem('@user')
+       
         navigation.navigate('CategoryPage');
     }
 

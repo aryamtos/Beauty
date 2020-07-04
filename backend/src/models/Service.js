@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 
 const serviceModel = new mongoose.Schema({
+    foto: { type: String},
     nomeService:{ type: String, required: true, trim: true, index: true },
     nome: { type: String, required: true, trim: true, index: true },
     parte: { type: String, required: true, trim: true, index: true },
@@ -16,6 +17,9 @@ const serviceModel = new mongoose.Schema({
     }
 }, { versionKey: false });
 
+serviceModel.virtual('foto_url').get(function(){
+    return `http://192.168.1.109:3000/files/${this.foto}`;
+});
 serviceModel.pre('save', next => {
     let agora = new Date();
     if (!this.dataCriacao)

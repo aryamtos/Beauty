@@ -20,19 +20,19 @@ export default function BookRequest({ navigation }) {
 
     const route = useRoute();
     const [date, setDate] = useState('');
-    const servico = route.params;
+    const servico = route.params._id;
     console.log(servico)
     //const user_id = servico.user;
     //console.log(user_id)
     async function handleSubmit(){
-
-    //const user_id = await AsyncStorage.getItem('user');
-    const servicos_id = await AsyncStorage.getItem('servicos')
-    await api.post(`/service/${servico._id}/bookings`,{
-        date
-    },{
-      headers:{servico}
-    })
+       // const user_id = await AsyncStorage.getItem('user');
+       const user_id = await AsyncStorage.getItem('_id')
+        await api.post(`/service/${servico}/bookings`,{
+            date
+        },{
+          headers:{user_id}
+        })
+   
     Alert.alert('Solicitação de serviço enviada;');
 
     navigation.navigate('StoreProfile');

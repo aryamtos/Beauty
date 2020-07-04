@@ -91,11 +91,13 @@ routes.put('/partner/register/:id',auth, _partner.put); //atualizando informaç�
 routes.get('/partner/:id',auth, _partner.getById);//pegando um único parceiro
 routes.delete('/partner/deletepartner/:id',auth, _partner.delete);//deletando algum parceiro
 //produtos parceiro
-routes.post('/partner/service/registrationservice',auth, _product.post);
+//routes.post('/partner/service/registrationservice',auth, _product.post);
+routes.post('/partner/service/registrationservice',_product.post);
 routes.get('/partner/service/index',auth, DashboardController.show);
 routes.put('/partner/service/:id',auth, _product.put);
 routes.delete('/partner/service/delete/:id', auth, _product.delete);
 routes.get('/partner/service/showuservices', DashboardController.getAll);
+
 
 
 module.exports = routes;
