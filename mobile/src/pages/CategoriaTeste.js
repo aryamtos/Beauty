@@ -1,53 +1,26 @@
 
-import React, { useEffect,useState} from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList, Image, SafeAreaView, Alert, TextInput, AsyncStorage, ActivityIndicator } from 'react-native';
-import { ListItem, SearchBar } from 'react-native-elements';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import api from '../services/api';
-import { NavigationParams} from 'react-navigation';
+import { ListItem, SearchBar, Icon, List } from 'react-native-elements';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { NavigationParams } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Icon } from 'react-native-elements';
-
 import GlobalStyles from '../assets/GlobalStyles';
 import lupa from '../assets/BUSCAR_cinza.png';
 import logoLoja from '../assets/logo_loja.jpg';
+import api from '../services/api';
+import {Filter} from  './Filter';
 
-
-
-export default function CategoriaTeste({ navigation }) {
+class App extends Component{
 
     
-    const [date, setDate] = useState('');
-    const route = useRoute();
-    const {servico} = route.params;
-
-    //const id = navigation.getParam('id');
-    async function handleSubmit(){
     
-    }
-      
 
-  useEffect(() => {
 
-    // AsyncStorage.getItem('nome');
-    handleSubmit();
- 
-   }, []);
- 
-    
-  
-    return (
-          
-        <SafeAreaView>
-            <Text></Text>
-        </SafeAreaView>
 
-        );
-    }
-
+}
 
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -99,51 +72,4 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 10,
     },
-    thumbnail: {
-
-        flexDirection: 'row',
-        alignSelf: 'stretch',
-        height: 90,
-        resizeMode: 'contain',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-start',
-        /*
-        width:200,
-        height: 120,
-        resizeMode: 'cover',
-        borderRadius: 2,*/
-        /*
-        height: 90,
-        resizeMode: 'contain',
-        marginRight: 10,*/
-        /*width: 200,
-        height: 120,
-        resizeMode: 'cover',
-        borderRadius: 2*/
-    },
-    resultData: {
-        flexDirection: 'column',
-        alignSelf: 'stretch',
-        justifyContent: 'flex-end',
-        borderColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingBottom: 10,
-        width: '100%',
-    },
-    resultNameText: {
-        fontSize: 16,
-        fontWeight: 'normal',
-        color: '#999',
-    },
-    resultText: {
-        fontSize: 10,
-        fontWeight: 'normal',
-        color: '#999',
-        marginRight: 15,
-    },
-    resultDataRate: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-    },
 });
-

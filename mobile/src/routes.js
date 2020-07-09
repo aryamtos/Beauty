@@ -9,8 +9,10 @@ import Index from './pages/Index';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PartnerLogin from './pages/PartnerLogin';
-import CategoryPage from './pages/CategoryPage';
+import CategoryPage from './pages/CategoryPage';//Corte
+import Depilacao from './pages/Depilacao';
 import BeardPage from './pages/BeardPage';
+import Manicure from './pages/Manicure';
 import PartnerRegister from './pages/PartnerRegister';
 import PartnerDashboard from './pages/PartnerDashboard';
 import PartnerProfile from './pages/PartnerProfile';
@@ -49,6 +51,46 @@ const Tab = createMaterialBottomTabNavigator();
  *  (sem ser parceiro)
  ***/
 
+function manicureNav() {
+    return (
+
+        <Tab.Navigator
+            activeColor="#511D68"
+            inactiveColor="#FFF"
+            barStyle={styles.tabBar}
+            tabBarOptions={{ showIcon: true }}
+        >
+            <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoInicio} style={styles.tabIcon} />
+                    ))
+                }}
+               name="Início"
+                component={Manicure}
+            />
+             <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoClientes} style={styles.tabIcon} />
+                    ))
+                }}
+                name="Buscar"
+                component={searchNav}
+            />
+             <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoPerfil} style={styles.tabIcon} />
+                    ))
+                }}
+                name="Perfil"
+                component={UserProfile}
+            />
+        </Tab.Navigator>
+    );
+
+}
 function beardNav() {
     return (
 
@@ -66,6 +108,46 @@ function beardNav() {
                 }}
                name="Início"
                 component={BeardPage}
+            />
+             <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoClientes} style={styles.tabIcon} />
+                    ))
+                }}
+                name="Buscar"
+                component={searchNav}
+            />
+             <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoPerfil} style={styles.tabIcon} />
+                    ))
+                }}
+                name="Perfil"
+                component={UserProfile}
+            />
+        </Tab.Navigator>
+    );
+
+}
+function depilNav() {
+    return (
+
+        <Tab.Navigator
+            activeColor="#511D68"
+            inactiveColor="#FFF"
+            barStyle={styles.tabBar}
+            tabBarOptions={{ showIcon: true }}
+        >
+            <Tab.Screen
+                options={{
+                    tabBarIcon: (() => (
+                        <Image source={logoInicio} style={styles.tabIcon} />
+                    ))
+                }}
+               name="Início"
+                component={Depilacao}
             />
              <Tab.Screen
                 options={{
@@ -261,6 +343,8 @@ function Routes({ navigation }) {
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="PartnerLogin" component={PartnerLogin} />
                 <Stack.Screen name="CategoryPage" component={categoryNave} />
+                <Stack.Screen name="Manicure" component={manicureNav} />
+                <Stack.Screen name="Depilacao" component={depilNav} />
                 <Stack.Screen name="BeardPage" component={beardNav} />
                 <Stack.Screen name="PartnerRegister" component={PartnerRegister} />
                 <Stack.Screen name="Dashboard" component={dashboardNav} />

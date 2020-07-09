@@ -1,49 +1,38 @@
 
 import React, { useState, useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
-import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native';
+import { Image, ImageBackground,localStorage, StatusBar, StyleSheet, Text, TouchableOpacity, View, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native';
 import background from '../assets/fundo2.png';
 import logo from '../assets/beautymenu1.png';
 import { TextInput } from 'react-native-gesture-handler';
 import { StackActions, StackNavigator, NavigationActions } from 'react-navigation';
 import api from '../services/api';
-
+import { useNavigation, useRoute } from '@react-navigation/native';
 export default function Login({navigation}){
 
+ 
+  const route = useRoute();
+  const servico = route.params;
   const [email, setEmail] = useState('')
   const [ senha, setSenha] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [ errorMessage, setErrorMessage] = useState(null)
-
+    
  
   async function signIn(){
 
    //try{
-
-      const credentials = {
-
-        email,
-        senha
-      }
       const response = await api.post('/auth',{
         email,
         senha
       })
 
-      const {user} = response.data
-      const {token} = response.data
-      console.log(response.data)
-      await AsyncStorage.setItem('user',JSON.stringify(user));
-      await AsyncStorage.setItem('token',JSON.stringify(token));
+      const {user} = response.data;
+      const {token} = response.data;
+      await AsyncStorage.setItem('user',JSON.stringify(user))
+      //await AsyncStorage.setItem('@user',user)
+      //await AsyncStorage.setItem('token',JSON.stringify(token));
 
       navigation.navigate('Dashboard')
-
-    //}
-    /*catch(err){
-      Alert.alert('Usuário não existe')
-      setErrorMessage('Usuário não existe')
-    }*/
-
+  
   }
     return (
       <ImageBackground source={background} style={styles.body}>
@@ -53,7 +42,7 @@ export default function Login({navigation}){
             <View style={styles.formTop}></View>
             <TextInput
               style={styles.Input}
-              placeholder="E-MAIL"
+              placeholder="CPF ou E-MAIL"
               placeholderTextColor="#A5A5A5"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -84,12 +73,13 @@ export default function Login({navigation}){
             </TouchableOpacity>
           </View>
           <View style={styles.alternatives}>
-            {/* <View style={styles.divide}>
+            <View style={styles.divide}>
               <View style={styles.divideLine} />
               <Text style={styles.divideText}>ou</Text>
               <View style={styles.divideLine} />
             </View>
-            <TouchableOpacity onPress={signIn} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity> */}
+            
+            <TouchableOpacity onPress={signIn} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
             <View style={styles.footer}>
               <TouchableOpacity onPress={signIn}><Text style={styles.footerText}>Criar conta</Text></TouchableOpacity>
               <TouchableOpacity onPress={signIn}><Text style={styles.footerText}>Esqueci minha senha</Text></TouchableOpacity>

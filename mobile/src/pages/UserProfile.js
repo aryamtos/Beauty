@@ -1,12 +1,25 @@
-import React from 'react';
-import { Image, StyleSheet, Text, View, StatusBar } from 'react-native';
+import React,  { useState, useEffect, Component } from 'react';
+import { Image, StyleSheet,AsyncStorage,Text, View, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import thumbnail from '../assets/perfil_.png';
 
 export default function UserProfile({ navigation }) {
 
+    async function handleSubmit(){
+        // const user_id = await AsyncStorage.getItem('user');
+        const user_id = await AsyncStorage.getItem('_id')
 
+         
+        /*await api.post(`/service/${servico}/bookings`,{
+             date
+         },{
+           headers:{user_id}
+         })*/
+    }
+    useEffect(() =>{
+        handleSubmit()
+    },[])
     function handleNavigate() {
         navigation.navigate('ListAgendamentos');
     }

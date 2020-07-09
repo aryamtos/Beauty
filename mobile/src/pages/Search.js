@@ -5,8 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import api from '../services/api';
 export default function Search({ navigation }) {
 
-    const [tipos,setCategoria] = useState('');
-    const [nome, setNome] = useState('');
+   const [nomeService, setNome] = useState('');
     const[rua, setRua] = useState('');
     const [bairro,setBairro] = useState('');
     const [cidade, setCidade] = useState('');
@@ -23,18 +22,17 @@ export default function Search({ navigation }) {
 
    
    async function handleSubmit(){
-       const response = await api.post('/search',{
-           tipos,
-      
-        
-     })
-       const {_id} = response.data;
-       await AsyncStorage.setItem('user', _id);
-       await AsyncStorage.setItem('tipos', tipos);
+     //  const response = await api.post('/search',{
+       ///    nomeService,
+     
+       await AsyncStorage.setItem('nomeService',nomeService);
+       //const {_id} = response.data;
+
+       //await AsyncStorage.setItem('user', _id);
+       //await AsyncStorage.setItem('tipos', tipos);
        //await AsyncStorage.setItem('nome', nome);
      
 
-       console.log(response.data);
        navigation.navigate('SearchResult');
    }
     
@@ -47,16 +45,16 @@ export default function Search({ navigation }) {
                     style={styles.input}
                     placeholder="Serviço ou estabelecimento"
                     autoCorrect={false}
-                    value={tipos}
-                    onChangeText={setCategoria}
+                    value={nomeService}
+                    onChangeText={setNome}
 
                 />
                 <View style={styles.containerDivide}>
                     <TextInput 
                         style={[styles.input, styles.inputDivide]}
                         placeholder="Cidade"
-                        value={nome}
-                    onChangeText={setNome}
+                        value={cidade}
+                    onChangeText={setCidade}
                         
                     />
                     <TextInput 

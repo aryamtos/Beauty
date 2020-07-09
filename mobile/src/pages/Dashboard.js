@@ -35,6 +35,12 @@ export default function Dashboard ({ navigation }) {
        
         navigation.navigate('CategoryPage');
     }
+    async function handleDepila(){
+        navigation.navigate('Depilacao');
+    }
+    async function handleManicure(){
+         navigation.navigate('Manicure');   
+    }
 
     return (
         <View style={styles.container}>
@@ -63,14 +69,14 @@ export default function Dashboard ({ navigation }) {
                     </LinearGradient>
                 </ImageBackground>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleSearchable} style={styles.categoria}>
+            <TouchableOpacity onPress={handleDepila} style={styles.categoria}>
                 <ImageBackground source={depila} style={styles.categoriaImage}>
                     <LinearGradient colors={['transparent', 'white']} style={styles.gradientEffect}>
                         <Text style={styles.categoriaText}>Depilação</Text>
                     </LinearGradient>
                 </ImageBackground>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleNavigation} style={styles.categoria}>
+            <TouchableOpacity onPress={handleManicure} style={styles.categoria}>
                 <ImageBackground source={manicure} style={styles.categoriaImage}>
                     <LinearGradient colors={['transparent', 'white']} style={styles.gradientEffect}>
                         <Text style={styles.categoriaText}>Manicure</Text>

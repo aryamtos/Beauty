@@ -15,7 +15,7 @@ import api from '../services/api';
 
 //import { Container, Title, Button, ButtonText, ProductList } from './styles';
 
-export default function CategoryPage({ navigation }) {
+export default function Depilacao({ navigation }) {
 
 
   const route = useRoute();
