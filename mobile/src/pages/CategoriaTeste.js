@@ -9,15 +9,10 @@ import GlobalStyles from '../assets/GlobalStyles';
 import lupa from '../assets/BUSCAR_cinza.png';
 import logoLoja from '../assets/logo_loja.jpg';
 import api from '../services/api';
-import {Filter} from  './Filter';
+import { Filter } from './Filter';
 
-class App extends Component{
-
-    
-    
-
-
-
+export default function CategoriaTeste({ navigation }) {
+    return <View></View>;
 }
 
 const styles = StyleSheet.create({
