@@ -23,6 +23,10 @@ let _product = new ServiceController();
 let _partner = new PartnerController();
 // let _user = new UserController();
 
+routes.get('/', (req, res) => {
+  return res.json({ message: 'oi' });
+})
+
 //DASHBOARD
 routes.get('/dashboard', DashboardController.show);
 
@@ -34,8 +38,8 @@ routes.get('/dashboard', DashboardController.show);
 routes.get('/spots', Service.index);
 routes.get('/all', Service.getAll);//Listagem de todos os serviços
 
-routes.get('/list/depil',Service.indexDepil);
-routes.get('/list/manicure',Service.indexManicure);
+routes.get('/list/depil', Service.indexDepil);
+routes.get('/list/manicure', Service.indexManicure);
 routes.get('/list/barba', Service.indexBarba);
 routes.get('/list/cortes', Service.indexCorte);
 
@@ -51,12 +55,12 @@ routes.get('/spots/servicos', Service.listServico);
 
 //ROTAS DE BUSCA
 
-routes.post('/search',SearchController.store );
+routes.post('/search', SearchController.store);
 
 
 //ROTAS SERVIÇOS
 
-routes.post('/service/register',upload.single('foto'), _product.post);
+routes.post('/service/register', upload.single('foto'), _product.post);
 
 routes.put('/service/register/:id', _product.put);
 
@@ -72,29 +76,29 @@ routes.post('/service/:id/bookings', BookingController.store);
 routes.get('/bookings', BookingController.getAll);
 
 //ROTAS DO ADMIN
-routes.get('/admin/showpartners',auth, _partner.get); //exibindo parceiros
+routes.get('/admin/showpartners', auth, _partner.get); //exibindo parceiros
 
 routes.post('/auth', _user.authentification);
 
 routes.post('/user/register', _user.post);
-routes.put('/user/register/:id',_user.put);
+routes.put('/user/register/:id', _user.put);
 //routes.get('/user/showusers', _user.get);
 routes.get('/user/:id', _user.getById);
-routes.delete('/user/deleteuser/:id',_user.delete);
-routes.get('/admin/showusers',auth, _user.get); //exibindo clientes
+routes.delete('/user/deleteuser/:id', _user.delete);
+routes.get('/admin/showusers', auth, _user.get); //exibindo clientes
 
 
 //ROTAS DO PARCEIRO
 routes.post('/authentification', _partner.authentification);
-routes.post('/partner/register',upload.single('logo'), _partner.post); //criando um usuário de Parceiro
-routes.put('/partner/register/:id',auth, _partner.put); //atualizando informações
-routes.get('/partner/:id',auth, _partner.getById);//pegando um único parceiro
-routes.delete('/partner/deletepartner/:id',auth, _partner.delete);//deletando algum parceiro
+routes.post('/partner/register', upload.single('logo'), _partner.post); //criando um usuário de Parceiro
+routes.put('/partner/register/:id', auth, _partner.put); //atualizando informações
+routes.get('/partner/:id', auth, _partner.getById);//pegando um único parceiro
+routes.delete('/partner/deletepartner/:id', auth, _partner.delete);//deletando algum parceiro
 //produtos parceiro
 //routes.post('/partner/service/registrationservice',auth, _product.post);
-routes.post('/partner/service/registrationservice',_product.post);
-routes.get('/partner/service/index',auth, DashboardController.show);
-routes.put('/partner/service/:id',auth, _product.put);
+routes.post('/partner/service/registrationservice', _product.post);
+routes.get('/partner/service/index', auth, DashboardController.show);
+routes.put('/partner/service/:id', auth, _product.put);
 routes.delete('/partner/service/delete/:id', auth, _product.delete);
 routes.get('/partner/service/showuservices', DashboardController.getAll);
 

@@ -1,13 +1,13 @@
-//importando 
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const socketio = require('socket.io');
-const bodyParser = require('body-parser');
-const path = require('path');
-const http = require('http');
-const routes = require('./routers');
-const variables = require('../src/config/variables');
+//importando
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const socketio = require("socket.io");
+const bodyParser = require("body-parser");
+const path = require("path");
+const http = require("http");
+const routes = require("./routers");
+const variables = require("../src/config/variables");
 
 //importando o express
 
@@ -19,30 +19,31 @@ const io = socketio(server);
 //     useNewUrlParser: true,
 //     useUnifiedTopology: true,
 // })
-mongoose.connect('mongodb+srv://BeautyMenu:carneiro2008@beautymenu-8o3sz.mongodb.net/aplicacion?retryWrites=true&w=majority',{
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
-})
+mongoose.connect(
+  "mongodb+srv://BeautyMenu:carneiro2008@beautymenu-8o3sz.mongodb.net/aplicacion?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
-const connectedUsers ={};
+const connectedUsers = {};
 
-io.on('connection', socket => {
-
-    const {user_id} = socket.handshake.query;
-    connectedUsers[user_id] = socket.id;
+io.on("connection", (socket) => {
+  const { user_id } = socket.handshake.query;
+  connectedUsers[user_id] = socket.id;
 });
-app.use((req,res, next) =>{
+app.use((req, res, next) => {
+  req.io = io;
+  req.connectedUsers = connectedUsers;
 
-    req.io =io;
-    req.connectedUsers = connectedUsers;
-
-    return next();
-})
+  return next();
+});
 //require('./models/user-model');
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
-app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
+app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(routes);
 
 //local host
