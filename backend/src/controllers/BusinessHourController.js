@@ -34,6 +34,6 @@ module.exports = {
 
     await service.save();
 
-    return res.json(service);
+    return res.status(201).json(service);
   },
 };
