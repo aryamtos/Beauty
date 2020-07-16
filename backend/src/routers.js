@@ -9,6 +9,7 @@ const ServiceController = require("./controllers/ServiceControllers");
 
 // const ProdutosController = require('./controllers/ProdutosController');
 const Service = require("./controllers/ListController");
+const BusinessHoursController = require("./controllers/BusinessHourController");
 const DashboardController = require("./controllers/DashboardController");
 const BookingController = require("./controllers/BookingController");
 const PartnerController = require("./controllers/PartnerRegisController");
@@ -60,6 +61,9 @@ routes.get("/service/showservices", _product.get);
 routes.get("/service/:id", _product.getById);
 
 routes.delete("/service/deleteservice/:id", _product.delete);
+//ROTAS HORÁRIO DE SERVIÇO
+routes.get("/businesshour", BusinessHoursController.index);
+routes.post("/businesshour", BusinessHoursController.store);
 
 //ROTAS BOOKING
 
