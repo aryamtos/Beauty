@@ -63,23 +63,11 @@ export default function Dashboard({ navigation }) {
   const route = useRoute();
   const [categoriaServico, setCategoria] = useState([]);
 
-  async function handleBarba() {
-    navigation.navigate("BeardPage", _id);
-  }
-
   async function handleSearchable() {
     navigation.navigate("Services");
   }
-  async function handleNavigation() {
-    const value = await AsyncStorage.getItem("@user");
-
-    navigation.navigate("CategoryPage");
-  }
-  async function handleDepila() {
-    navigation.navigate("Depilacao");
-  }
-  async function handleManicure() {
-    navigation.navigate("Manicure");
+  async function handleNavigation(type) {
+    navigation.navigate("CategoryPage", { screen: "Início", params: { type } });
   }
 
   return (
@@ -104,7 +92,10 @@ export default function Dashboard({ navigation }) {
             />
           </View>
           <Text style={styles.containerText}>Categorias</Text>
-          <TouchableOpacity onPress={handleNavigation} style={styles.categoria}>
+          <TouchableOpacity
+            onPress={() => handleNavigation("Cabelo")}
+            style={styles.categoria}
+          >
             <ImageBackground source={corte} style={styles.categoriaImage}>
               <LinearGradient
                 colors={["transparent", "white"]}
@@ -114,7 +105,10 @@ export default function Dashboard({ navigation }) {
               </LinearGradient>
             </ImageBackground>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleBarba} style={styles.categoria}>
+          <TouchableOpacity
+            onPress={() => handleNavigation("Rosto")}
+            style={styles.categoria}
+          >
             <ImageBackground source={barba} style={styles.categoriaImage}>
               <LinearGradient
                 colors={["transparent", "white"]}
@@ -124,7 +118,10 @@ export default function Dashboard({ navigation }) {
               </LinearGradient>
             </ImageBackground>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleDepila} style={styles.categoria}>
+          <TouchableOpacity
+            onPress={() => handleNavigation("Depila")}
+            style={styles.categoria}
+          >
             <ImageBackground source={depila} style={styles.categoriaImage}>
               <LinearGradient
                 colors={["transparent", "white"]}
@@ -134,7 +131,10 @@ export default function Dashboard({ navigation }) {
               </LinearGradient>
             </ImageBackground>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleManicure} style={styles.categoria}>
+          <TouchableOpacity
+            onPress={() => handleNavigation("Manicure")}
+            style={styles.categoria}
+          >
             <ImageBackground source={manicure} style={styles.categoriaImage}>
               <LinearGradient
                 colors={["transparent", "white"]}
