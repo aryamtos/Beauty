@@ -75,6 +75,7 @@ routes.post("/businesshour", BusinessHoursController.store);
  * ---------------------------------------------
  */
 routes.get("/professional", ProfessionalsController.index);
+routes.get("/professional/:service_id", ProfessionalsController.show);
 routes.post("/professional", ProfessionalsController.store);
 
 //ROTAS BOOKING
