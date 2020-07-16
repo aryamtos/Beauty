@@ -51,6 +51,7 @@ export default function CategoryPage({ navigation }) {
   useEffect(() => {
     loadProducts();
   }, []);
+
   function handleNavigate(servico) {
     navigation.navigate("StoreProfile", { servico });
   }
@@ -81,7 +82,7 @@ export default function CategoryPage({ navigation }) {
         data={servicos}
         keyExtractor={(servico) => String(servico._id)}
         //horizontal
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item: servico }) => (
           <ScrollView>
             <Image style={styles.thumbnail}></Image>
