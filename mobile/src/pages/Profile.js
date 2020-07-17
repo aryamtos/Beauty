@@ -46,7 +46,7 @@ export default function Profile({ navigation }) {
 
     if (response.data) {
       navigation.goBack();
-      Alert.alert("Atualizado com sucesso!");
+      Alert.alert("Sucesso!", "Seu perfil foi atualizado");
     }
   }
 
