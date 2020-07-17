@@ -26,7 +26,7 @@ export default function StoreEmployees({ navigation }) {
   return (
     <View style={styles.container}>
       {professionals.map((professional) => (
-        <View style={styles.profContainer}>
+        <View key={professional.name} style={styles.profContainer}>
           <Text style={styles.profName}>{professional.name}</Text>
           <Text style={styles.profFunction}>
             {professional.professionalFunction}

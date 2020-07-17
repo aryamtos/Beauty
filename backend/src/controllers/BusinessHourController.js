@@ -7,13 +7,11 @@ module.exports = {
     let service = await Service.findById(service_id);
     const businessHours = [];
 
-    await Promise.all(
-      service.businessHours.map(async (bh_id) => {
-        const busHour = await BusinessHour.findById(bh_id);
+    for (let bh_id of service.businessHours) {
+      const busHour = await BusinessHour.findById(bh_id);
 
-        businessHours.push(busHour);
-      })
-    );
+      businessHours.push(busHour);
+    }
 
     return res.json({ businessHours });
   },
