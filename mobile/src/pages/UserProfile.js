@@ -27,8 +27,8 @@ export default function UserProfile({ navigation }) {
   }, []);
 
   useEffect(() => {
-    if (user !== {}) {
-      const name = user.interpriseName.split(" ");
+    if (user && user.nome) {
+      const name = user.nome.split(" ");
 
       setName(name[0]);
     }

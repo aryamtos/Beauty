@@ -1,49 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, ScrollView, View, StatusBar, FlatList,ImageBackground, Image, SafeAreaView, Alert, TextInput, AsyncStorage } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Icon } from 'react-native-elements';
-import socketio from 'socket.io-client';
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  StyleSheet,
+  ScrollView,
+  View,
+  StatusBar,
+  FlatList,
+  ImageBackground,
+  Image,
+  SafeAreaView,
+  Alert,
+  TextInput,
+  AsyncStorage,
+} from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Icon } from "react-native-elements";
+import socketio from "socket.io-client";
 
-import GlobalStyles from '../assets/GlobalStyles';
-import lupa from '../assets/BUSCAR_cinza.png';
-import logoLoja from '../assets/logo_loja.jpg';
-import PropTypes from 'prop-types';
-import { useNavigation, useRoute } from '@react-navigation/native'
+import GlobalStyles from "../assets/GlobalStyles";
+import lupa from "../assets/BUSCAR_cinza.png";
+import logoLoja from "../assets/logo_loja.jpg";
+import PropTypes from "prop-types";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-
-import api from '../services/api';
+import api from "../services/api";
 
 export default function Profile({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [nome, setNome] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [confirmacao, setConfirmacao] = useState("");
+  const [date, setDate] = useState("");
 
+  async function handleSubmit() {
+    let user = await AsyncStorage.getItem("user");
+    user = JSON.parse(user);
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [nome, setNome] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [confirmacao, setConfirmacao] = useState('');
-  const [date, setDate] = useState('');
-
-  useEffect(() => {
-     updateSubmit();
-  }, []);
-  async function updateSubmit() {
-
-    const response = await api.put(`/user/register/${id}`, {
+    const response = await api.put(`/user/register/${user._id}`, {
       email,
       senha,
       nome,
       telefone,
-    })
-    setDate(response.data);
-    navigation.navigate('StoreService');
-    Alert.alert("Atualizado com sucesso!")
+    });
 
+    if (response.data) {
+      navigation.goBack();
+      Alert.alert("Atualizado com sucesso!");
+    }
   }
 
   return (
-    <ImageBackground source={background} style={styles.body}>
+    <View style={styles.body}>
       <View style={styles.container}>
-        <Image source={logo} style={styles.logo} />
         <View style={styles.form}>
           <View style={styles.formTop}></View>
           <TextInput
@@ -53,12 +62,8 @@ export default function Profile({ navigation }) {
             autoCapitalize="words"
             autoCorrect={false}
             value={nome}
-            onChangeText ={ nome => setNome(nome)}
-
+            onChangeText={(nome) => setNome(nome)}
           />
-          <View style={styles.borderContainer}>
-            <View style={styles.border}></View>
-          </View>
           <View style={styles.borderContainer}>
             <View style={styles.border}></View>
           </View>
@@ -68,8 +73,7 @@ export default function Profile({ navigation }) {
             placeholderTextColor="#A5A5A5"
             autoCorrect={false}
             value={telefone}
-            onChangeText ={ telefone => setTelefone(telefone)}
-
+            onChangeText={(telefone) => setTelefone(telefone)}
           />
           <View style={styles.borderContainer}>
             <View style={styles.border}></View>
@@ -82,7 +86,7 @@ export default function Profile({ navigation }) {
             autoCapitalize="none"
             autoCorrect={false}
             value={email}
-            onChangeText ={ email => setEmail(email)} 
+            onChangeText={(email) => setEmail(email)}
           />
           <View style={styles.borderContainer}>
             <View style={styles.border}></View>
@@ -95,7 +99,7 @@ export default function Profile({ navigation }) {
             autoCorrect={false}
             secureTextEntry={true}
             value={senha}
-            onChangeText ={ senha => setSenha(senha)}
+            onChangeText={(senha) => setSenha(senha)}
           />
           <View style={styles.borderContainer}>
             <View style={styles.border}></View>
@@ -108,121 +112,112 @@ export default function Profile({ navigation }) {
             autoCorrect={false}
             secureTextEntry={true}
             value={confirmacao}
-            onChangeText ={confirmacao => setConfirmacao(confirmacao)}
-
+            onChangeText={(confirmacao) => setConfirmacao(confirmacao)}
           />
           <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
             <Text style={styles.btnText}>Atualizar perfil</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.alternatives}>
-          <View style={styles.divide}>
-            <View style={styles.divideLine} />
-            <Text style={styles.divideText}>ou</Text>
-            <View style={styles.divideLine} />
-          </View>
-          <TouchableOpacity onPress={handleSubmit} style={styles.btnGoogle}><Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text></TouchableOpacity>
-        </View>
       </View>
-    </ImageBackground>
-  )
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: StatusBar.currentHeight,
     marginBottom: -2,
   },
   container: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: "stretch",
+    alignItems: "center",
+    justifyContent: "center",
   },
   logo: {
     height: 50,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginBottom: 30,
   },
   form: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     paddingHorizontal: 30,
   },
   formTop: {
     borderTopWidth: 1,
-    borderColor: '#BDAAC6',
+    borderColor: "#BDAAC6",
   },
   Input: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     fontSize: 15,
     padding: 10,
-    textAlign: 'center',
-    borderColor: '#BDAAC6',
+    textAlign: "center",
+    borderColor: "#BDAAC6",
     borderWidth: 1,
     borderTopWidth: 0,
     borderBottomWidth: 0,
   },
   borderContainer: {
-    backgroundColor: '#fff',
-    borderColor: '#BDAAC6',
+    backgroundColor: "#fff",
+    borderColor: "#BDAAC6",
     borderWidth: 0,
     borderRightWidth: 1,
     borderLeftWidth: 1,
   },
   border: {
-    width: '90%',
-    borderColor: '#BDAAC6',
-    backgroundColor: '#fff',
+    width: "90%",
+    borderColor: "#BDAAC6",
+    backgroundColor: "#fff",
     borderTopWidth: 1,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   btn: {
     height: 52,
-    backgroundColor: '#511D68',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#511D68",
+    justifyContent: "center",
+    alignItems: "center",
   },
   btnText: {
     fontSize: 15,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
   alternatives: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     paddingHorizontal: 30,
   },
   divide: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 5,
     marginBottom: 5,
   },
   divideLine: {
-    width: '40%',
+    width: "40%",
     borderWidth: 0,
     borderBottomWidth: 1,
-    borderBottomColor: '#511D68',
+    borderBottomColor: "#511D68",
   },
   divideText: {
     fontSize: 12,
-    color: '#511D68',
+    color: "#511D68",
     marginLeft: 5,
     marginRight: 5,
   },
   btnGoogle: {
     height: 52,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#511D68',
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#511D68",
     borderWidth: 1,
   },
   textGoogle: {
     fontSize: 14,
-    fontWeight: 'normal',
-    color: '#A5A5A5',
+    fontWeight: "normal",
+    color: "#A5A5A5",
   },
 });

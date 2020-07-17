@@ -31,7 +31,7 @@ export default function Login({ navigation }) {
 
   async function signIn() {
     try {
-      const response = await api.post("/authentification", {
+      const response = await api.post("/auth", {
         email,
         senha,
       });
@@ -48,6 +48,11 @@ export default function Login({ navigation }) {
       console.log(error);
     }
   }
+
+  function handleRegister() {
+    navigation.navigate("Register");
+  }
+
   return (
     <ImageBackground source={background} style={styles.body}>
       <View style={styles.container}>
@@ -97,7 +102,7 @@ export default function Login({ navigation }) {
             <Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text>
           </TouchableOpacity>
           <View style={styles.footer}>
-            <TouchableOpacity onPress={signIn}>
+            <TouchableOpacity onPress={handleRegister}>
               <Text style={styles.footerText}>Criar conta</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={signIn}>
