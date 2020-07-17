@@ -23,6 +23,12 @@ const UserPartnerSchema = new mongoose.Schema(
         ref: "Service",
       },
     ],
+    businessHours: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "BusinessHour",
+      },
+    ],
   },
   { versionKey: false }
 );

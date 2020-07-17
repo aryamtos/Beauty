@@ -1,26 +1,27 @@
 const BusinessHour = require("../models/BusinessHour");
-const Service = require("../models/Service");
+const UserPartner = require("../models/UserPartner");
 
 module.exports = {
   async index(req, res) {
-    const { service_id } = req.headers;
-    let service = await Service.findById(service_id);
+    const { partner_id } = req.headers;
+    let partner = await UserPartner.findById(partner_id);
     const businessHours = [];
 
-    for (let bh_id of service.businessHours) {
+    for (let bh_id of partner.businessHours) {
       const busHour = await BusinessHour.findById(bh_id);
 
       businessHours.push(busHour);
     }
 
+    console.log(businessHours);
     return res.json({ businessHours });
   },
 
   async store(req, res) {
-    const { service_id } = req.headers;
+    const { partner_id } = req.headers;
     const { dia, horaInicio, horaFim } = req.body;
 
-    const service = await Service.findById(service_id);
+    const partner = await UserPartner.findById(partner_id);
 
     const businessHour = await BusinessHour.create({
       dia,
@@ -28,10 +29,10 @@ module.exports = {
       horaFim,
     });
 
-    service.businessHours.push(businessHour);
+    partner.businessHours.push(businessHour);
 
-    await service.save();
+    await partner.save();
 
-    return res.status(201).json(service);
+    return res.status(201).json(partner);
   },
 };

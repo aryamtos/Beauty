@@ -1,4 +1,5 @@
 const Booking = require("../models/Booking");
+const Service = require("../models/Service");
 const { isPast } = require("date-fns");
 
 const {
@@ -15,8 +16,15 @@ const {
 const current = new Date();
 module.exports = {
   async index(req, res) {
-    const { service_id } = req.query;
-    const servicos = await Booking.find({ service: service_id }).sort("date"); //encontrar vários tipos
+    const { partner_id } = req.query;
+    const { user_id } = req.query;
+    let servicos = {};
+
+    if (partner_id) {
+      servicos = await Booking.find({ partner: partner_id }).sort("date"); //encontrar vários tipos
+    } else if (user_id) {
+      servicos = await Booking.find({ user: user_id }).sort("date"); //encontrar vários tipos
+    }
 
     return res.json(servicos);
   },
@@ -25,11 +33,15 @@ module.exports = {
     const service_id = req.params.id; //spot_id
     const { date } = req.body;
 
+    const service = await Service.findById(service_id);
+
     const booking = await Booking.create({
       user: user_id,
+      partner: service.user,
       service: service_id,
       date,
     });
+
     await booking.populate("service").populate("user").execPopulate();
 
     const ownerSocket = req.connectedUsers[booking.service.user_id];

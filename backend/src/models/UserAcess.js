@@ -13,6 +13,12 @@ const UserAcess = new schema(
     email: { type: String, required: true },
     dataCriacao: { type: Date, default: Date.now },
     senha: { type: String, required: true },
+    bookings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+      },
+    ],
   },
   { versionKey: false }
 );

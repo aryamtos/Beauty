@@ -16,12 +16,6 @@ const serviceModel = new mongoose.Schema(
       require: true,
       ref: "UserPartner",
     },
-    businessHours: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "BusinessHour",
-      },
-    ],
     professionals: [
       {
         type: mongoose.Schema.Types.ObjectId,

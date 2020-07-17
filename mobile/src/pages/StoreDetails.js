@@ -32,19 +32,38 @@ export default function StoreDetails() {
    *  o campo user contem somente o _id desse
    *  usuário, e não o usuário inteiro.
    */
-  const [user, setUser] = useState({});
+  const [store, setStore] = useState({});
   const [businessHours, setBusinessHours] = useState([]);
   const servico = route.params.servico;
 
+  /**
+   * ------------------------------------
+   *   Pegando as informações da loja
+   * ------------------------------------
+   */
   useEffect(() => {
     async function handleInit() {
-      const servico = route.params.servico;
+      const service = route.params.servico;
+
+      const token = await AsyncStorage.getItem("token");
+
+      try {
+        const response = await api.get(`/partner/${service.user}`, {
+          headers: { token_access: token },
+        });
+        if (response.data) {
+          setStore(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
 
       const response = await api.get("/businesshour", {
-        headers: { service_id: servico._id },
+        headers: { partner_id: service.user },
       });
 
       if (response.data) {
+        console.log(response.data);
         setBusinessHours(response.data.businessHours);
       }
     }
@@ -56,22 +75,22 @@ export default function StoreDetails() {
     <View style={styles.container}>
       <View style={styles.session}>
         <Text style={styles.sessionBoldText}>Sobre</Text>
-        <Text style={styles.sessionNormalText}>{servico.user.about}</Text>
+        <Text style={styles.sessionNormalText}>{store.about}</Text>
       </View>
       <View style={styles.session}>
         <Text style={styles.sessionBoldText}>Endereço</Text>
-        <Text style={styles.sessionNormalText}>{servico.user.adress}</Text>
+        <Text style={styles.sessionNormalText}>{store.adress}</Text>
       </View>
       <View style={styles.session}>
         <Text style={styles.sessionBoldText}>Contato</Text>
-        <Text style={styles.sessionNormalText}>{servico.user.email}</Text>
-        <Text style={styles.sessionNormalText}>{servico.user.phone}</Text>
+        <Text style={styles.sessionNormalText}>E-Mail: {store.email}</Text>
+        <Text style={styles.sessionNormalText}>Telefone: {store.phone}</Text>
       </View>
       <View style={styles.session}>
         <Text style={styles.sessionBoldText}>Horário de Funcionamento</Text>
         <View style={styles.hoursSession}>
           {businessHours.map((businessHour) => (
-            <View style={styles.businessHourContainer}>
+            <View key={businessHour.dia} style={styles.businessHourContainer}>
               <Text style={styles.sessionNormalText}>{businessHour.dia}</Text>
               <Text style={styles.sessionNormalText}>
                 {businessHour.horaInicio} - {businessHour.horaFim}
@@ -118,6 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "normal",
     color: "#A5A5A5",
+    marginLeft: 10,
   },
   sessionPrice: {
     fontSize: 14,
