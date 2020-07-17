@@ -2,11 +2,7 @@
   "expo": {
     "name": "mobile",
     "slug": "mobile",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,11 +14,17 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
+    },
+    "androidNavigationBar": {
+      "bar-style": "light-content",
+      "backgroundColor": "#511D68"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#511D68"
     }
   }
 }
