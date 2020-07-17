@@ -1,73 +1,124 @@
-import React from 'react';
-import { Image, StyleSheet, Text, View, StatusBar } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from "react";
+import {
+  AsyncStorage,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+} from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-import logo from '../assets/bmlogo_.png';
+import logo from "../assets/bmlogo_.png";
 
-export default function PartnerDashboard({ navigation }){
-    function handleNavigation(){
-        navigation.navigate('NewService');
+import api from "../services/api";
+
+export default function PartnerDashboard({ navigation }) {
+  const [name, setName] = useState("");
+  const [isTokenValid, setIsTokenValid] = useState(true);
+  useEffect(() => {
+    async function handleInit() {
+      try {
+        /**
+         * -----------------------------------
+         *   Vericiando veracidade do token
+         * -----------------------------------
+         */
+        const token = await AsyncStorage.getItem("token");
+
+        await api.get("/dashboard", {
+          headers: { token_access: token },
+        });
+
+        setIsTokenValid(true);
+      } catch (error) {
+        console.log(error);
+        setIsTokenValid(false);
+        return;
+      }
+
+      /**
+       * ---------------------------------
+       *    Separando o nome do usuário
+       * ---------------------------------
+       */
+      let user = await AsyncStorage.getItem("user");
+      user = JSON.parse(user);
+      setName(user.interpriseName.split(" ")[0]);
     }
 
-    return(
-        <>
-            <View style={styles.header}>
-                <Image source={logo} style={styles.logo} />
-                <Text style={styles.headerText}>Olá, Leo Bob!</Text>
-            </View>
-            <View style={styles.container}>
-                <Text style={styles.titleText}>SEUS AGENDAMENTOS DE HOJE</Text>
-                <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
-                    <Text style={styles.btnText}>NOVO ATENDIMENTO</Text>
-                </TouchableOpacity>
-            </View>
-        </>
-    );
+    handleInit();
+  }, []);
+
+  useEffect(() => {
+    if (!isTokenValid) {
+      navigation.navigate("PartnerLogin");
+    }
+  }, [isTokenValid]);
+
+  function handleNavigation() {
+    navigation.navigate("NewService");
+  }
+
+  return (
+    <>
+      <View style={styles.header}>
+        <Image source={logo} style={styles.logo} />
+        <Text style={styles.headerText}>Olá, {name}!</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.titleText}>SEUS AGENDAMENTOS DE HOJE</Text>
+        <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
+          <Text style={styles.btnText}>NOVO ATENDIMENTO</Text>
+        </TouchableOpacity>
+      </View>
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignSelf: 'stretch',
-        paddingHorizontal: 30,
-        marginTop: 15,
-        alignItems: 'center',
-    },
-    header: {
-        alignSelf: 'stretch',
-        paddingHorizontal: 30,
-        flexDirection: 'row',
-        backgroundColor: '#511D68',
-        justifyContent: 'flex-start',
-        paddingTop: StatusBar.currentHeight + 10,
-        paddingBottom: 10,
-    },
-    titleText: {
-        fontSize: 15,
-        fontWeight: 'normal',
-        color: '#511D68',
-    },
-    headerText: {
-        alignSelf: 'flex-end',
-        fontSize: 20,
-        fontWeight: 'normal',
-        color: '#fff',
-    },
-    logo: {
-        height: 30,
-        resizeMode: 'contain',
-        marginRight: 5,
-    },
-    btn: {
-        height: 42,
-        backgroundColor: '#511D68',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    btnText: {
-        fontSize: 15,
-        fontWeight: 'normal',
-        color: '#fff',
-        paddingHorizontal: 55,
-    },
+  container: {
+    flex: 1,
+    alignSelf: "stretch",
+    paddingHorizontal: 30,
+    marginTop: 15,
+    alignItems: "center",
+  },
+  header: {
+    alignSelf: "stretch",
+    paddingHorizontal: 30,
+    flexDirection: "row",
+    backgroundColor: "#511D68",
+    justifyContent: "flex-start",
+    paddingTop: StatusBar.currentHeight + 10,
+    paddingBottom: 10,
+  },
+  titleText: {
+    fontSize: 15,
+    fontWeight: "normal",
+    color: "#511D68",
+  },
+  headerText: {
+    alignSelf: "flex-end",
+    fontSize: 20,
+    fontWeight: "normal",
+    color: "#fff",
+  },
+  logo: {
+    height: 30,
+    resizeMode: "contain",
+    marginRight: 5,
+  },
+  btn: {
+    height: 42,
+    backgroundColor: "#511D68",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnText: {
+    fontSize: 15,
+    fontWeight: "normal",
+    color: "#fff",
+    paddingHorizontal: 55,
+  },
 });
