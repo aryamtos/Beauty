@@ -17,6 +17,7 @@ const BookingSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Service",
     },
+    nameService: { type: String },
   },
   { versionKey: false }
 );

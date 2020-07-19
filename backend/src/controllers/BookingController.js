@@ -16,9 +16,9 @@ const {
 const current = new Date();
 module.exports = {
   async index(req, res) {
-    const { partner_id } = req.query;
-    const { user_id } = req.query;
-    let servicos = {};
+    const { partner_id } = req.headers;
+    const { user_id } = req.headers;
+    let servicos = [];
 
     if (partner_id) {
       servicos = await Booking.find({ partner: partner_id }).sort("date"); //encontrar vários tipos
@@ -26,7 +26,7 @@ module.exports = {
       servicos = await Booking.find({ user: user_id }).sort("date"); //encontrar vários tipos
     }
 
-    return res.json(servicos);
+    return res.json({ servicos });
   },
   async store(req, res, next) {
     const { user_id } = req.headers;
@@ -39,6 +39,7 @@ module.exports = {
       user: user_id,
       partner: service.user,
       service: service_id,
+      nameService: service.nomeService,
       date,
     });
 
