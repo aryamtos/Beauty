@@ -63,7 +63,6 @@ export default function StoreDetails() {
       });
 
       if (response.data) {
-        console.log(response.data);
         setBusinessHours(response.data.businessHours);
       }
     }
