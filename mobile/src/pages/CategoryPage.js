@@ -23,10 +23,6 @@ import PropTypes from "prop-types";
 
 import api from "../services/api";
 
-//import ServiceList from '../components/ServiceList';x'
-
-//import { Container, Title, Button, ButtonText, ProductList } from './styles';
-
 export default function CategoryPage({ navigation }) {
   const route = useRoute();
   const [servicos, setServicos] = useState([]);
@@ -34,21 +30,28 @@ export default function CategoryPage({ navigation }) {
   const servico = route.params;
   //console.log(servico._id)
 
-  async function loadProducts() {
-    const { type } = route.params;
-    const response = await api.get("/partner/service/showuservices", {
-      params: { type },
-    });
-    setServicos(response.data);
-
-    const { _id } = response.data;
-
-    await AsyncStorage.setItem("_id", _id);
-    //await AsyncStorage.setItem('servicos', _id);
-    // await AsyncStorage.setItem('tipos', tipos);
-  }
-
   useEffect(() => {
+    async function loadProducts() {
+      const { type } = route.params;
+      const token = await AsyncStorage.getItem("token");
+      const response = await api.get("/partner/service/showuservices", {
+        params: { type },
+      });
+      let servicos = response.data;
+
+      for (let servico of servicos) {
+        const user = await api.get(`/partner/${servico.user}`, {
+          headers: {
+            token_access: token,
+          },
+        });
+
+        servico.user = user.data;
+      }
+
+      setServicos(servicos);
+    }
+
     loadProducts();
   }, []);
 

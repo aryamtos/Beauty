@@ -48,7 +48,7 @@ export default function StoreDetails() {
       const token = await AsyncStorage.getItem("token");
 
       try {
-        const response = await api.get(`/partner/${service.user}`, {
+        const response = await api.get(`/partner/${service.user._id}`, {
           headers: { token_access: token },
         });
         if (response.data) {
@@ -59,7 +59,7 @@ export default function StoreDetails() {
       }
 
       const response = await api.get("/businesshour", {
-        headers: { partner_id: service.user },
+        headers: { partner_id: service.user._id },
       });
 
       if (response.data) {
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     maxWidth: "50%",
-    marginLeft: 10,
+    marginLeft: 0,
   },
   sessionBoldText: {
     fontSize: 16,
