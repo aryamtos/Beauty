@@ -11,6 +11,19 @@ import {
 import { ListItem, SearchBar } from "react-native-elements";
 import api from "../services/api";
 
+/**
+ * ---------------------------------------------------------
+ *    Alterações
+ * ---------------------------------------------------------
+ *
+ *  Tomei a liberdade de refazer a estrutura do presente
+ *  componente, visto que não conheço aquela sintaxe mais
+ *  antiga do React Native.
+ *
+ *  Acho que para esse componente faltaria uma opção de
+ *  editar os serviços, e não só poder ver uma mera lista
+ *  deles.
+ */
 export default function Services() {
   const [nameList, setNameList] = useState([]);
 
