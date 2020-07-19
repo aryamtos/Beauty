@@ -13,7 +13,6 @@ module.exports = {
       businessHours.push(busHour);
     }
 
-    console.log(businessHours);
     return res.json({ businessHours });
   },
 
