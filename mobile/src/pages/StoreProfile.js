@@ -92,9 +92,12 @@ export default function StoreProfile({ navigation }) {
       <View style={styles.container}>
         <View style={styles.resultData}>
           <Text style={styles.resultNameText}>
-            {servico.user.interpriseName}
+            {servico.user.enterpriseName}
           </Text>
-          <Text style={styles.resultText}>{servico.user.adress}</Text>
+          <Text style={styles.resultText}>
+            {servico.user.address}. {servico.user.neighborhood},{" "}
+            {servico.user.city}
+          </Text>
           <View style={styles.resultDataRate}>
             <Icon
               name="star-o"

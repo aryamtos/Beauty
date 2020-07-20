@@ -95,11 +95,14 @@ export default function CategoryPage({ navigation }) {
             >
               <View style={styles.resultData}>
                 <Text style={styles.resultNameText}>
-                  {servico.user.interpriseName}
+                  {servico.user.enterpriseName}
                 </Text>
                 <View style={styles.resultDataRate}></View>
                 <Text style={styles.resultText}>{servico.user.category}</Text>
-                <Text style={styles.resultText}>{servico.user.adress}</Text>
+                <Text style={styles.resultText}>
+                  {servico.user.address}. {servico.user.neighborhood},{" "}
+                  {servico.user.city}
+                </Text>
               </View>
             </TouchableOpacity>
           </ScrollView>

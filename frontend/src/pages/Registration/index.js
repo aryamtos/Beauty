@@ -71,7 +71,7 @@ export default function Registration({ history }) {
               name="category"
               value={category}
               onClick={(event) =>
-                setCategory((event.target.value = "autonomo"))
+                setCategory((event.target.value = "Autônomo"))
               }
             ></input>
             <label htmlFor="autonomo">Autônomo</label>
@@ -84,7 +84,7 @@ export default function Registration({ history }) {
               id="Salão"
               name="category"
               value={category}
-              onChange={(event) => setCategory((event.target.value = "salao"))}
+              onChange={(event) => setCategory((event.target.value = "Salão"))}
             ></input>
             <label htmlFor="Salão">Salão</label>
 
