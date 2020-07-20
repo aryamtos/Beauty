@@ -41,8 +41,6 @@ export default function Dashboard({ navigation }) {
         const user = await AsyncStorage.getItem("user");
         const token = await AsyncStorage.getItem("token");
 
-        console.log(user);
-
         await api.get("/dashboard", {
           headers: { token_access: token },
         });

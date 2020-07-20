@@ -38,7 +38,9 @@ export default function BookRequest({ navigation }) {
 
   const onChange = (event, selectedDate) => {
     setShow(Platform.OS === "ios");
-    setDate(selectedDate);
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
   };
 
   function showMode(currentMode) {
@@ -84,7 +86,7 @@ export default function BookRequest({ navigation }) {
       console.log(error);
     }
 
-    Alert.alert("Solicitação de serviço enviada;");
+    Alert.alert("Sucesso!", "Solicitação de serviço enviada");
 
     navigation.navigate("StoreProfile");
   }
@@ -95,18 +97,17 @@ export default function BookRequest({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <RectButton style={styles.button} onPress={showDatepicker}>
-          <Text style={styles.buttonText}>Data</Text>
-        </RectButton>
-        <RectButton style={styles.button} onPress={showTimepicker}>
-          <Text style={styles.buttonText}>Hora</Text>
-        </RectButton>
-      </View>
+      <TouchableOpacity style={styles.input} onPress={showDatepicker}>
+        <Text style={styles.inputText}>Selecione a Data</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.input} onPress={showTimepicker}>
+        <Text style={styles.inputText}>Selecione a Hora</Text>
+      </TouchableOpacity>
       {show && (
         <DateTimePicker
           mode={mode}
           value={date}
+          minimumDate={new Date()}
           is24Hour={true}
           onChange={onChange} // Use "en_GB" here
         />
@@ -135,18 +136,25 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginTop: 30,
   },
-
   input: {
+    height: 42,
     borderWidth: 1,
-    borderColor: "#DDD",
+    borderColor: "#BDAAC6",
+    backgroundColor: "#eee",
     paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
     fontSize: 16,
-    color: "#444",
+    color: "#511D68",
     height: 44,
     marginBottom: 20,
     borderRadius: 2,
   },
-
+  inputText: {
+    color: "#511D68",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
   button: {
     height: 42,
     backgroundColor: "#483D8B",
