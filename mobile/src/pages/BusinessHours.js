@@ -46,7 +46,7 @@ export default function BusinessHours({ navigation }) {
     <View style={styles.container}>
       <View style={styles.card}>
         {businessHours.map((businessHour) => (
-          <View id={businessHour._id} style={styles.cardData}>
+          <View id={businessHour.dia} style={styles.cardData}>
             <Text style={styles.cardText}>{businessHour.dia}</Text>
             <Text style={styles.cardText}>
               {businessHour.horaInicio} - {businessHour.horaFim}

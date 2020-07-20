@@ -6,7 +6,7 @@ import { Alert } from "react-native";
 import api from "../services/api";
 
 export default function Location({ navigation }) {
-  const [address, setAddress] = useState("");
+  const [user, setUser] = useState({});
 
   // useEffect criado a fim de pegar o endereço
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Location({ navigation }) {
           },
         });
 
-        setAddress(response.data.adress);
+        setUser(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -44,9 +44,10 @@ export default function Location({ navigation }) {
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Endereço:</Text>
         <View style={styles.cardAddress}>
-          <Text style={styles.cardText}>{address}</Text>
+          <Text style={styles.cardText}>
+            {user.address}. {user.neighborhood}, {user.city}
+          </Text>
         </View>
-        <Text style={styles.cardText}>Cidade-BA</Text>
         <TouchableOpacity onPress={handleMap} style={styles.cardBtn}>
           <Text style={styles.cardBtnText}>Ver no mapa</Text>
         </TouchableOpacity>

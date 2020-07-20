@@ -5,7 +5,7 @@ const md5 = require("md5");
 class userPartnerRepository {
   constructor() {
     this._base = new base("UserPartner");
-    this._projection = "interpriseName email _id isAdmin";
+    this._projection = "responsibleName enterpriseName email _id isAdmin";
   }
 
   async IsEmailExiste(Email) {
@@ -26,7 +26,7 @@ class userPartnerRepository {
 
   async update(id, data) {
     let usuarioAtualizado = await this._base.update(id, {
-      nome: data.interpriseName,
+      nome: data.enterpriseName,
       email: data.email,
       logo: data.logo,
     });
