@@ -8,14 +8,16 @@ const UserPartnerSchema = new mongoose.Schema(
     logo: { type: String },
     responsibleName: { type: String, required: true, trim: true, index: true },
     category: { trim: true, type: String },
-    interpriseName: { type: String, trim: true, index: true },
+    enterpriseName: { type: String, trim: true, index: true },
     cpf: { type: String, required: true },
     phone: { type: Number, required: true },
-    adress: { type: String, required: true },
-    about: String,
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    neighborhood: { type: String, required: true },
+    about: { type: String },
     email: { type: String, required: true },
     senha: { type: String, required: true },
-    dataCriacao: { type: Date, default: Date.now },
+    createdAt: { type: Date, default: Date.now },
     isAdmin: { type: Boolean, default: false },
     servicos: [
       {
@@ -35,7 +37,7 @@ const UserPartnerSchema = new mongoose.Schema(
 
 UserPartnerSchema.pre("save", (next) => {
   let agora = new Date();
-  if (!this.criationDate) this.criationDate = agora;
+  if (!this.dataCriacao) this.dataCriacao = agora;
   next();
 });
 
