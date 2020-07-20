@@ -36,6 +36,7 @@ export default function BookRequest({ navigation }) {
   const [mode, setMode] = useState("");
   const service_id = route.params._id;
 
+  // Funções para lidar com o picker de data e hora
   const onChange = (event, selectedDate) => {
     setShow(Platform.OS === "ios");
     if (selectedDate) {
@@ -73,7 +74,7 @@ export default function BookRequest({ navigation }) {
     const user_id = user._id;
 
     try {
-      await api.post(
+      const response = await api.post(
         `/service/${service_id}/bookings`,
         {
           date,
@@ -83,14 +84,11 @@ export default function BookRequest({ navigation }) {
         }
       );
 
-      await api.post();
+      Alert.alert("Sucesso!", "Solicitação de serviço enviada");
+      navigation.navigate("StoreProfile");
     } catch (error) {
-      console.log(error.response);
+      console.log(error.response.data);
     }
-
-    Alert.alert("Sucesso!", "Solicitação de serviço enviada");
-
-    navigation.navigate("StoreProfile");
   }
 
   function handleCancel() {

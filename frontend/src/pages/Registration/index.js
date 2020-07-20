@@ -43,7 +43,7 @@ export default function Registration({ history }) {
         window.location.replace("http://pag.ae/7W8s7gr9n");
       }
     } catch (error) {
-      console.log(error.response);
+      console.log(error);
     }
   }
   return (
