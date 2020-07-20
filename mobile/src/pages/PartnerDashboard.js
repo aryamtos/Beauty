@@ -44,7 +44,6 @@ export default function PartnerDashboard({ navigation }) {
        */
       let user = await AsyncStorage.getItem("user");
       user = JSON.parse(user);
-      console.log(user);
       setName(user.responsibleName.split(" ")[0]);
     }
 

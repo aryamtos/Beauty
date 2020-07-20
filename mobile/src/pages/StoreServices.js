@@ -33,9 +33,6 @@ export default function StoreServices({ navigation }) {
     const response = await api.get(`/service/${servico._id}`);
     setTipos(response.data);
     const { _id } = response.data;
-    const { user } = response.data;
-    await AsyncStorage.setItem("_id", _id);
-    await AsyncStorage.setItem("user", JSON.stringify(user));
     navigation.navigate("BookRequest", { _id });
   }
 

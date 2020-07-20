@@ -73,8 +73,6 @@ export default function StoreProfile({ navigation }) {
   async function handleSubmit() {
     const response = await api.get(`/service/${servico._id}`);
     setDate(response.data);
-
-    //console.log(response.data)
   }
 
   useEffect(() => {

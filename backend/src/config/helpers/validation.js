@@ -41,7 +41,6 @@ class ValidationContract {
   }
 
   isValid() {
-    console.log(this._errors.length);
     return this._errors.length == 0;
   }
 }

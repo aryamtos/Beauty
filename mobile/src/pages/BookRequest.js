@@ -13,6 +13,8 @@ import {
   AsyncStorage,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { RectButton } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
 
 import GlobalStyles from "../assets/GlobalStyles";
@@ -29,10 +31,29 @@ import api from "../services/api";
 
 export default function BookRequest({ navigation }) {
   const route = useRoute();
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState("");
   const service_id = route.params._id;
-  //const user_id = servico.user;
-  //console.log(user_id)
+
+  const onChange = (event, selectedDate) => {
+    setShow(Platform.OS === "ios");
+    setDate(selectedDate);
+  };
+
+  function showMode(currentMode) {
+    setShow(true);
+    setMode(currentMode);
+  }
+
+  function showDatepicker() {
+    showMode("date");
+  }
+
+  function showTimepicker() {
+    showMode("time");
+  }
+
   async function handleSubmit() {
     /**
      * -----------------------------------------
@@ -46,9 +67,8 @@ export default function BookRequest({ navigation }) {
      */
     let user = await AsyncStorage.getItem("user");
     user = JSON.parse(user);
-    const user_id = user._id;
 
-    console.log(service_id);
+    const user_id = user._id;
 
     try {
       await api.post(
@@ -68,22 +88,29 @@ export default function BookRequest({ navigation }) {
 
     navigation.navigate("StoreProfile");
   }
+
   function handleCancel() {
     navigation.navigate("StoreProfile");
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.label}>DATA DE INTERESSE *</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Qual data você quer reservar?"
-        placeholderTextColor="#999"
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={date}
-        onChangeText={setDate}
-      />
+      <View>
+        <RectButton style={styles.button} onPress={showDatepicker}>
+          <Text style={styles.buttonText}>Data</Text>
+        </RectButton>
+        <RectButton style={styles.button} onPress={showTimepicker}>
+          <Text style={styles.buttonText}>Hora</Text>
+        </RectButton>
+      </View>
+      {show && (
+        <DateTimePicker
+          mode={mode}
+          value={date}
+          is24Hour={true}
+          onChange={onChange} // Use "en_GB" here
+        />
+      )}
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.buttonText}>Solicitar Serviço</Text>
       </TouchableOpacity>
@@ -100,8 +127,7 @@ export default function BookRequest({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     margin: 30,
-    marginTop: 50,
-    marginTop: StatusBar.currentHeight,
+    marginTop: StatusBar.currentHeight + 50,
   },
   label: {
     fontWeight: "bold",

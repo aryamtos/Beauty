@@ -12,6 +12,8 @@ const {
   startOfYear,
   endOfYear,
 } = require("date-fns");
+const UserPartner = require("../models/UserPartner");
+const User = require("../models/UserAcess");
 
 const current = new Date();
 module.exports = {
@@ -21,12 +23,12 @@ module.exports = {
     let servicos = [];
 
     if (partner_id) {
-      servicos = await Booking.find({ partner: partner_id }).sort("date"); //encontrar vários tipos
+      bookings = await Booking.find({ partner: partner_id }).sort("date"); //encontrar vários tipos
     } else if (user_id) {
-      servicos = await Booking.find({ user: user_id }).sort("date"); //encontrar vários tipos
+      bookings = await Booking.find({ user: user_id }).sort("date"); //encontrar vários tipos
     }
 
-    return res.json({ servicos });
+    return res.json({ bookings });
   },
   async store(req, res, next) {
     const { user_id } = req.headers;
@@ -34,12 +36,16 @@ module.exports = {
     const { date } = req.body;
 
     const service = await Service.findById(service_id);
+    const user = await User.findById(user_id);
+
+    console.log(user_id);
 
     const booking = await Booking.create({
       user: user_id,
       partner: service.user,
       service: service_id,
       nameService: service.nomeService,
+      nameCustomer: user.nome,
       date,
     });
 

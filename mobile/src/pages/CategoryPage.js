@@ -34,6 +34,7 @@ export default function CategoryPage({ navigation }) {
     async function loadProducts() {
       const { type } = route.params;
       const token = await AsyncStorage.getItem("token");
+
       const response = await api.get("/partner/service/showuservices", {
         params: { type },
       });
