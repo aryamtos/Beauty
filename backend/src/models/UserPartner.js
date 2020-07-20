@@ -25,6 +25,12 @@ const UserPartnerSchema = new mongoose.Schema(
         ref: "Service",
       },
     ],
+    bookings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+      },
+    ],
     businessHours: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -82,8 +82,10 @@ export default function BookRequest({ navigation }) {
           headers: { "Content-Type": "application/json", user_id: user_id },
         }
       );
+
+      await api.post();
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     }
 
     Alert.alert("Sucesso!", "Solicitação de serviço enviada");

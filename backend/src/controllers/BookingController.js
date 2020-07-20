@@ -1,5 +1,7 @@
 const Booking = require("../models/Booking");
 const Service = require("../models/Service");
+const UserPartner = require("../models/UserPartner");
+const User = require("../models/UserAcess");
 const { isPast } = require("date-fns");
 
 const {
@@ -12,8 +14,6 @@ const {
   startOfYear,
   endOfYear,
 } = require("date-fns");
-const UserPartner = require("../models/UserPartner");
-const User = require("../models/UserAcess");
 
 const current = new Date();
 module.exports = {
@@ -37,8 +37,7 @@ module.exports = {
 
     const service = await Service.findById(service_id);
     const user = await User.findById(user_id);
-
-    console.log(user_id);
+    const partner = await UserPartner.findById(service.user);
 
     const booking = await Booking.create({
       user: user_id,
@@ -49,7 +48,21 @@ module.exports = {
       date,
     });
 
-    await booking.populate("service").populate("user").execPopulate();
+    /**
+     * ------------------------------------------------
+     *  Armazenando o booking no parceiro e no user
+     * ------------------------------------------------
+     *
+     *  Populate não serve para linkar as tabelas, ele
+     *  só busca por uma referência para que você
+     *  possa ver as informações ao invés de um ID
+     */
+    user.bookings.push(booking);
+    partner.bookings.push(booking);
+    await user.save();
+    await partner.save();
+
+    await booking.populate("partner").populate("user").execPopulate();
 
     const ownerSocket = req.connectedUsers[booking.service.user_id];
 
