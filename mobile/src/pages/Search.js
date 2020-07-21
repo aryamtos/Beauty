@@ -23,6 +23,8 @@ export default function Search({ navigation }) {
     ///    nomeService,
 
     await AsyncStorage.setItem("nomeService", nomeService);
+    await AsyncStorage.setItem("city", cidade);
+    await AsyncStorage.setItem("neighborhood", bairro);
     //const {_id} = response.data;
 
     //await AsyncStorage.setItem('user', _id);
@@ -43,19 +45,24 @@ export default function Search({ navigation }) {
           value={nomeService}
           onChangeText={setNome}
         />
-        <View style={styles.containerDivide}>
-          <TextInput
-            style={[styles.input, styles.inputDivide]}
-            placeholder="Cidade"
-            value={cidade}
-            onChangeText={setCidade}
-          />
-          <TextInput
+        {/* <View style={styles.containerDivide}> */}
+        <TextInput
+          style={[styles.input]}
+          placeholder="Cidade"
+          value={cidade}
+          onChangeText={setCidade}
+        />
+        {/* <TextInput
             style={[styles.input, styles.inputDivide]}
             placeholder="Estado"
           />
-        </View>
-        <TextInput style={styles.input} placeholder="Bairro" />
+        </View> */}
+        <TextInput
+          style={styles.input}
+          placeholder="Bairro"
+          value={bairro}
+          onChangeText={setBairro}
+        />
       </View>
       <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
         <Text style={styles.btnText}>Buscar</Text>

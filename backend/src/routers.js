@@ -48,8 +48,7 @@ routes.get("/service/:id", Service.show);
 routes.get("/spots/servicos", Service.listServico);
 
 //ROTAS DE BUSCA
-
-routes.post("/search", SearchController.store);
+routes.get("/search", SearchController.index);
 
 //ROTAS SERVIÇOS
 

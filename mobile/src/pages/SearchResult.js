@@ -12,7 +12,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
 import PropTypes from "prop-types";
 import lupa from "../assets/BUSCAR_cinza.png";
@@ -24,17 +24,23 @@ import GlobalStyles from "../assets/GlobalStyles";
 export default function SearchResult({ navigation }) {
   //const [nomeService, setNome] = useState([]);
 
-  const [spots, settipo] = useState([]);
+  const [spots, settipo] = useState({});
   const [nome, setNome] = useState([]);
+  const [showServices, setShowServices] = useState(true);
+  const [showStores, setShowStores] = useState(false);
+  const [isSearchDone, setIsSearchDone] = useState(false);
 
   useEffect(() => {
     async function loadCategories() {
       const nomeService = await AsyncStorage.getItem("nomeService");
+      const neighborhood = await AsyncStorage.getItem("neighborhood");
+      const city = await AsyncStorage.getItem("city");
 
-      const response = await api.get(`/spots/servicos/`, {
-        params: { nomeService },
+      const response = await api.get(`/search`, {
+        params: { nomeService, neighborhood, city },
       });
       settipo(response.data);
+      setIsSearchDone(true);
     }
     loadCategories();
   }, []);
@@ -43,30 +49,115 @@ export default function SearchResult({ navigation }) {
     navigation.goBack();
   }
 
+  function handleListShow(option) {
+    switch (option) {
+      case 1:
+        setShowServices(true);
+        setShowStores(false);
+        break;
+      case 2:
+        setShowServices(false);
+        setShowStores(true);
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
-      <FlatList
-        style={styles.list}
-        data={spots}
-        keyExtractor={(servico) => String(servico._id)}
-        //horizontal
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item: servico }) => (
-          <ScrollView>
-            <Image style={styles.thumbnail}></Image>
-            <View style={styles.resultData}>
-              <Text style={styles.resultNameText}>{servico.nomeService}</Text>
-              <View style={styles.resultDataRate}></View>
-              <Text style={styles.resultText}>{servico.user.category}</Text>
-              <Text style={styles.resultText}>{servico.user.adress}</Text>
-            </View>
-            <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
-              <Text style={styles.btnText}>VOLTAR</Text>
-            </TouchableOpacity>
-          </ScrollView>
-        )}
-      />
+      <Text style={styles.containerText}>Resultados</Text>
+      <View style={styles.optionsContainer}>
+        <TouchableOpacity style={styles.btn} onPress={() => handleListShow(1)}>
+          <Text style={styles.btnText}>Serviços</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={() => handleListShow(2)}>
+          <Text style={styles.btnText}>Estabelecimentos</Text>
+        </TouchableOpacity>
+      </View>
+      {isSearchDone && (
+        <>
+          {showServices && (
+            <>
+              {spots.services ? (
+                <FlatList
+                  style={styles.list}
+                  data={spots.services}
+                  keyExtractor={(servico) => String(servico._id)}
+                  //horizontal
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({ item: servico }) => (
+                    <ScrollView>
+                      <Image style={styles.thumbnail}></Image>
+                      <View style={styles.resultData}>
+                        <Text style={styles.resultNameText}>
+                          {servico.nomeService}
+                        </Text>
+                        <View style={styles.resultDataRate}></View>
+                        <Text style={styles.resultText}>
+                          {servico.user.category}
+                        </Text>
+                        <Text style={styles.resultText}>
+                          {servico.user.address}. {servico.user.neighborhood},{" "}
+                          {servico.user.city}
+                        </Text>
+                      </View>
+                    </ScrollView>
+                  )}
+                />
+              ) : (
+                <View style={styles.failContainer}>
+                  <Text style={[styles.resultText, { fontSize: 14 }]}>
+                    Não encontramos nenhum serviço :(
+                  </Text>
+                </View>
+              )}
+            </>
+          )}
+          {showStores && (
+            <>
+              {spots.stores.length > 0 ? (
+                <FlatList
+                  style={styles.list}
+                  data={spots.stores}
+                  keyExtractor={(partner) => String(partner._id)}
+                  //horizontal
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({ item: partner }) => (
+                    <ScrollView>
+                      <Image style={styles.thumbnail}></Image>
+                      <View style={styles.resultData}>
+                        <Text style={styles.resultNameText}>
+                          {partner.enterpriseName}
+                        </Text>
+                        <View style={styles.resultDataRate}></View>
+                        <Text style={styles.resultText}>
+                          {partner.category}
+                        </Text>
+                        <Text style={styles.resultText}>
+                          {partner.address}. {partner.neighborhood},{" "}
+                          {partner.city}
+                        </Text>
+                      </View>
+                      {/* Comentei pois este botão não faz o menor sentido pra mim 
+
+              <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
+                <Text style={styles.btnText}>VOLTAR</Text>
+              </TouchableOpacity> */}
+                    </ScrollView>
+                  )}
+                />
+              ) : (
+                <View style={styles.failContainer}>
+                  <Text style={[styles.resultText, { fontSize: 14 }]}>
+                    Não encontramos nenhum estabelecimento :(
+                  </Text>
+                </View>
+              )}
+            </>
+          )}
+        </>
+      )}
     </View>
   );
 }
@@ -167,5 +258,24 @@ const styles = StyleSheet.create({
   resultDataRate: {
     flexDirection: "row",
     justifyContent: "flex-start",
+  },
+  optionsContainer: {
+    height: 50,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  btn: {
+    padding: 10,
+  },
+  btnText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#511D68",
+  },
+  failContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
