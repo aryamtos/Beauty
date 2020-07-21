@@ -44,8 +44,17 @@ export default function UserProfile({ navigation }) {
   useEffect(() => {
     handleSubmit();
   }, []);
-  function handleNavigate() {
-    navigation.navigate("ListAgendamentos");
+  function handleNavigate(option) {
+    switch (option) {
+      case 1:
+        navigation.navigate("ListAgendamentos");
+        break;
+      case 2:
+        navigation.navigate("History");
+        break;
+      default:
+        break;
+    }
   }
 
   function handlePerfil() {
@@ -62,10 +71,10 @@ export default function UserProfile({ navigation }) {
           <Text style={styles.name}>{name}</Text>
         </View>
         <Text style={styles.text}>Para o usuário</Text>
-        <TouchableOpacity onPress={() => handleNavigate()} style={styles.btn}>
+        <TouchableOpacity onPress={() => handleNavigate(1)} style={styles.btn}>
           <Text style={styles.btnText}>Seus agendamentos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity onPress={() => handleNavigate(2)} style={styles.btn}>
           <Text style={styles.btnText}>Histórico</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handlePerfil()} style={styles.btn}>
