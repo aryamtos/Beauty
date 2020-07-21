@@ -45,35 +45,50 @@ export default function ListAgendamentos({ navigation }) {
         var newBookings = [];
 
         if (agendas && agendas.length > 0) {
+          const moment = new Date().getTime();
           for (let booking of agendas) {
             // Formatando as datas de criação de atualização
             let bookingDate = new Date(booking.date);
-            let dateDay =
-              bookingDate.getDate() >= 10
-                ? bookingDate.getDate()
-                : "0" + bookingDate.getDate();
-            let dateMonth =
-              bookingDate.getMonth() >= 10
-                ? bookingDate.getMonth()
-                : "0" + bookingDate.getMonth();
-            let dateHour =
-              bookingDate.getHours() >= 10
-                ? bookingDate.getHours()
-                : "0" + bookingDate.getHours();
-            let dateMinute =
-              bookingDate.getMinutes() >= 10
-                ? bookingDate.getMinutes()
-                : "0" + bookingDate.getMinutes();
+            /**
+             * ---------------------------------------------
+             *    Filtro
+             * ---------------------------------------------
+             *
+             *  Como se trata de uma página que irá listar
+             *  os agendamentos do usuário, é bom mostrar
+             *  somente aqueles que ainda não passaram da
+             *  data, sobre os agendamentos que já foram,
+             *  deixamos com a página de histórico.
+             */
+            var isDateValid = bookingDate.getTime() >= moment;
+            if (isDateValid) {
+              let dateDay =
+                bookingDate.getDate() >= 10
+                  ? bookingDate.getDate()
+                  : "0" + bookingDate.getDate();
+              let dateMonth =
+                bookingDate.getMonth() >= 10
+                  ? bookingDate.getMonth()
+                  : "0" + bookingDate.getMonth();
+              let dateHour =
+                bookingDate.getHours() >= 10
+                  ? bookingDate.getHours()
+                  : "0" + bookingDate.getHours();
+              let dateMinute =
+                bookingDate.getMinutes() >= 10
+                  ? bookingDate.getMinutes()
+                  : "0" + bookingDate.getMinutes();
 
-            const dateString = `${dateDay}/${dateMonth} ${dateHour}:${dateMinute}`;
+              const dateString = `${dateDay}/${dateMonth} ${dateHour}:${dateMinute}`;
 
-            // Inserindo o novo formato no array genérico
-            newBookings.push({
-              _id: booking._id,
-              date: dateString,
-              nameService: booking.nameService,
-              service: booking.service,
-            });
+              // Inserindo o novo formato no array genérico
+              newBookings.push({
+                _id: booking._id,
+                date: dateString,
+                nameService: booking.nameService,
+                service: booking.service,
+              });
+            }
           }
 
           // Pondo os dados do array genérico no array original

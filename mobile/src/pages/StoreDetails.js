@@ -78,9 +78,9 @@ export default function StoreDetails() {
       </View>
       <View style={styles.session}>
         <Text style={styles.sessionBoldText}>Endereço</Text>
-        <Text style={styles.sessionNormalText}>{store.address}</Text>
-        <Text style={styles.sessionNormalText}>{store.neighborhood}</Text>
-        <Text style={styles.sessionNormalText}>{store.city}</Text>
+        <Text style={styles.sessionNormalText}>
+          {store.address}. {store.neighborhood}, {store.city}
+        </Text>
       </View>
       <View style={styles.session}>
         <Text style={styles.sessionBoldText}>Contato</Text>
