@@ -34,10 +34,6 @@ export default function Login({ navigation }) {
     //await AsyncStorage.setItem('@user',user)
     await AsyncStorage.setItem("token", token);
 
-    const usuario = await AsyncStorage.getItem("user");
-
-    console.log(usuario);
-
     navigation.navigate("PartnerDashboard");
   }
 

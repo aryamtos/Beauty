@@ -81,7 +81,7 @@ routes.post("/professional", ProfessionalsController.store);
 //ROTAS BOOKING
 
 routes.post("/service/:id/bookings", BookingController.store);
-routes.get("/bookings", BookingController.getAll);
+routes.get("/bookings", BookingController.index);
 
 //ROTAS DO ADMIN
 routes.get("/admin/showpartners", auth, _partner.get); //exibindo parceiros
