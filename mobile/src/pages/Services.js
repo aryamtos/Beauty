@@ -24,7 +24,7 @@ import api from "../services/api";
  *  editar os serviços, e não só poder ver uma mera lista
  *  deles.
  */
-export default function Services() {
+export default function Services({ navigation }) {
   const [nameList, setNameList] = useState([]);
 
   useEffect(() => {
@@ -50,6 +50,10 @@ export default function Services() {
     handleInit();
   }, []);
 
+  function handleNavigate(service) {
+    navigation.navigate("StoreProfile", { servico: service });
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.containerTitle}>Seus serviços</Text>
@@ -58,6 +62,7 @@ export default function Services() {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <ListItem
+            onPress={() => handleNavigate(item)}
             style={styles.listItem}
             leftAvatar={{ source: { uri: item.foto_url } }}
             title={`${item.nomeService}`}

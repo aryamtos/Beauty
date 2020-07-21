@@ -68,7 +68,7 @@ export default function StoreProfile({ navigation }) {
   const route = useRoute();
   const [date, setDate] = useState("");
   const [tipos, setTipos] = useState([]);
-  const servico = route.params.servico;
+  let servico = route.params.servico;
 
   async function handleSubmit() {
     const response = await api.get(`/service/${servico._id}`);
@@ -76,6 +76,18 @@ export default function StoreProfile({ navigation }) {
   }
 
   useEffect(() => {
+    async function handleInfo() {
+      const token = await AsyncStorage.getItem("token");
+
+      const user = await api.get(`/partner/${servico.user}`, {
+        headers: {
+          token_access: token,
+        },
+      });
+
+      servico.user = user.data;
+    }
+    handleInfo();
     handleSubmit();
   }, []);
 
