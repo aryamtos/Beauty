@@ -29,7 +29,7 @@ export default function ListAgendamentos({ navigation }) {
         },
       });
 
-      setAgendas(response.data);
+      setAgendas(response.data.bookings);
     }
 
     handleInit();
@@ -40,62 +40,57 @@ export default function ListAgendamentos({ navigation }) {
    * para formatar as datas a serem exibidas
    */
   useEffect(() => {
-    async function handleDates() {
-      var newBookings = [];
+    if (!isDateHandled) {
+      async function handleDates() {
+        var newBookings = [];
 
-      if (agendas && agendas.length > 0) {
-        for (let booking of agendas) {
-          // Formatando as datas de criação de atualização
-          let date = booking.date.split("T");
-          let year = reverseDate(date[0].split(/-(.+)/)[1]);
-          let hours = handleHours(date[1].split(".")[0]);
-          date = [year, " ", hours].join("");
+        if (agendas && agendas.length > 0) {
+          for (let booking of agendas) {
+            // Formatando as datas de criação de atualização
+            let bookingDate = new Date(booking.date);
+            let dateDay =
+              bookingDate.getDate() >= 10
+                ? bookingDate.getDate()
+                : "0" + bookingDate.getDate();
+            let dateMonth =
+              bookingDate.getMonth() >= 10
+                ? bookingDate.getMonth()
+                : "0" + bookingDate.getMonth();
+            let dateHour =
+              bookingDate.getHours() >= 10
+                ? bookingDate.getHours()
+                : "0" + bookingDate.getHours();
+            let dateMinute =
+              bookingDate.getMinutes() >= 10
+                ? bookingDate.getMinutes()
+                : "0" + bookingDate.getMinutes();
 
-          // Inserindo o novo formato no array genérico
-          newBookings.push({
-            date: date,
-            nameService: booking.nameService,
-            service: booking.service,
-          });
+            const dateString = `${dateDay}/${dateMonth} ${dateHour}:${dateMinute}`;
+
+            // Inserindo o novo formato no array genérico
+            newBookings.push({
+              _id: booking._id,
+              date: dateString,
+              nameService: booking.nameService,
+              service: booking.service,
+            });
+          }
+
+          // Pondo os dados do array genérico no array original
+          setAgendas(newBookings);
+          setIsDateHandled(true);
         }
-
-        // Pondo os dados do array genérico no array original
-        setAgendas(newBookings);
-        setIsDateHandled(true);
       }
+      // Formatando as datas
+      handleDates();
+      //console.log(agendas);
     }
-    // Formatando as datas
-    handleDates();
   }, [agendas]);
-
-  /**
-   * Função que inverte mès/dia para dia/mês
-   * @param {string} date
-   */
-  function reverseDate(date) {
-    if (date) {
-      const splittedDate = date.split("-");
-      splittedDate.reverse();
-      const newDate = splittedDate.join("/");
-      return newDate;
-    }
-  }
-
-  /**
-   * Função que corta as horas de HH:MM:SS para HH:MM
-   * @param {string} hours
-   */
-  function handleHours(hours) {
-    const splittedHour = hours.split(":");
-    const newHour = splittedHour.slice(0, 2).join(":");
-
-    return newHour;
-  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.containerTitle}>Seus agendamentos</Text>
-      {isDateHandled && (
+      {isDateHandled === true && (
         <FlatList
           data={agendas}
           keyExtractor={(item) => item._id}

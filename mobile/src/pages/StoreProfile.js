@@ -79,7 +79,7 @@ export default function StoreProfile({ navigation }) {
     async function handleInfo() {
       const token = await AsyncStorage.getItem("token");
 
-      const user = await api.get(`/partner/${servico.user}`, {
+      const user = await api.get(`/partner/${servico.user._id}`, {
         headers: {
           token_access: token,
         },
