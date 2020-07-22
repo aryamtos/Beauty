@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { ListItem, SearchBar } from "react-native-elements";
 import api from "../services/api";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 /**
  * ---------------------------------------------------------
@@ -61,13 +62,16 @@ export default function Services({ navigation }) {
         data={nameList}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <ListItem
-            onPress={() => handleNavigate(item)}
-            style={styles.listItem}
-            leftAvatar={{ source: { uri: item.foto_url } }}
-            title={`${item.nomeService}`}
-            subtitle={`${item.parte}`}
-          />
+          <>
+            <ListItem
+              onPress={() => handleNavigate(item)}
+              style={styles.listItem}
+              leftAvatar={{ source: { uri: item.foto_url } }}
+              title={`${item.nomeService}`}
+              subtitle={`${item.parte}`}
+            />
+            <Text>Oi</Text>
+          </>
         )}
       />
     </View>

@@ -5,10 +5,12 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 
-import { ListItem } from "react-native-elements";
+import { Icon } from "react-native-elements";
 
 import api from "../services/api";
 import BookingComponent from "../components/BookingComponent";
@@ -87,6 +89,8 @@ export default function ListAgendamentos({ navigation }) {
                 date: dateString,
                 nameService: booking.nameService,
                 service: booking.service,
+                isApproved: booking.isApproved,
+                wasCanceled: booking.wasCanceled,
               });
             }
           }
@@ -102,6 +106,23 @@ export default function ListAgendamentos({ navigation }) {
     }
   }, [agendas]);
 
+  async function handleCancelVerify(id) {
+    Alert.alert(
+      "Cancelamento",
+      "Tem certeza de que deseja cancelar o agendamento?",
+      [{ text: "Não" }, { text: "Sim", onPress: () => handleCancel(id) }]
+    );
+  }
+
+  async function handleCancel(id) {
+    const response = await api.put(`/bookings/${id}`, { wasCanceled: true });
+
+    if (response.data) {
+      Alert.alert("Sucesso!", "Seu agendamento foi cancelado");
+      navigation.goBack();
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.containerTitle}>Seus agendamentos</Text>
@@ -110,11 +131,27 @@ export default function ListAgendamentos({ navigation }) {
           data={agendas}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <ListItem
-              style={styles.listItem}
-              title={`${item.nameService}`}
-              subtitle={`${item.date}`}
-            />
+            <>
+              {!item.wasCanceled && (
+                <TouchableOpacity style={styles.listItem}>
+                  <View>
+                    <Text style={styles.listName}>{item.nameService}</Text>
+                    <Text style={styles.listDate}>{item.date}</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.cancelBtn}
+                    onPress={() => handleCancelVerify(item._id)}
+                  >
+                    <Icon
+                      name="times"
+                      size={30}
+                      type="font-awesome"
+                      color="#511D68"
+                    />
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              )}
+            </>
           )}
         />
       )}
@@ -137,7 +174,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   listItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: "#eee",
+    padding: 10,
+  },
+  listName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#511D68",
+  },
+  listDate: {
+    fontSize: 16,
+    color: "#777",
+  },
+  cancelBtn: {
+    padding: 5,
   },
 });
