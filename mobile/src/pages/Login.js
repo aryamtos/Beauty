@@ -54,6 +54,13 @@ export default function Login({ navigation }) {
     navigation.navigate("Register");
   }
 
+  function handleNotReady() {
+    Alert.alert(
+      "Em breve",
+      "Essa função ainda não está pronta, mas virá em futuras atualizações"
+    );
+  }
+
   return (
     <ImageBackground source={background} style={styles.body}>
       <View style={styles.container}>
@@ -99,7 +106,7 @@ export default function Login({ navigation }) {
             <View style={styles.divideLine} />
           </View>
 
-          <TouchableOpacity onPress={signIn} style={styles.btnGoogle}>
+          <TouchableOpacity onPress={handleNotReady} style={styles.btnGoogle}>
             <Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text>
           </TouchableOpacity>
           <View style={styles.footer}>
