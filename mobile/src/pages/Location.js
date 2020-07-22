@@ -36,7 +36,10 @@ export default function Location({ navigation }) {
   }
 
   function handleMap() {
-    Alert.alert("MAPA :)");
+    Alert.alert(
+      "Em breve",
+      "O mapa estará disponível em futuras atualizações :)"
+    );
   }
 
   return (
