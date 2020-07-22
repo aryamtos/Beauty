@@ -2,20 +2,8 @@ const Booking = require("../models/Booking");
 const Service = require("../models/Service");
 const UserPartner = require("../models/UserPartner");
 const User = require("../models/UserAcess");
-const { isPast } = require("date-fns");
+const { update } = require("../models/Booking");
 
-const {
-  startOfDay,
-  endOfDay,
-  startOfWeek,
-  endOfWeek,
-  startOfMonth,
-  endOfMonth,
-  startOfYear,
-  endOfYear,
-} = require("date-fns");
-
-const current = new Date();
 module.exports = {
   async index(req, res) {
     const { partner_id } = req.headers;
@@ -71,6 +59,28 @@ module.exports = {
     }
 
     return res.json(booking);
+  },
+
+  async update(req, res, next) {
+    const booking_id = req.params.id;
+    const { isApproved, wasCanceled } = req.body;
+
+    try {
+      const booking = await Booking.findById(booking_id);
+
+      if (isApproved) {
+        booking.isApproved = isApproved;
+      }
+      if (wasCanceled) {
+        booking.wasCanceled = wasCanceled;
+      }
+
+      await booking.save();
+
+      return res.status(200).json(booking);
+    } catch (error) {
+      return res.status(400).json({ message: error });
+    }
   },
 
   async getAll(req, res) {

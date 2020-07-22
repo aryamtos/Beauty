@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const BookingSchema = new mongoose.Schema(
   {
     date: { type: Date, required: true },
-    approved: Boolean,
+    isApproved: { type: Boolean, required: true, default: false },
+    wasCanceled: { type: Boolean, required: true, default: false },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

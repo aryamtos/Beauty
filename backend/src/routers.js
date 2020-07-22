@@ -81,6 +81,7 @@ routes.post("/professional", ProfessionalsController.store);
 
 routes.post("/service/:id/bookings", BookingController.store);
 routes.get("/bookings", BookingController.index);
+routes.put("/bookings/:id", BookingController.update);
 
 //ROTAS DO ADMIN
 routes.get("/admin/showpartners", auth, _partner.get); //exibindo parceiros
