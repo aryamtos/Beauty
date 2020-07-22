@@ -6,6 +6,7 @@ const _repo = new repository();
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
 const Client = require("../models/UserAcess");
+const Partner = require("../models/UserPartner");
 const variables = require("../config/variables");
 
 function userController() {}
@@ -40,6 +41,7 @@ userController.prototype.post = async (req, res) => {
   }
   req.body.senha = md5(req.body.senha);
   const { nome, cpf, telefone, email, senha } = req.body;
+  const { partner_id } = req.headers;
   const userClient = await Client.create({
     nome,
     cpf,
@@ -48,6 +50,15 @@ userController.prototype.post = async (req, res) => {
     cpf,
     senha,
   });
+
+  if (partner_id) {
+    const partner = await Partner.findById(partner_id);
+
+    if (partner) {
+      partner.customers.push(userClient);
+      await partner.save();
+    }
+  }
 
   return res.json(userClient);
   //ctrlBase.post(_repo, _validationContract, req, res);

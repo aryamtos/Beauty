@@ -15,7 +15,7 @@ const UserPartnerSchema = new mongoose.Schema(
     city: { type: String, required: true },
     neighborhood: { type: String, required: true },
     about: { type: String },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     senha: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     isAdmin: { type: Boolean, default: false },
@@ -29,6 +29,12 @@ const UserPartnerSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Booking",
+      },
+    ],
+    customers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
     ],
     businessHours: [

@@ -10,7 +10,7 @@ const UserAcess = new schema(
     telefone: { type: Number },
     foto: { type: String },
     ativo: { type: Boolean },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     dataCriacao: { type: Date, default: Date.now },
     senha: { type: String, required: true },
     bookings: [

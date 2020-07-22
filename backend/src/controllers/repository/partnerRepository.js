@@ -40,7 +40,7 @@ class userPartnerRepository {
   async getById(id) {
     return await this._base._model.findById(
       id,
-      "enterpriseName category email phone address neighborhood city about _id logo businessHours"
+      "enterpriseName category email phone address neighborhood city about _id logo customers businessHours"
     );
   }
 
