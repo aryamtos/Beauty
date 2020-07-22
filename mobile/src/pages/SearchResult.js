@@ -45,10 +45,6 @@ export default function SearchResult({ navigation }) {
     loadCategories();
   }, []);
 
-  function handleNavigation() {
-    navigation.goBack();
-  }
-
   function handleListShow(option) {
     switch (option) {
       case 1:
@@ -79,7 +75,7 @@ export default function SearchResult({ navigation }) {
         <>
           {showServices && (
             <>
-              {spots.services ? (
+              {spots.services[0] ? (
                 <FlatList
                   style={styles.list}
                   data={spots.services}
@@ -116,7 +112,7 @@ export default function SearchResult({ navigation }) {
           )}
           {showStores && (
             <>
-              {spots.stores.length > 0 ? (
+              {spots.stores[0] ? (
                 <FlatList
                   style={styles.list}
                   data={spots.stores}

@@ -19,17 +19,9 @@ export default function Search({ navigation }) {
   const [endereco, setEndereco] = useState("");
 
   async function handleSubmit() {
-    //  const response = await api.post('/search',{
-    ///    nomeService,
-
     await AsyncStorage.setItem("nomeService", nomeService);
     await AsyncStorage.setItem("city", cidade);
     await AsyncStorage.setItem("neighborhood", bairro);
-    //const {_id} = response.data;
-
-    //await AsyncStorage.setItem('user', _id);
-    //await AsyncStorage.setItem('tipos', tipos);
-    //await AsyncStorage.setItem('nome', nome);
 
     navigation.navigate("SearchResult");
   }

@@ -18,7 +18,7 @@ module.exports = {
 
       results.services = servicos;
     }
-    if (neighborhood || city) {
+    if (nomeService || neighborhood || city) {
       if (nomeService) {
         storeQuery.enterpriseName = { $regex: nomeService, $options: "i" };
       }

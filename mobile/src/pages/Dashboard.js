@@ -25,6 +25,7 @@ import api from "../services/api";
 
 export default function Dashboard({ navigation }) {
   const [isTokenValid, setIsTokenValid] = useState(null);
+  const [nomeService, setNomeService] = useState("");
 
   useEffect(() => {
     async function handleInit() {
@@ -70,25 +71,26 @@ export default function Dashboard({ navigation }) {
     navigation.navigate("CategoryPage", { screen: "Início", params: { type } });
   }
 
+  async function handleSubmit() {
+    await AsyncStorage.setItem("nomeService", nomeService);
+
+    navigation.navigate("SearchResult");
+  }
+
   return (
     <>
       {isTokenValid ? (
         <View style={styles.container}>
           <View style={styles.busca}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Buscar");
-              }}
-              style={styles.btnLupa}
-            >
+            <TouchableOpacity onPress={handleSubmit} style={styles.btnLupa}>
               <Image source={lupa} style={styles.buscaIcon} />
             </TouchableOpacity>
             <TextInput
               style={styles.buscaText}
               placeholder="Buscar serviços ou estabelecimentos"
-              onSubmitEditing={() => {
-                navigation.navigate("Buscar");
-              }}
+              value={nomeService}
+              onChangeText={setNomeService}
+              onSubmitEditing={handleSubmit}
             />
           </View>
           <Text style={styles.containerText}>Categorias</Text>
