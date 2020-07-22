@@ -87,7 +87,7 @@ export default function BookRequest({ navigation }) {
       Alert.alert("Sucesso!", "Solicitação de serviço enviada");
       navigation.navigate("StoreProfile");
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.data.message);
     }
   }
 
