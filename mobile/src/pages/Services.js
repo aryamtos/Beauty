@@ -70,7 +70,6 @@ export default function Services({ navigation }) {
               title={`${item.nomeService}`}
               subtitle={`${item.parte}`}
             />
-            <Text>Oi</Text>
           </>
         )}
       />

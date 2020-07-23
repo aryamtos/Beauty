@@ -93,12 +93,10 @@ partnerController.prototype.authentification = async (req, res) => {
   _validationContract.isRequired(req.body.senha, "Informe sua senha");
 
   if (!_validationContract) {
-    res
-      .status(400)
-      .send({
-        messsage: "Não foi possível efetuar o login",
-        validation: _validationContract.errors(),
-      });
+    res.status(400).send({
+      messsage: "Não foi possível efetuar o login",
+      validation: _validationContract.errors(),
+    });
   }
 
   let partnerFounded = await _repo.authenticate(req.body.email, req.body.senha);
@@ -111,9 +109,10 @@ partnerController.prototype.authentification = async (req, res) => {
       ),
     });
   } else {
-    res
-      .status(404)
-      .send({ message: "Usuário e senha informado estão inválidos" });
+    res.status(400).send({
+      messsage: "Não foi possível efetuar o login",
+      validation: [{ message: "Usuário ou senha inválidos" }],
+    });
   }
 };
 
