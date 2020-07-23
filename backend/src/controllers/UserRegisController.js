@@ -118,9 +118,10 @@ userController.prototype.authentification = async (req, res) => {
       token: jwt.sign({ user: userFounded }, variables.Security.secretKey),
     });
   } else {
-    res
-      .status(404)
-      .send({ message: "Usuário e senha informado estão inválidos" });
+    res.status(404).send({
+      message: "Não foi possível efetuar o login",
+      validation: [{ message: "Usuário ou senha inválidos" }],
+    });
   }
 };
 

@@ -29,6 +29,10 @@ export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
+  // Erros de validação
+  const [isFormIncorret, setIsFormIncorret] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   async function signIn() {
     try {
       const response = await api.post("/auth", {
@@ -44,9 +48,11 @@ export default function Login({ navigation }) {
       //await AsyncStorage.setItem('@user',user)
       await AsyncStorage.setItem("token", token);
 
+      setIsFormIncorret(false);
       navigation.navigate("Dashboard");
     } catch (error) {
-      console.log(error);
+      setIsFormIncorret(true);
+      setErrorMessage(error.response.data.validation[0].message);
     }
   }
 
@@ -95,6 +101,11 @@ export default function Login({ navigation }) {
             //value={senha}
             //onChangeText={setPassword}
           />
+          {isFormIncorret && (
+            <View style={styles.errorMessageContainer}>
+              <Text style={styles.errorMessage}>*{errorMessage}</Text>
+            </View>
+          )}
           <TouchableOpacity onPress={signIn} style={styles.btn}>
             <Text style={styles.btnText}>LOGIN</Text>
           </TouchableOpacity>
@@ -231,5 +242,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "normal",
     color: "#511D68",
+  },
+  errorMessageContainer: {
+    backgroundColor: "#fff",
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: "#BDAAC6",
+  },
+  errorMessage: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "#f00",
   },
 });
