@@ -36,7 +36,7 @@ userController.prototype.post = async (req, res) => {
   if (usuarioIsEmailExiste) {
     _validationContract.isTrue(
       usuarioIsEmailExiste.nome != undefined,
-      `Já existe o e-mail ${req.body.email} cadastrado em nossa base.`
+      `O e-mail ${req.body.email} Já existe.`
     );
   }
   req.body.senha = md5(req.body.senha);
@@ -79,7 +79,7 @@ userController.prototype.put = async (req, res) => {
     _validationContract.isTrue(
       usuarioIsEmailExiste.nome != undefined &&
         usuarioIsEmailExiste._id != req.params.id,
-      `Já existe o e-mail ${req.body.email} cadastrado em nossa base.`
+      `O e-mail ${req.body.email} Já existe.`
     );
   }
   ctrlBase.put(_repo, _validationContract, req, res);

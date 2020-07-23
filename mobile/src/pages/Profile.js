@@ -33,20 +33,35 @@ export default function Profile({ navigation }) {
   const [confirmacao, setConfirmacao] = useState("");
   const [date, setDate] = useState("");
 
+  // Erros de validação
+  const [isFormIncorret, setIsFormIncorret] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   async function handleSubmit() {
     let user = await AsyncStorage.getItem("user");
     user = JSON.parse(user);
 
-    const response = await api.put(`/user/register/${user._id}`, {
-      email,
-      senha,
-      nome,
-      telefone,
-    });
+    if (senha !== confirmacao) {
+      setIsFormIncorret(true);
+      setErrorMessage("As senhas devem ser iguais");
+      return;
+    }
 
-    if (response.data) {
-      navigation.goBack();
-      Alert.alert("Sucesso!", "Seu perfil foi atualizado");
+    try {
+      const response = await api.put(`/user/register/${user._id}`, {
+        email,
+        senha,
+        nome,
+        telefone,
+      });
+
+      if (response.data) {
+        navigation.goBack();
+        Alert.alert("Sucesso!", "Seu perfil foi atualizado");
+      }
+    } catch (error) {
+      setIsFormIncorret(true);
+      setErrorMessage(error.response.data.validation[0].message);
     }
   }
 
@@ -114,6 +129,11 @@ export default function Profile({ navigation }) {
             value={confirmacao}
             onChangeText={(confirmacao) => setConfirmacao(confirmacao)}
           />
+          {isFormIncorret && (
+            <View style={styles.errorMessageContainer}>
+              <Text style={styles.errorMessage}>*{errorMessage}</Text>
+            </View>
+          )}
           <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
             <Text style={styles.btnText}>Atualizar perfil</Text>
           </TouchableOpacity>
@@ -219,5 +239,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "normal",
     color: "#A5A5A5",
+  },
+  errorMessageContainer: {
+    backgroundColor: "#fff",
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: "#BDAAC6",
+  },
+  errorMessage: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "#f00",
   },
 });
