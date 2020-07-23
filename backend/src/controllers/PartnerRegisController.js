@@ -39,8 +39,12 @@ partnerController.prototype.post = async (req, res) => {
   if (usuarioIsEmailExiste) {
     _validationContract.isTrue(
       usuarioIsEmailExiste.nome != undefined,
-      `Já existe o e-mail ${req.body.email} cadastrado em nossa base.`
+      `O E-Mail ${req.body.email} já existe.`
     );
+    return res.status(400).send({
+      messsage: "Não foi possível realizar o cadastro",
+      validation: [{ message: `O E-Mail ${req.body.email} já existe.` }],
+    });
   }
 
   //Criptografa a senha do usuário
@@ -65,10 +69,13 @@ partnerController.prototype.put = async (req, res) => {
   let usuarioIsEmailExiste = await _repo.IsEmailExiste(req.body.email);
   if (usuarioIsEmailExiste) {
     _validationContract.isTrue(
-      usuarioIsEmailExiste.nome != undefined &&
-        usuarioIsEmailExiste._id != req.params.id,
-      `Já existe o e-mail ${req.body.email} cadastrado em nossa base.`
+      usuarioIsEmailExiste.nome != undefined,
+      `O e-mail ${req.body.email} Já existe.`
     );
+    return res.status(400).send({
+      messsage: "Não foi possível efetuar o login",
+      validation: _validationContract.errors(),
+    });
   }
   ctrlBase.put(_repo, _validationContract, req, res);
 };
