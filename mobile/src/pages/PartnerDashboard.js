@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   AsyncStorage,
   Image,
   FlatList,
@@ -9,7 +10,7 @@ import {
   StatusBar,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { ListItem } from "react-native-elements";
+import { Icon } from "react-native-elements";
 
 import logo from "../assets/bmlogo_.png";
 
@@ -19,6 +20,7 @@ export default function PartnerDashboard({ navigation }) {
   const [name, setName] = useState("");
   const [bookings, setBookings] = useState([]);
   const [isTokenValid, setIsTokenValid] = useState(true);
+  const [isDateHandled, setIsDateHandled] = useState(false);
   useEffect(() => {
     async function handleInit() {
       try {
@@ -82,15 +84,17 @@ export default function PartnerDashboard({ navigation }) {
     });
 
     // Verificando somente os que são hoje
-    const moment = new Date();
     for (let booking of response.data.bookings) {
+      const moment = new Date();
       const bookingDate = new Date(booking.date);
+
       var isDateValid =
         bookingDate.getDate() === moment.getDate() &&
         bookingDate.getMonth() === moment.getMonth() &&
         bookingDate.getFullYear() === moment.getFullYear() &&
-        bookingDate.getHours() >= moment.getHours() &&
-        bookingDate.getMinutes() >= moment.getMinutes();
+        (bookingDate.getHours() > moment.getHours() ||
+          (bookingDate.getHours() === moment.getHours &&
+            bookingDate.getMinutes() >= moment.getMinutes()));
       if (isDateValid) {
         bookings.push(booking);
       }
@@ -108,6 +112,7 @@ export default function PartnerDashboard({ navigation }) {
      */
     const result = await handleDates(bookings);
     setBookings(result);
+    setIsDateHandled(true);
     return;
   }
 
@@ -140,9 +145,35 @@ export default function PartnerDashboard({ navigation }) {
         date: dateString,
         nameService: date.nameService,
         service: date.service,
+        isApproved: date.isApproved,
+        wasCanceled: date.wasCanceled,
       });
     }
     return bookings;
+  }
+
+  /**
+   * ---------------------------------------
+   *    Cancelamento
+   * ---------------------------------------
+   *  Funções que lidam com o cancelamento
+   *  de bookings previamente agendados
+   */
+  async function handleCancelVerify(id) {
+    Alert.alert(
+      "Cancelamento",
+      "Tem certeza de que deseja cancelar o agendamento?",
+      [{ text: "Não" }, { text: "Sim", onPress: () => handleCancel(id) }]
+    );
+  }
+
+  async function handleCancel(id) {
+    const response = await api.put(`/bookings/${id}`, { wasCanceled: true });
+
+    if (response.data) {
+      Alert.alert("Sucesso!", "Seu agendamento foi cancelado");
+      navigation.goBack();
+    }
   }
 
   return (
@@ -153,21 +184,35 @@ export default function PartnerDashboard({ navigation }) {
       </View>
       <View style={styles.container}>
         <Text style={styles.titleText}>SEUS AGENDAMENTOS DE HOJE</Text>
-        <FlatList
-          style={styles.list}
-          data={bookings}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <ListItem
-              containerStyle={styles.item}
-              titleStyle={styles.bookingTitle}
-              subtitleStyle={styles.bookingHour}
-              style={styles.listItem}
-              title={`${item.nameService}`}
-              subtitle={`${item.date}`}
-            />
-          )}
-        />
+        {isDateHandled === true && (
+          <FlatList
+            data={bookings}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => (
+              <>
+                {!item.wasCanceled && (
+                  <TouchableOpacity style={styles.listItem}>
+                    <View>
+                      <Text style={styles.listName}>{item.nameService}</Text>
+                      <Text style={styles.listDate}>{item.date}</Text>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.cancelBtn}
+                      onPress={() => handleCancelVerify(item._id)}
+                    >
+                      <Icon
+                        name="times"
+                        size={30}
+                        type="font-awesome"
+                        color="#511D68"
+                      />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
+              </>
+            )}
+          />
+        )}
         <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
           <Text style={styles.btnText}>NOVO ATENDIMENTO</Text>
         </TouchableOpacity>
@@ -224,22 +269,22 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingHorizontal: 55,
   },
-  list: {
-    width: "100%",
-    alignSelf: "stretch",
-    paddingHorizontal: 0,
+  listItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
   },
-  item: {
-    paddingHorizontal: 0,
-  },
-  bookingTitle: {
-    fontSize: 16,
+  listName: {
+    fontSize: 18,
     fontWeight: "bold",
     color: "#511D68",
   },
-  bookingHour: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#aaa",
+  listDate: {
+    fontSize: 16,
+    color: "#777",
+  },
+  cancelBtn: {
+    padding: 5,
   },
 });
