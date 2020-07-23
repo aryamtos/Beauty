@@ -24,20 +24,33 @@ export default function Register({ navigation }) {
   const [telefone, setPhone] = useState("");
   const [senhaConfirmacao, setConfirmacao] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+
+  // Erros de validação
+  const [isFormIncorret, setIsFormIncorret] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleSubmit() {
-    const response = await api.post("/user/register", {
-      nome,
-      cpf,
-      telefone,
-      email,
-      senha,
-      senhaConfirmacao,
-    });
+    if (senha !== senhaConfirmacao) {
+      setIsFormIncorret(true);
+      setErrorMessage("As senhas devem ser iguais");
+      return;
+    }
+    try {
+      const response = await api.post("/user/register", {
+        nome,
+        cpf,
+        telefone,
+        email,
+        senha,
+        senhaConfirmacao,
+      });
 
-    Alert.alert("Cadastrado com sucesso!");
-    navigation.navigate("Index");
+      Alert.alert("Cadastrado com sucesso!");
+      navigation.navigate("Index");
+    } catch (error) {
+      setIsFormIncorret(true);
+      setErrorMessage(error.response.data.validation[0].message);
+    }
   }
 
   return (
@@ -116,6 +129,11 @@ export default function Register({ navigation }) {
             value={senhaConfirmacao}
             onChangeText={setConfirmacao}
           />
+          {isFormIncorret && (
+            <View style={styles.errorMessageContainer}>
+              <Text style={styles.errorMessage}>*{errorMessage}</Text>
+            </View>
+          )}
           <TouchableOpacity onPress={handleSubmit} style={styles.btn}>
             <Text style={styles.btnText}>CRIAR CONTA</Text>
           </TouchableOpacity>
@@ -126,7 +144,7 @@ export default function Register({ navigation }) {
             <Text style={styles.divideText}>ou</Text>
             <View style={styles.divideLine} />
           </View>
-          <TouchableOpacity onPress={handleSubmit} style={styles.btnGoogle}>
+          <TouchableOpacity style={styles.btnGoogle}>
             <Text style={styles.textGoogle}>ENTRAR COM O GOOGLE</Text>
           </TouchableOpacity>
         </View>
@@ -231,5 +249,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "normal",
     color: "#A5A5A5",
+  },
+  errorMessageContainer: {
+    backgroundColor: "#fff",
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: "#BDAAC6",
+  },
+  errorMessage: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "#f00",
   },
 });

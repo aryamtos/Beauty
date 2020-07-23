@@ -38,6 +38,10 @@ userController.prototype.post = async (req, res) => {
       usuarioIsEmailExiste.nome != undefined,
       `O e-mail ${req.body.email} Já existe.`
     );
+    return res.status(400).send({
+      messsage: "Não foi possível efetuar o login",
+      validation: _validationContract.errors(),
+    });
   }
   req.body.senha = md5(req.body.senha);
   const { nome, cpf, telefone, email, senha } = req.body;
