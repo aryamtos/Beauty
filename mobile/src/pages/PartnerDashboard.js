@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import {
   Alert,
   AsyncStorage,
-  Image,
   FlatList,
+  Image,
+  Modal,
   StyleSheet,
+  StatusBar,
+  TouchableOpacity,
   Text,
   View,
-  StatusBar,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 import { Icon } from "react-native-elements";
 
 import logo from "../assets/bmlogo_.png";
@@ -21,6 +23,8 @@ export default function PartnerDashboard({ navigation }) {
   const [bookings, setBookings] = useState([]);
   const [isTokenValid, setIsTokenValid] = useState(true);
   const [isDateHandled, setIsDateHandled] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   useEffect(() => {
     async function handleInit() {
       try {
@@ -172,7 +176,29 @@ export default function PartnerDashboard({ navigation }) {
 
     if (response.data) {
       Alert.alert("Sucesso!", "Seu agendamento foi cancelado");
-      navigation.goBack();
+    }
+  }
+
+  /**
+   * ---------------------------------------
+   *    Aprovação
+   * ---------------------------------------
+   *  Funções que lidam com a aprovação
+   *  de bookings previamente agendados
+   */
+  async function handleApproveVerify(id) {
+    Alert.alert(
+      "Confirmação",
+      "Tem certeza de que deseja aprovar o agendamento?",
+      [{ text: "Não" }, { text: "Sim", onPress: () => handleApprove(id) }]
+    );
+  }
+
+  async function handleApprove(id) {
+    const response = await api.put(`/bookings/${id}`, { isApproved: true });
+
+    if (response.data) {
+      Alert.alert("Sucesso!", "O agendamento foi aprovado.");
     }
   }
 
@@ -190,7 +216,7 @@ export default function PartnerDashboard({ navigation }) {
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
               <>
-                {!item.wasCanceled && (
+                {!item.wasCanceled && item.isApproved && (
                   <TouchableOpacity style={styles.listItem}>
                     <View>
                       <Text style={styles.listName}>{item.nameService}</Text>
@@ -213,6 +239,63 @@ export default function PartnerDashboard({ navigation }) {
             )}
           />
         )}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isModalVisible}
+          onRequestClose={() => {
+            setIsModalVisible(!isModalVisible);
+          }}
+        >
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Agendamentos pendentes</Text>
+            <FlatList
+              style={{ flex: 1 }}
+              data={bookings}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                <>
+                  {!item.wasCanceled && !item.isApproved && (
+                    <TouchableOpacity style={styles.listItem}>
+                      <View>
+                        <Text style={styles.listName}>{item.nameService}</Text>
+                        <Text style={styles.listDate}>{item.date}</Text>
+                      </View>
+                      <TouchableOpacity
+                        style={styles.cancelBtn}
+                        onPress={() => handleApproveVerify(item._id)}
+                      >
+                        <Icon
+                          name="check"
+                          size={30}
+                          type="font-awesome"
+                          color="#511D68"
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.cancelBtn}
+                        onPress={() => handleCancelVerify(item._id)}
+                      >
+                        <Icon
+                          name="times"
+                          size={30}
+                          type="font-awesome"
+                          color="#511D68"
+                        />
+                      </TouchableOpacity>
+                    </TouchableOpacity>
+                  )}
+                </>
+              )}
+            />
+          </View>
+        </Modal>
+        <TouchableOpacity
+          style={styles.btnWhite}
+          onPress={() => setIsModalVisible(!isModalVisible)}
+        >
+          <Text style={styles.btnWhiteText}>Agendamentos pendentes</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
           <Text style={styles.btnText}>NOVO ATENDIMENTO</Text>
         </TouchableOpacity>
@@ -269,6 +352,25 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingHorizontal: 55,
   },
+  btnWhite: {
+    height: 42,
+    borderWidth: 1,
+    borderColor: "#BDAAC6",
+    backgroundColor: "#eee",
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 16,
+    color: "#511D68",
+    height: 44,
+    marginTop: 10,
+    borderRadius: 2,
+  },
+  btnWhiteText: {
+    color: "#511D68",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
   listItem: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -286,5 +388,24 @@ const styles = StyleSheet.create({
   },
   cancelBtn: {
     padding: 5,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "flex-start",
+    padding: 10,
+    borderRadius: 15,
+    margin: 10,
+    elevation: 10,
+  },
+  modalTitle: {
+    fontSize: 23,
+    fontWeight: "bold",
+    color: "#511D68",
+    marginBottom: 20,
+  },
+  modalText: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
