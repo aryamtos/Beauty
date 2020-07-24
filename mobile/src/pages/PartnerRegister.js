@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import * as WebBrowser from "expo-web-browser";
 
 import background from "../assets/fundo2.png";
 import logo from "../assets/beautymenu0.png";
@@ -53,6 +54,12 @@ export default function PartnerRegister({ navigation }) {
         senha,
         senhaConfirmacao: confirmaSenha,
       });
+
+      if (category === "Autônomo") {
+        await WebBrowser.openBrowserAsync("http://pag.ae/7W6ds4vuo");
+      } else {
+        await WebBrowser.openBrowserAsync("http://pag.ae/7W8s7gr9n");
+      }
 
       Alert.alert("Sucesso!", "Sua conta foi cadastrada.");
       navigation.navigate("Index");

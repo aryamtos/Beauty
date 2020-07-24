@@ -35,7 +35,7 @@ export default function Registration({ history }) {
         senhaConfirmacao,
       });
 
-      if (category === "autonomo") {
+      if (category === "Autônomo") {
         // history.push('http://pag.ae/7W6ds4vuo');
         window.location.replace("http://pag.ae/7W6ds4vuo");
       } else {

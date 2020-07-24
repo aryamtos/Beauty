@@ -25,40 +25,42 @@ export default function PartnerDashboard({ navigation }) {
   const [isDateHandled, setIsDateHandled] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  useEffect(() => {
-    async function handleInit() {
-      try {
-        /**
-         * -----------------------------------
-         *   Vericiando veracidade do token
-         * -----------------------------------
-         */
-        const token = await AsyncStorage.getItem("token");
-        let user = await AsyncStorage.getItem("user");
-        user = JSON.parse(user);
-
-        await api.get("/dashboard", {
-          headers: { token_access: token, user_id: user._id },
-        });
-
-        setIsTokenValid(true);
-      } catch (error) {
-        console.log(error);
-        setIsTokenValid(false);
-        return;
-      }
-
+  // Função que inicializa tudo
+  async function handleInit() {
+    try {
       /**
-       * ---------------------------------
-       *    Separando o nome do usuário
-       * ---------------------------------
+       * -----------------------------------
+       *   Vericiando veracidade do token
+       * -----------------------------------
        */
+      const token = await AsyncStorage.getItem("token");
       let user = await AsyncStorage.getItem("user");
       user = JSON.parse(user);
-      setName(user.responsibleName.split(" ")[0]);
-      handleBookings();
+
+      await api.get("/dashboard", {
+        headers: { token_access: token, user_id: user._id },
+      });
+
+      setIsTokenValid(true);
+    } catch (error) {
+      console.log(error);
+      setIsTokenValid(false);
+      return;
     }
 
+    /**
+     * ---------------------------------
+     *    Separando o nome do usuário
+     * ---------------------------------
+     */
+    let user = await AsyncStorage.getItem("user");
+    user = JSON.parse(user);
+    setName(user.responsibleName.split(" ")[0]);
+    handleBookings();
+  }
+
+  // Chamando a função para inicializar
+  useEffect(() => {
     handleInit();
   }, []);
 
