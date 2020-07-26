@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Image,
   ImageBackground,
   StyleSheet,
   View,
@@ -93,7 +94,10 @@ export default function StoreProfile({ navigation }) {
 
   return (
     <>
-      <ImageBackground style={styles.resultHeader}>
+      <ImageBackground
+        source={{ uri: servico.user.thumbnail_url }}
+        style={styles.resultHeader}
+      >
         <LinearGradient
           colors={["transparent", "rgba(255,255,255,0.8)"]}
           style={styles.gradient}
