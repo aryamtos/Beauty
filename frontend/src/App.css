@@ -1,38 +1,42 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap");
 
-*{
+* {
   margin: 0;
   padding: 0;
   outline: 0;
   box-sizing: border-box;
 }
 
-html, body, #root{
+html,
+body,
+#root {
   min-height: 100%;
 }
 
-body{
+body {
   background-attachment: fixed;
-  background:#000 url('./assets/background3.png' ) no-repeat; 
+  background: #000 url("./assets/background3.png") no-repeat;
   opacity: 1.5;
   background-size: cover;
   -webkit-font-smoothing: antialiased !important;
 }
 
-body, input, button{
+body,
+input,
+button {
   font-family: Roboto, Arial, Helvetica, sans-serif;
   font-size: 14px;
 }
 
-.logo{
+.logo {
   max-width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.container{
-  margin: 80px auto 0;
+.container {
+  margin: 80px auto 80px;
   max-width: 450px;
   width: 100%;
   display: flex;
@@ -40,7 +44,7 @@ body, input, button{
   align-items: center;
 }
 
-.content{
+.content {
   width: 100%;
   background: #ffffff;
   margin-top: 50px;
@@ -48,7 +52,7 @@ body, input, button{
   padding: 30px;
 }
 
-.content > p{
+.content > p {
   font-size: 22px;
   line-height: 30px;
   margin-bottom: 30px;
@@ -59,20 +63,20 @@ body, input, button{
   flex-direction: column;
 }
 
-.content form label{
+.content form label {
   font-size: 14px;
   color: #444;
   font-weight: bold;
   margin-bottom: 8px;
 }
 
-.content form label span{
+.content form label span {
   font-weight: normal;
   color: #999;
   font-size: 12px;
 }
 
-.content form input{
+.content form input {
   margin-bottom: 20px;
   border: 1px solid #dddddd;
   border-radius: 2px;
@@ -94,6 +98,6 @@ body, input, button{
   cursor: pointer;
 }
 
-.content button.btn:hover{
+.content button.btn:hover {
   background: #993399b9;
 }

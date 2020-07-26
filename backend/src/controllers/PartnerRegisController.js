@@ -6,6 +6,8 @@ const _repo = new repository();
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
 const variables = require("../config/variables");
+const UserPartner = require("../models/UserPartner");
+const { response } = require("express");
 
 function partnerController() {}
 
@@ -49,7 +51,43 @@ partnerController.prototype.post = async (req, res) => {
 
   //Criptografa a senha do usuário
   req.body.senha = md5(req.body.senha);
-  ctrlBase.post(_repo, _validationContract, req, res);
+  const { filename } = req.file;
+  console.log(req);
+
+  if (!_validationContract.isValid()) {
+    res
+      .status(400)
+      .send({
+        message: "Existem dados inválidos na sua requisição",
+        validation: validationContract.errors(),
+      })
+      .end();
+    return;
+  }
+
+  try {
+    let response = await UserPartner.create({
+      thumbnail: filename,
+      email: req.body.email,
+      responsibleName: req.body.responsibleName,
+      category: req.body.category,
+      enterpriseName: req.body.enterpriseName,
+      phone: req.body.phone,
+      cpf: req.body.cpf,
+      address: req.body.address,
+      neighborhood: req.body.neighborhood,
+      city: req.body.city,
+      about: req.body.about,
+      senha: req.body.senha,
+      senhaConfirmacao: req.body.senhaConfirmacao,
+    });
+    console.log(response);
+    return res.status(201).json(response);
+  } catch (err) {
+    console.log("Post com error, motivo: ", err);
+    res.status(500).send({ message: "Erro no processamento", error: err });
+  }
+  //ctrlBase.post(_repo, _validationContract, req, res);
 };
 
 partnerController.prototype.put = async (req, res) => {

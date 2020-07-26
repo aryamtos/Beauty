@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import api from "../../services/api";
+import { FaCamera } from "react-icons/fa";
 import "./styles.css";
 
 export default function Registration({ history }) {
@@ -15,40 +16,64 @@ export default function Registration({ history }) {
   const [about, setAbout] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirmacao, setSenhaConfirmacao] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
+
+  const preview = useMemo(() => {
+    console.log(thumbnail);
+    return thumbnail ? URL.createObjectURL(thumbnail) : null;
+  }, [thumbnail]);
 
   async function handleSubmit(event) {
     event.preventDefault();
 
     try {
-      const response = await api.post("/partner/register", {
-        email,
-        responsibleName,
-        category,
-        enterpriseName,
-        phone,
-        cpf,
-        address,
-        neighborhood,
-        city,
-        about,
-        senha,
-        senhaConfirmacao,
-      });
+      const data = new FormData();
 
-      if (category === "Autônomo") {
-        // history.push('http://pag.ae/7W6ds4vuo');
-        window.location.replace("http://pag.ae/7W6ds4vuo");
-      } else {
-        // history.push('http://pag.ae/7W8s7gr9n');
-        window.location.replace("http://pag.ae/7W8s7gr9n");
+      data.append("thumbnail", thumbnail);
+      data.append("email", email);
+      data.append("responsibleName", responsibleName);
+      data.append("category", category);
+      data.append("enterpriseName", enterpriseName);
+      data.append("phone", phone);
+      data.append("cpf", cpf);
+      data.append("address", address);
+      data.append("neighborhood", neighborhood);
+      data.append("city", city);
+      data.append("about", about);
+      data.append("senha", senha);
+      data.append("senhaConfirmacao", senhaConfirmacao);
+
+      const response = await api.post("/partner/register", data);
+
+      if (response.status === 201) {
+        if (category === "Autônomo") {
+          // history.push('http://pag.ae/7W6ds4vuo');
+          window.location.replace("http://pag.ae/7W6ds4vuo");
+        } else {
+          // history.push('http://pag.ae/7W8s7gr9n');
+          window.location.replace("http://pag.ae/7W8s7gr9n");
+        }
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     }
   }
   return (
     <>
       <form onSubmit={handleSubmit}>
+        {/* --------------------LOGO------------------------------------ */}
+        <label>FOTO</label>
+        <label
+          id="thumbnail"
+          style={{ backgroundImage: `url(${preview})` }}
+          className={thumbnail ? "has-thumbnail" : ""}
+        >
+          <input
+            type="file"
+            onChange={(event) => setThumbnail(event.target.files[0])}
+          />
+          <FaCamera />
+        </label>
         {/* --------------------NOME------------------------------------ */}
         <label htmlFor="responsibleName">NOME</label>
         <input

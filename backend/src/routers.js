@@ -97,7 +97,7 @@ routes.get("/admin/showusers", auth, _user.get); //exibindo clientes
 
 //ROTAS DO PARCEIRO
 routes.post("/authentification", _partner.authentification);
-routes.post("/partner/register", upload.single("logo"), _partner.post); //criando um usuário de Parceiro
+routes.post("/partner/register", upload.single("thumbnail"), _partner.post); //criando um usuário de Parceiro
 routes.put("/partner/register/:id", auth, _partner.put); //atualizando informações
 routes.get("/partner/:id", auth, _partner.getById); //pegando um único parceiro
 routes.delete("/partner/deletepartner/:id", auth, _partner.delete); //deletando algum parceiro

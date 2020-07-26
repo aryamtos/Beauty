@@ -5,12 +5,12 @@ const mongoose = require("mongoose");
 //criando o schema ("tabela") dos parceiros do app
 const UserPartnerSchema = new mongoose.Schema(
   {
-    logo: { type: String },
+    thumbnail: { type: String },
     responsibleName: { type: String, required: true, trim: true, index: true },
     category: { trim: true, type: String },
     enterpriseName: { type: String, trim: true, index: true },
     cpf: { type: String, required: true },
-    phone: { type: Number, required: true },
+    phone: { type: String, required: true },
     address: { type: String, required: true },
     city: { type: String, required: true },
     neighborhood: { type: String, required: true },
@@ -44,8 +44,12 @@ const UserPartnerSchema = new mongoose.Schema(
       },
     ],
   },
-  { versionKey: false }
+  { versionKey: false, toJSON: { virtuals: true } }
 );
+
+UserPartnerSchema.virtual("thumbnail_url").get(function () {
+  return `http://192.168.15:41:4444/uploads/${this.thumbnail}`;
+});
 
 UserPartnerSchema.pre("save", (next) => {
   let agora = new Date();
