@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 //criando o schema ("tabela") dos parceiros do app
 const UserPartnerSchema = new mongoose.Schema(
   {
-    thumbnail: { type: String },
+    thumbnail: String,
     responsibleName: { type: String, required: true, trim: true, index: true },
     category: { trim: true, type: String },
     enterpriseName: { type: String, trim: true, index: true },
@@ -44,17 +44,17 @@ const UserPartnerSchema = new mongoose.Schema(
       },
     ],
   },
-  { versionKey: false, toJSON: { virtuals: true } }
+  { toJSON: { virtuals: true }, versionKey: false }
 );
-
-UserPartnerSchema.virtual("thumbnail_url").get(function () {
-  return `http://192.168.15:41:4444/uploads/${this.thumbnail}`;
-});
 
 UserPartnerSchema.pre("save", (next) => {
   let agora = new Date();
   if (!this.dataCriacao) this.dataCriacao = agora;
   next();
+});
+
+UserPartnerSchema.virtual("thumbnail_url").get(function () {
+  return `http://192.168.15.41:4444/files/${this.thumbnail}`;
 });
 
 module.exports = mongoose.model("UserPartner", UserPartnerSchema);

@@ -56,6 +56,11 @@ export default function CategoryPage({ navigation }) {
     loadProducts();
   }, []);
 
+  useEffect(() => {
+    if (servicos[0] && servicos[0].user)
+      console.log(servicos[servicos.length - 1].user.thumbnail_url);
+  }, [servicos]);
+
   function handleNavigate(servico) {
     navigation.navigate("StoreProfile", { servico });
   }
@@ -89,7 +94,16 @@ export default function CategoryPage({ navigation }) {
         showsVerticalScrollIndicator={false}
         renderItem={({ item: servico }) => (
           <ScrollView>
-            <Image style={styles.thumbnail}></Image>
+            {servico.user.thumbnail_url ? (
+              <View>
+                <Image
+                  style={styles.thumbnail}
+                  source={{ uri: servico.user.thumbnail_url }}
+                />
+              </View>
+            ) : (
+              <Image style={styles.thumbnail} />
+            )}
             <TouchableOpacity
               onPress={() => handleNavigate(servico)}
               style={styles.result}
@@ -168,25 +182,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   thumbnail: {
-    flexDirection: "row",
-    alignSelf: "stretch",
     height: 90,
-    resizeMode: "contain",
-    alignItems: "flex-end",
-    justifyContent: "flex-start",
-    /*
-    width:200,
-    height: 120,
-    resizeMode: 'cover',
-    borderRadius: 2,*/
-    /*
-    height: 90,
-    resizeMode: 'contain',
-    marginRight: 10,*/
-    /*width: 200,
-    height: 120,
-    resizeMode: 'cover',
-    borderRadius: 2*/
+    resizeMode: "cover",
   },
   resultData: {
     flexDirection: "column",

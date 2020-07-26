@@ -41,8 +41,8 @@ app.use((req, res, next) => {
 });
 //require('./models/user-model');
 app.use(bodyParser.json());
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(routes);
 
