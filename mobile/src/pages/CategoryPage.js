@@ -94,21 +94,21 @@ export default function CategoryPage({ navigation }) {
         showsVerticalScrollIndicator={false}
         renderItem={({ item: servico }) => (
           <ScrollView>
-            {servico.user.thumbnail_url ? (
-              <View>
-                <Image
-                  style={styles.thumbnail}
-                  source={{ uri: servico.user.thumbnail_url }}
-                />
-              </View>
-            ) : (
-              <Image style={styles.thumbnail} />
-            )}
             <TouchableOpacity
               onPress={() => handleNavigate(servico)}
               style={styles.result}
             >
               <View style={styles.resultData}>
+                {servico.user.thumbnail_url ? (
+                  <View>
+                    <Image
+                      style={styles.thumbnail}
+                      source={{ uri: servico.user.thumbnail_url }}
+                    />
+                  </View>
+                ) : (
+                  <Image style={styles.thumbnail} />
+                )}
                 <Text style={styles.resultNameText}>
                   {servico.user.enterpriseName}
                 </Text>
