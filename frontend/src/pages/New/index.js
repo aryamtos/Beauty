@@ -93,7 +93,7 @@ export default function New({ history }) {
       >
         <option value="null">Selecione a área</option>
         <option value="Rosto">Rosto</option>
-        <option value="Cabelos">Cabelos</option>
+        <option value="Cabelo">Cabelos</option>
         <option value="Costas"> Costas</option>
         <option value="Mãos e pés">Mãos e pés</option>
         <option value="Mãos">Mãos</option>
