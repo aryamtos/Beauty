@@ -15,7 +15,7 @@ export default function Dashboard({ history }) {
       const response = await api.get("/partner/service/index", {
         headers: { user_id, token_access },
       });
-      console.log(response);
+
       setServices(response.data);
     }
     loadServices();
@@ -60,7 +60,10 @@ export default function Dashboard({ history }) {
 
             <span className="sbutton">
               <Link to="/update">
-                <button onClick={handleClick(service._id)} className="btn1">
+                <button
+                  onClick={() => handleClick(service._id)}
+                  className="btn1"
+                >
                   Editar
                 </button>
               </Link>

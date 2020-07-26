@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import api from "../../services/api";
 
-export default function PartnerUpdate() {
+export default function PartnerUpdate({ history }) {
   const [responsibleName, setRName] = useState("");
   const [enterpriseName, setEName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,10 +23,6 @@ export default function PartnerUpdate() {
       return thumbnail;
     }
   }, [thumbnail]);
-
-  useEffect(() => {
-    console.log("o link é", preview);
-  }, [preview]);
 
   useEffect(() => {
     async function handleInit() {
@@ -53,15 +49,57 @@ export default function PartnerUpdate() {
           setThumbnail(response.data.thumbnail_url);
         }
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
       }
     }
 
     handleInit();
   }, []);
 
-  async function handleSubmit() {
-    //
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const partner_id = localStorage.getItem("partner");
+    const token = localStorage.getItem("token-access");
+
+    if (senha !== "" && senha !== senhaConfirmacao) {
+      console.log("As senhas devem ser iguais.");
+      return;
+    }
+
+    try {
+      const data = new FormData();
+
+      if (typeof thumbnail !== "string") {
+        data.append("thumbnail", thumbnail);
+      }
+      data.append("responsibleName", responsibleName);
+      data.append("enterpriseName", enterpriseName);
+      data.append("email", email);
+      data.append("phone", phone);
+      data.append("address", address);
+      data.append("neighborhood", neighborhood);
+      data.append("city", city);
+      data.append("cpf", cpf);
+      data.append("about", about);
+      data.append("senha", senha);
+
+      const response = await api.put(`/partner/register/${partner_id}`, data, {
+        headers: {
+          token_access: token,
+        },
+      });
+
+      if (response.data) {
+        history.push("/dashboard");
+      }
+    } catch (error) {
+      if (error.response.data.validation) {
+        console.log(error.response.data.validation[0].message);
+      } else {
+        console.log(error.response);
+      }
+    }
   }
 
   return (
@@ -90,9 +128,6 @@ export default function PartnerUpdate() {
       />
       {/* ---------------nome do responsavel-------------------------- */}
       <label htmlFor="enterpriseName">NOME DO SALÃO</label>
-      <p className="descricao">
-        Se você possui um salão, coloque o nome dele no campo abaixo
-      </p>
       <input
         type="text"
         id="enterpriseName"

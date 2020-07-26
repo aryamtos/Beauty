@@ -94,7 +94,7 @@ partnerController.prototype.put = async (req, res) => {
   let _validationContract = new validation();
 
   _validationContract.isRequired(
-    req.body.interpriseName,
+    req.body.enterpriseName,
     "Informe o nome da empresa"
   );
   _validationContract.isRequired(req.body.email, "Informe seu e-mail");
@@ -105,7 +105,8 @@ partnerController.prototype.put = async (req, res) => {
   );
 
   let usuarioIsEmailExiste = await _repo.IsEmailExiste(req.body.email);
-  if (usuarioIsEmailExiste) {
+  if (usuarioIsEmailExiste && req.body.email !== usuarioIsEmailExiste.email) {
+    console.log(req.body.email, usuarioIsEmailExiste.email);
     _validationContract.isTrue(
       usuarioIsEmailExiste.nome != undefined,
       `O e-mail ${req.body.email} Já existe.`
@@ -115,7 +116,25 @@ partnerController.prototype.put = async (req, res) => {
       validation: _validationContract.errors(),
     });
   }
-  ctrlBase.put(_repo, _validationContract, req, res);
+
+  try {
+    if (req.file) {
+      // Muda o nome da thumbnail
+      const { filename } = req.file;
+      req.body.thumbnail = filename;
+    }
+    const { id } = req.params;
+    //Criptografa a senha do usuário
+    req.body.senha = md5(req.body.senha);
+
+    const user = await UserPartner.findByIdAndUpdate(id, { $set: req.body });
+
+    return res.status(200).send(user);
+  } catch (error) {
+    console.log("deu ruim");
+    return res.status(400).send(error);
+  }
+  //ctrlBase.put(_repo, _validationContract, req, res);
 };
 
 partnerController.prototype.get = async (req, res) => {

@@ -25,11 +25,7 @@ class userPartnerRepository {
   }
 
   async update(id, data) {
-    let usuarioAtualizado = await this._base.update(id, {
-      nome: data.enterpriseName,
-      email: data.email,
-      logo: data.logo,
-    });
+    let usuarioAtualizado = await this._base.update(id, data);
     return this._base._model.findById(usuarioAtualizado._id, this._projection);
   }
 

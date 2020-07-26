@@ -8,18 +8,23 @@ export default function Login({ history }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const response = await api.post("/authentification", { email, senha });
-    const { token } = response.data;
-    const { user } = response.data;
-    const { _id } = user;
-    const { isAdmin } = user;
-    localStorage.setItem("partner", _id);
-    localStorage.setItem("token-access", token);
 
-    if (!isAdmin) {
-      history.push("/dashboard");
-    } else {
-      history.push("/admin");
+    try {
+      const response = await api.post("/authentification", { email, senha });
+      const { token } = response.data;
+      const { user } = response.data;
+      const { _id } = user;
+      const { isAdmin } = user;
+      localStorage.setItem("partner", _id);
+      localStorage.setItem("token-access", token);
+
+      if (!isAdmin) {
+        history.push("/dashboard");
+      } else {
+        history.push("/admin");
+      }
+    } catch (error) {
+      console.log(error.response);
     }
   }
   return (
