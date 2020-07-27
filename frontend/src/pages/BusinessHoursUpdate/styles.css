@@ -1,0 +1,16 @@
+.dayContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.dayLabel {
+  color: #511d68;
+}
+
+.hourInput {
+  width: 20%;
+  border-width: 0px !important;
+  border-bottom-width: 1px !important;
+}
