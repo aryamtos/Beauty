@@ -8,6 +8,8 @@ export default function BusinessHoursUpdate() {
   const [businessHours, setBusinessHours] = useState([]);
   const [wasUpdateSuccessful, setWasUpdateSuccessful] = useState(false);
   const [wasRequestSent, setWasRequestSent] = useState(false);
+  const [wereHoursVerified, setWereHoursVerified] = useState(false);
+  const [needToStore, setNeedToStore] = useState(false);
 
   useEffect(() => {
     async function handleInit() {
@@ -22,23 +24,30 @@ export default function BusinessHoursUpdate() {
         if (response.data) {
           setBusinessHours(response.data.businessHours);
         }
+
+        return;
       } catch (error) {
         console.log(error);
+        return;
       }
     }
 
     handleInit();
+    setWereHoursVerified(true);
   }, []);
 
   useEffect(() => {
-    if (!businessHours[0]) {
-      businessHours.push({ dia: "Dom", horaInicio: "", horaFim: "" });
-      businessHours.push({ dia: "Seg", horaInicio: "", horaFim: "" });
-      businessHours.push({ dia: "Ter", horaInicio: "", horaFim: "" });
-      businessHours.push({ dia: "Qua", horaInicio: "", horaFim: "" });
-      businessHours.push({ dia: "Qui", horaInicio: "", horaFim: "" });
-      businessHours.push({ dia: "Sex", horaInicio: "", horaFim: "" });
-      businessHours.push({ dia: "Sab", horaInicio: "", horaFim: "" });
+    if (wereHoursVerified === true && !businessHours[0]) {
+      const temporaryArray = [];
+      temporaryArray.push({ _id: 1, dia: "Dom", horaInicio: "", horaFim: "" });
+      temporaryArray.push({ _id: 2, dia: "Seg", horaInicio: "", horaFim: "" });
+      temporaryArray.push({ _id: 3, dia: "Ter", horaInicio: "", horaFim: "" });
+      temporaryArray.push({ _id: 4, dia: "Qua", horaInicio: "", horaFim: "" });
+      temporaryArray.push({ _id: 5, dia: "Qui", horaInicio: "", horaFim: "" });
+      temporaryArray.push({ _id: 6, dia: "Sex", horaInicio: "", horaFim: "" });
+      temporaryArray.push({ _id: 7, dia: "Sab", horaInicio: "", horaFim: "" });
+      setBusinessHours(temporaryArray);
+      setNeedToStore(true);
     }
   }, [businessHours]);
 
@@ -46,18 +55,62 @@ export default function BusinessHoursUpdate() {
     e.preventDefault();
 
     const user_id = localStorage.getItem("partner");
-    try {
-      const response = await api.put(`/businesshour/massive/${user_id}`, {
-        businessHours,
-      });
+    if (needToStore) {
+      /**
+       * ---------------------------------------------------
+       *    Need to Store
+       * ---------------------------------------------------
+       *
+       *  Caso no qual os horários do parceiro ainda não
+       *  foram definidos, então ele terá que criar um
+       *  novo grupo de horários para si.
+       */
+      try {
+        const response = await api.post(
+          `/businesshour/massive/`,
+          {
+            businessHours,
+          },
+          {
+            headers: {
+              partner_id: user_id,
+            },
+          }
+        );
 
-      if (response.status === 200) {
+        if (response.status === 200) {
+          console.log(response.data);
+          setWasRequestSent(true);
+          setWasUpdateSuccessful(true);
+        }
+      } catch (error) {
+        console.log(error.response);
         setWasRequestSent(true);
-        setWasUpdateSuccessful(true);
+        setWasUpdateSuccessful(false);
       }
-    } catch (error) {
-      setWasRequestSent(true);
-      setWasUpdateSuccessful(false);
+    } else {
+      /**
+       * ---------------------------------------------------
+       *    There is No Need to Store
+       * ---------------------------------------------------
+       *
+       *  Caso no qual os horários do parceiro ainda não
+       *  foram definidos, então ele terá que criar um
+       *  novo grupo de horários para si.
+       */
+      try {
+        const response = await api.put(`/businesshour/massive/${user_id}`, {
+          businessHours,
+        });
+
+        if (response.status === 200) {
+          setWasRequestSent(true);
+          setWasUpdateSuccessful(true);
+        }
+      } catch (error) {
+        setWasRequestSent(true);
+        setWasUpdateSuccessful(false);
+      }
     }
   }
 

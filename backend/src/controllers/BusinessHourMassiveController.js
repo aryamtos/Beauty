@@ -3,7 +3,31 @@ const UserPartner = require("../models/UserPartner");
 
 module.exports = {
   async store(req, res) {
-    //
+    const { partner_id } = req.headers;
+    const { businessHours } = req.body;
+
+    try {
+      const partner = await UserPartner.findById(partner_id).populate(
+        "businessHours"
+      );
+
+      for (let item of businessHours) {
+        const businessHour = await BusinessHour.create({
+          dia: item.dia,
+          horaInicio: item.horaInicio,
+          horaFim: item.horaFim,
+        });
+
+        partner.businessHours.push(businessHour);
+      }
+      await partner.save();
+
+      return res.status(200).json(partner.businessHours);
+    } catch (error) {
+      return res
+        .status(400)
+        .json({ message: "Não foi possível realizar a operação" });
+    }
   },
 
   async update(req, res) {
@@ -24,7 +48,7 @@ module.exports = {
 
       return res.status(200).json(partner.businessHours);
     } catch (error) {
-      return res.tatus(400).json(error);
+      return res.tatus(400).json({ message: error });
     }
   },
 };

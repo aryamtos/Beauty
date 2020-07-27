@@ -67,10 +67,10 @@ routes.delete("/service/deleteservice/:id", _product.delete);
  * Rotas horário de serviço
  * ---------------------------------------------
  */
+routes.post("/businesshour/massive", BusinessHourMassiveController.store);
+routes.put("/businesshour/massive/:id", BusinessHourMassiveController.update);
 routes.get("/businesshour", BusinessHoursController.index);
 routes.post("/businesshour", BusinessHoursController.store);
-routes.put("/businesshour/massive/:id", BusinessHourMassiveController.update);
-routes.post("/businesshour/massive", BusinessHourMassiveController.store);
 /**
  * ---------------------------------------------
  * Rotas relativas aos profissionais do serviço
