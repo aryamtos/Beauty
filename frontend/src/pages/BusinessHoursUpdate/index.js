@@ -40,8 +40,10 @@ export default function BusinessHoursUpdate() {
     }
   }, [businessHours]);
 
-  async function handleSubmit() {
-    //
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    console.log(businessHours);
   }
 
   return (
@@ -50,7 +52,7 @@ export default function BusinessHoursUpdate() {
       {businessHours[0] && (
         <>
           {businessHours.map((item) => (
-            <div className="dayContainer">
+            <div key={item._id} className="dayContainer">
               <label>
                 <p className="dayLabel">{item.dia}</p>
               </label>
@@ -58,11 +60,29 @@ export default function BusinessHoursUpdate() {
                 className="hourInput"
                 placeholder="00:00"
                 value={item.horaInicio}
+                onChange={(event) => {
+                  setBusinessHours(
+                    businessHours.map((hour) =>
+                      hour._id === item._id
+                        ? { ...hour, horaInicio: event.target.value }
+                        : hour
+                    )
+                  );
+                }}
               />
               <input
                 className="hourInput"
                 placeholder="00:00"
                 value={item.horaFim}
+                onChange={(event) => {
+                  setBusinessHours(
+                    businessHours.map((hour) =>
+                      hour._id === item._id
+                        ? { ...item, horaFim: event.target.value }
+                        : hour
+                    )
+                  );
+                }}
               />
             </div>
           ))}
