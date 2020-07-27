@@ -14,6 +14,7 @@ const ProfessionalsController = require("./controllers/ProfessionalController");
 const DashboardController = require("./controllers/DashboardController");
 const BookingController = require("./controllers/BookingController");
 const PartnerController = require("./controllers/PartnerRegisController");
+const BusinessHourMassiveController = require("./controllers/BusinessHourMassiveController");
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -68,6 +69,8 @@ routes.delete("/service/deleteservice/:id", _product.delete);
  */
 routes.get("/businesshour", BusinessHoursController.index);
 routes.post("/businesshour", BusinessHoursController.store);
+routes.put("/businesshour/massive/:id", BusinessHourMassiveController.update);
+routes.post("/businesshour/massive", BusinessHourMassiveController.store);
 /**
  * ---------------------------------------------
  * Rotas relativas aos profissionais do serviço

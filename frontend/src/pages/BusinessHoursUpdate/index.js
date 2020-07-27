@@ -6,6 +6,8 @@ import api from "../../services/api";
 
 export default function BusinessHoursUpdate() {
   const [businessHours, setBusinessHours] = useState([]);
+  const [wasUpdateSuccessful, setWasUpdateSuccessful] = useState(false);
+  const [wasRequestSent, setWasRequestSent] = useState(false);
 
   useEffect(() => {
     async function handleInit() {
@@ -43,7 +45,20 @@ export default function BusinessHoursUpdate() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(businessHours);
+    const user_id = localStorage.getItem("partner");
+    try {
+      const response = await api.put(`/businesshour/massive/${user_id}`, {
+        businessHours,
+      });
+
+      if (response.status === 200) {
+        setWasRequestSent(true);
+        setWasUpdateSuccessful(true);
+      }
+    } catch (error) {
+      setWasRequestSent(true);
+      setWasUpdateSuccessful(false);
+    }
   }
 
   return (
@@ -87,6 +102,9 @@ export default function BusinessHoursUpdate() {
             </div>
           ))}
         </>
+      )}
+      {wasUpdateSuccessful && (
+        <p className="success">Horários atualizados com sucesso!</p>
       )}
       <button type="submit" className="btn">
         Atualizar
