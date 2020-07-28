@@ -1,29 +1,13 @@
 const Service = require("../models/Service");
 const Professional = require("../models/Professional");
+const UserPartner = require("../models/UserPartner");
 
 module.exports = {
-  async index(req, res) {
-    const { service_id } = req.headers;
-    const professionals = [];
-
-    service = await Service.findById(service_id);
-
-    await Promise.all(
-      service.professionals.map(async (id) => {
-        const professional = await Professional.findById(id);
-
-        professionals.push(professional);
-      })
-    );
-
-    return res.json({ professionals });
-  },
-
   async store(req, res) {
-    const { service_id } = req.headers;
+    const { partner_id } = req.headers;
     const { name, professionalFunction } = req.body;
 
-    const service = await Service.findById(service_id);
+    const partner = await UserPartner.findById(partner_id);
 
     if (name !== "" && professionalFunction !== "") {
       const professional = await Professional.create({
@@ -31,49 +15,38 @@ module.exports = {
         professionalFunction,
       });
 
-      service.professionals.push(professional);
+      partner.professionals.push(professional);
 
-      await service.save();
+      await partner.save();
     }
 
-    return res.json(service);
+    return res.json(partner);
   },
 
   /**
-   *  Essa função pega o ID do serviço e retorna
+   *  Essa função pega o ID do parceiro e retorna
    *  as informações dos profissionais envolvidos
    */
   async show(req, res) {
-    const { service_id } = req.params;
+    const { partner_id } = req.params;
     const professionals = [];
 
     try {
-      let service = await Service.findById(service_id);
+      const partner = await UserPartner.findById(partner_id);
 
-      for (professional_id of service.professionals) {
-        const professional = await Professional.findById(professional_id);
+      await Promise.all(
+        partner.professionals.map(async (id) => {
+          const professional = await Professional.findById(id);
 
-        if (professional) {
           professionals.push(professional);
-        }
-      }
+        })
+      );
+
+      return res.json({ professionals });
     } catch (error) {
-      console.log(error);
       return res
         .status(400)
         .json({ message: "Não foi possível realizar a operação" });
     }
-
-    // await Promise.all(
-    //   service.professionals.map(async (professional_id) => {
-    //     const professional = await Professional.findById(professional_id);
-
-    //     if (professional) {
-    //       professionals.push(professional);
-    //     }
-    //     console.log(professionals);
-    //   })
-    // );
-    return res.json({ professionals });
   },
 };

@@ -16,12 +16,6 @@ const serviceModel = new mongoose.Schema(
       require: true,
       ref: "UserPartner",
     },
-    professionals: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Professional",
-      },
-    ],
   },
   { versionKey: false }
 );

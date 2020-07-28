@@ -43,6 +43,12 @@ const UserPartnerSchema = new mongoose.Schema(
         ref: "BusinessHour",
       },
     ],
+    professionals: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Professional",
+      },
+    ],
   },
   { toJSON: { virtuals: true }, versionKey: false }
 );
