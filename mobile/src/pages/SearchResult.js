@@ -60,6 +60,10 @@ export default function SearchResult({ navigation }) {
     }
   }
 
+  useEffect(() => {
+    console.log(spots);
+  }, [spots]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.containerText}>Resultados</Text>
@@ -84,7 +88,10 @@ export default function SearchResult({ navigation }) {
                   showsVerticalScrollIndicator={false}
                   renderItem={({ item: servico }) => (
                     <ScrollView>
-                      <Image style={styles.thumbnail}></Image>
+                      <Image
+                        source={{ uri: servico.user.thumbnail_url }}
+                        style={styles.thumbnail}
+                      ></Image>
                       <View style={styles.resultData}>
                         <Text style={styles.resultNameText}>
                           {servico.nomeService}
@@ -121,7 +128,10 @@ export default function SearchResult({ navigation }) {
                   showsVerticalScrollIndicator={false}
                   renderItem={({ item: partner }) => (
                     <ScrollView>
-                      <Image style={styles.thumbnail}></Image>
+                      <Image
+                        source={{ uri: partner.thumbnail_url }}
+                        style={styles.thumbnail}
+                      ></Image>
                       <View style={styles.resultData}>
                         <Text style={styles.resultNameText}>
                           {partner.enterpriseName}

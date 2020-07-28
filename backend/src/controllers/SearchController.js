@@ -13,7 +13,7 @@ module.exports = {
 
       var servicos = await Service.find(serviceQuery).populate(
         "user",
-        "_id email responsibleName enterpriseName category phone address neighborhood city about "
+        "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail"
       );
 
       results.services = servicos;
@@ -30,7 +30,7 @@ module.exports = {
       }
       var stores = await UserPartner.find(
         storeQuery,
-        "enterpriseName category address neighborhood city"
+        "enterpriseName category address neighborhood city thumbnail"
       );
       results.stores = stores;
     }
