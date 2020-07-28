@@ -48,15 +48,14 @@ export default function Dashboard({ history }) {
           Alterar Horários
         </button>
       </div>
-      <h2>Seus serviços:</h2>
-      <ul className="spot-list">
+      <h2>Seus serviços</h2>
+      <div className="service-list">
         {services.map((service) => (
-          <li key={service._id}>
-            <br></br>
-            <h3>{service.nome}</h3>
-            <span>{service.parte}</span>
-            <span>{`R$${service.preco}`}</span>
-            <span>{`${service.tempo} min`}</span>
+          <div className="item" key={service._id}>
+            <div>
+              <h3>{service.nomeService}</h3>
+              <span>{service.parte}</span>
+            </div>
 
             <span className="sbutton">
               <Link to="/update">
@@ -68,10 +67,9 @@ export default function Dashboard({ history }) {
                 </button>
               </Link>
             </span>
-            <br />
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
       <Link to="/new">
         <button className="btn">Cadastrar novo serviço</button>
       </Link>
