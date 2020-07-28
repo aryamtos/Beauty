@@ -12,7 +12,11 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
+import {
+  TouchableOpacity,
+  RectButton,
+  TouchableHighlight,
+} from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
 import PropTypes from "prop-types";
 import lupa from "../assets/BUSCAR_cinza.png";
@@ -60,8 +64,12 @@ export default function SearchResult({ navigation }) {
     }
   }
 
-  function handleNavigate(servico) {
-    navigation.navigate("StoreProfile", { servico });
+  async function handleNavigate(servico) {
+    if (!servico.user) {
+      navigation.navigate("StoreProfile", { servico });
+    } else {
+      navigation.navigate("StoreProfile", { servico: servico.user });
+    }
   }
 
   return (
@@ -130,23 +138,25 @@ export default function SearchResult({ navigation }) {
                   showsVerticalScrollIndicator={false}
                   renderItem={({ item: partner }) => (
                     <ScrollView>
-                      <Image
-                        source={{ uri: partner.thumbnail_url }}
-                        style={styles.thumbnail}
-                      ></Image>
-                      <View style={styles.resultData}>
-                        <Text style={styles.resultNameText}>
-                          {partner.enterpriseName}
-                        </Text>
-                        <View style={styles.resultDataRate}></View>
-                        <Text style={styles.resultText}>
-                          {partner.category}
-                        </Text>
-                        <Text style={styles.resultText}>
-                          {partner.address}. {partner.neighborhood},{" "}
-                          {partner.city}
-                        </Text>
-                      </View>
+                      <TouchableOpacity onPress={() => handleNavigate(partner)}>
+                        <Image
+                          source={{ uri: partner.thumbnail_url }}
+                          style={styles.thumbnail}
+                        ></Image>
+                        <View style={styles.resultData}>
+                          <Text style={styles.resultNameText}>
+                            {partner.enterpriseName}
+                          </Text>
+                          <View style={styles.resultDataRate}></View>
+                          <Text style={styles.resultText}>
+                            {partner.category}
+                          </Text>
+                          <Text style={styles.resultText}>
+                            {partner.address}. {partner.neighborhood},{" "}
+                            {partner.city}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </ScrollView>
                   )}
                 />
