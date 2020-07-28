@@ -35,8 +35,6 @@ module.exports = {
       results.stores = stores;
     }
 
-    console.log(results);
-
     return res.json(results);
   },
 };

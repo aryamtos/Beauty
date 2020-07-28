@@ -60,9 +60,9 @@ export default function SearchResult({ navigation }) {
     }
   }
 
-  useEffect(() => {
-    console.log(spots);
-  }, [spots]);
+  function handleNavigate(servico) {
+    navigation.navigate("StoreProfile", { servico });
+  }
 
   return (
     <View style={styles.container}>
@@ -88,23 +88,25 @@ export default function SearchResult({ navigation }) {
                   showsVerticalScrollIndicator={false}
                   renderItem={({ item: servico }) => (
                     <ScrollView>
-                      <Image
-                        source={{ uri: servico.user.thumbnail_url }}
-                        style={styles.thumbnail}
-                      ></Image>
-                      <View style={styles.resultData}>
-                        <Text style={styles.resultNameText}>
-                          {servico.nomeService}
-                        </Text>
-                        <View style={styles.resultDataRate}></View>
-                        <Text style={styles.resultText}>
-                          {servico.user.category}
-                        </Text>
-                        <Text style={styles.resultText}>
-                          {servico.user.address}. {servico.user.neighborhood},{" "}
-                          {servico.user.city}
-                        </Text>
-                      </View>
+                      <TouchableOpacity onPress={() => handleNavigate(servico)}>
+                        <Image
+                          source={{ uri: servico.user.thumbnail_url }}
+                          style={styles.thumbnail}
+                        ></Image>
+                        <View style={styles.resultData}>
+                          <Text style={styles.resultNameText}>
+                            {servico.nomeService}
+                          </Text>
+                          <View style={styles.resultDataRate}></View>
+                          <Text style={styles.resultText}>
+                            {servico.user.category}
+                          </Text>
+                          <Text style={styles.resultText}>
+                            {servico.user.address}. {servico.user.neighborhood},{" "}
+                            {servico.user.city}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </ScrollView>
                   )}
                 />
@@ -145,11 +147,6 @@ export default function SearchResult({ navigation }) {
                           {partner.city}
                         </Text>
                       </View>
-                      {/* Comentei pois este botão não faz o menor sentido pra mim 
-
-              <TouchableOpacity onPress={handleNavigation} style={styles.btn}>
-                <Text style={styles.btnText}>VOLTAR</Text>
-              </TouchableOpacity> */}
                     </ScrollView>
                   )}
                 />
