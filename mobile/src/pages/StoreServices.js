@@ -47,7 +47,7 @@ export default function StoreServices({ navigation }) {
   }, []);
 
   async function handleSubmit() {
-    navigation.navigate("BookRequest");
+    navigation.navigate("BookRequest", { services });
   }
 
   /*function handleNavigate(_id,servicos,user) {

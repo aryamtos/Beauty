@@ -7,6 +7,7 @@ import {
   StatusBar,
   FlatList,
   Image,
+  Picker,
   SafeAreaView,
   Alert,
   TextInput,
@@ -34,7 +35,14 @@ export default function BookRequest({ navigation }) {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState("");
-  //const service_id = route.params._id;
+  const [services, setServices] = useState([]);
+  const [service, setService] = useState(null);
+
+  useEffect(() => {
+    const { services } = route.params;
+
+    setServices(services);
+  }, []);
 
   // Funções para lidar com o picker de data e hora
   const onChange = (event, selectedDate) => {
@@ -75,7 +83,7 @@ export default function BookRequest({ navigation }) {
 
     try {
       const response = await api.post(
-        `/service/${service_id}/bookings`,
+        `/service/${service._id}/bookings`,
         {
           date,
         },
@@ -97,6 +105,23 @@ export default function BookRequest({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.inputText}>Selecione o serviço</Text>
+      <Picker
+        selectedValue={service}
+        style={{ height: 50, width: "100%" }}
+        onValueChange={(itemValue, itemIndex) => {
+          setService(itemValue);
+        }}
+      >
+        {services.map((service) => (
+          <Picker.Item
+            color="#777"
+            key={service._id}
+            label={service.nomeService}
+            value={service}
+          />
+        ))}
+      </Picker>
       <TouchableOpacity style={styles.input} onPress={showDatepicker}>
         <Text style={styles.inputText}>Selecione a Data</Text>
       </TouchableOpacity>
