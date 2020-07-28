@@ -23,9 +23,28 @@ module.exports = {
     const { type } = req.query;
 
     if (type) {
-      const services = await Service.find({ parte: type });
+      const services = await Service.find({ parte: type }).populate(
+        "user",
+        "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail servicos"
+      );
+      const partners = [];
 
-      return res.json(services);
+      await Promise.all(
+        services.map((service) => {
+          let isRepeated = false;
+          for (let partner of partners) {
+            if (partner._id === service.user._id) {
+              isRepeated = true;
+              break;
+            }
+          }
+          if (isRepeated === false) {
+            partners.push(service.user);
+          }
+        })
+      );
+
+      return res.json(partners);
     }
 
     // const services = await Service.find();

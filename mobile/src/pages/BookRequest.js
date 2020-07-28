@@ -34,7 +34,7 @@ export default function BookRequest({ navigation }) {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState("");
-  const service_id = route.params._id;
+  //const service_id = route.params._id;
 
   // Funções para lidar com o picker de data e hora
   const onChange = (event, selectedDate) => {

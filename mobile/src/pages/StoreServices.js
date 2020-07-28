@@ -23,17 +23,31 @@ export default function StoreServices({ navigation }) {
   const [categoria, setCategoria] = useState([]);
   const [tipos, setTipos] = useState([]);
   const [date, setDate] = useState("");
+  const [services, setServices] = useState([]);
   const servico = route.params.servico;
 
-  /* useEffect(() => {
+  useEffect(() => {
+    async function handleInit() {
+      const token = await AsyncStorage.getItem("token");
 
-        handleSubmit();
-    }, []);*/
+      try {
+        const response = await api.get("/partner/service/index", {
+          headers: { user_id: servico._id, token_access: token },
+        });
+
+        if (response.data) {
+          setServices(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    handleInit();
+  }, []);
+
   async function handleSubmit() {
-    const response = await api.get(`/service/${servico._id}`);
-    setTipos(response.data);
-    const { _id } = response.data;
-    navigation.navigate("BookRequest", { _id });
+    navigation.navigate("BookRequest");
   }
 
   /*function handleNavigate(_id,servicos,user) {
@@ -41,20 +55,26 @@ export default function StoreServices({ navigation }) {
     }*/
   return (
     <View style={styles.container}>
-      <View style={styles.service}>
-        <View style={styles.leftSide}>
-          <Text style={styles.serviceBoldText}>{servico.nomeService}</Text>
-          <Text style={styles.serviceNormalText}>{servico.parte}</Text>
-          <Text style={styles.serviceNormalText}></Text>
-        </View>
-        <View style={styles.rightSide}>
-          <Text style={styles.servicePrice}>R${servico.preco}</Text>
-          <Text style={styles.servicePrice}>R${servico.tempo}</Text>
-        </View>
-      </View>
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.buttonText}>Solicitar Serviço</Text>
       </TouchableOpacity>
+      <FlatList
+        data={services}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View style={styles.service}>
+            <View style={styles.leftSide}>
+              <Text style={styles.serviceBoldText}>{item.nomeService}</Text>
+              <Text style={styles.serviceNormalText}>{item.parte}</Text>
+              <Text style={styles.serviceNormalText}></Text>
+            </View>
+            <View style={styles.rightSide}>
+              <Text style={styles.servicePrice}>R${item.preco}</Text>
+              <Text style={styles.servicePrice}>{item.tempo} min</Text>
+            </View>
+          </View>
+        )}
+      />
     </View>
   );
 }
@@ -113,5 +133,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 2,
     marginTop: 15,
+    marginBottom: 15,
   },
 });

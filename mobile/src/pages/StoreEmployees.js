@@ -9,15 +9,13 @@ export default function StoreEmployees({ navigation }) {
 
   useEffect(() => {
     async function handleInit() {
-      if (route) {
-        const service = route.params.servico;
-
-        const response = await api.get(`/professional/${service._id}`);
-
-        if (response) {
-          setProfessionals(response.data.professionals);
-        }
-      }
+      // if (route) {
+      //   const service = route.params.servico;
+      //   const response = await api.get(`/professional/${service._id}`);
+      //   if (response) {
+      //     setProfessionals(response.data.professionals);
+      //   }
+      // }
     }
 
     handleInit();

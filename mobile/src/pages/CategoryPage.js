@@ -38,28 +38,23 @@ export default function CategoryPage({ navigation }) {
       const response = await api.get("/partner/service/showuservices", {
         params: { type },
       });
-      let servicos = response.data;
+      let partners = response.data;
 
-      for (let servico of servicos) {
-        const user = await api.get(`/partner/${servico.user}`, {
-          headers: {
-            token_access: token,
-          },
-        });
+      // for (let servico of servicos) {
+      //   const user = await api.get(`/partner/${servico.user}`, {
+      //     headers: {
+      //       token_access: token,
+      //     },
+      //   });
 
-        servico.user = user.data;
-      }
+      //   servico.user = user.data;
+      // }
 
-      setServicos(servicos);
+      setServicos(partners);
     }
 
     loadProducts();
   }, []);
-
-  useEffect(() => {
-    if (servicos[0] && servicos[0].user)
-      console.log(servicos[servicos.length - 1].user.thumbnail_url);
-  }, [servicos]);
 
   function handleNavigate(servico) {
     navigation.navigate("StoreProfile", { servico });
@@ -99,24 +94,23 @@ export default function CategoryPage({ navigation }) {
               style={styles.result}
             >
               <View style={styles.resultData}>
-                {servico.user.thumbnail_url ? (
+                {servico.thumbnail_url ? (
                   <View>
                     <Image
                       style={styles.thumbnail}
-                      source={{ uri: servico.user.thumbnail_url }}
+                      source={{ uri: servico.thumbnail_url }}
                     />
                   </View>
                 ) : (
                   <Image style={styles.thumbnail} />
                 )}
                 <Text style={styles.resultNameText}>
-                  {servico.user.enterpriseName}
+                  {servico.enterpriseName}
                 </Text>
                 <View style={styles.resultDataRate}></View>
-                <Text style={styles.resultText}>{servico.user.category}</Text>
+                <Text style={styles.resultText}>{servico.category}</Text>
                 <Text style={styles.resultText}>
-                  {servico.user.address}. {servico.user.neighborhood},{" "}
-                  {servico.user.city}
+                  {servico.address}. {servico.neighborhood}, {servico.city}
                 </Text>
               </View>
             </TouchableOpacity>

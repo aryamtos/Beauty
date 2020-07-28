@@ -48,7 +48,7 @@ export default function StoreDetails() {
       const token = await AsyncStorage.getItem("token");
 
       try {
-        let response = await api.get(`/partner/${service.user._id}`, {
+        let response = await api.get(`/partner/${service._id}`, {
           headers: { token_access: token },
         });
         if (response.data) {
@@ -56,7 +56,7 @@ export default function StoreDetails() {
         }
 
         response = await api.get("/businesshour", {
-          headers: { partner_id: service.user._id },
+          headers: { partner_id: service._id },
         });
 
         if (response.data) {

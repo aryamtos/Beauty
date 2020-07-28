@@ -69,33 +69,54 @@ export default function StoreProfile({ navigation }) {
   const route = useRoute();
   const [date, setDate] = useState("");
   const [tipos, setTipos] = useState([]);
+  const [services, setServices] = useState([]);
   let servico = route.params.servico;
+
+  useEffect(() => {
+    async function handleInit() {
+      const token = await AsyncStorage.getItem("token");
+
+      try {
+        const response = await api.get("/partner/service/index", {
+          headers: { user_id: servico._id, token_access: token },
+        });
+
+        if (response.data) {
+          setServices(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    handleInit();
+  }, []);
 
   async function handleSubmit() {
     const response = await api.get(`/service/${servico._id}`);
     setDate(response.data);
   }
 
-  useEffect(() => {
-    async function handleInfo() {
-      const token = await AsyncStorage.getItem("token");
+  // useEffect(() => {
+  //   async function handleInfo() {
+  //     const token = await AsyncStorage.getItem("token");
 
-      const user = await api.get(`/partner/${servico.user._id}`, {
-        headers: {
-          token_access: token,
-        },
-      });
+  //     const user = await api.get(`/partner/${servico.user._id}`, {
+  //       headers: {
+  //         token_access: token,
+  //       },
+  //     });
 
-      servico.user = user.data;
-    }
-    handleInfo();
-    handleSubmit();
-  }, []);
+  //     servico.user = user.data;
+  //   }
+  //   handleInfo();
+  //   handleSubmit();
+  // }, []);
 
   return (
     <>
       <ImageBackground
-        source={{ uri: servico.user.thumbnail_url }}
+        source={{ uri: servico.thumbnail_url }}
         style={styles.resultHeader}
       >
         <LinearGradient
@@ -105,12 +126,9 @@ export default function StoreProfile({ navigation }) {
       </ImageBackground>
       <View style={styles.container}>
         <View style={styles.resultData}>
-          <Text style={styles.resultNameText}>
-            {servico.user.enterpriseName}
-          </Text>
+          <Text style={styles.resultNameText}>{servico.enterpriseName}</Text>
           <Text style={styles.resultText}>
-            {servico.user.address}. {servico.user.neighborhood},{" "}
-            {servico.user.city}
+            {servico.address}. {servico.neighborhood}, {servico.city}
           </Text>
           <View style={styles.resultDataRate}>
             <Icon
@@ -120,7 +138,7 @@ export default function StoreProfile({ navigation }) {
               style={{ marginTop: 2, marginRight: 2 }}
             />
             <Text style={styles.resultText}>4,0</Text>
-            <Text style={styles.resultText}>{servico.user.category}</Text>
+            <Text style={styles.resultText}>{servico.category}</Text>
           </View>
         </View>
         <StoreNav />

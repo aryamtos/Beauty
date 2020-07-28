@@ -13,7 +13,7 @@ module.exports = {
 
       var servicos = await Service.find(serviceQuery).populate(
         "user",
-        "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail"
+        "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail services"
       );
 
       results.services = servicos;
