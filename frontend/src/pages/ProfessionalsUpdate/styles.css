@@ -1,0 +1,14 @@
+h3 {
+  font-size: 15px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+input {
+  border-width: 0px !important;
+  border-bottom-width: 1px !important;
+}
