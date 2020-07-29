@@ -6,6 +6,8 @@ import api from "../../services/api";
 
 export default function Professionals() {
   const [professionals, setProfessionals] = useState([]);
+  const [wasUpdateSuccessful, setWasUpdateSuccessful] = useState(false);
+  const [wasRequestSent, setWasRequestSent] = useState(false);
 
   useEffect(() => {
     async function handleInit() {
@@ -20,14 +22,6 @@ export default function Professionals() {
       } catch (error) {
         console.log(error.response);
       }
-
-      setProfessionals((professionals) => [
-        ...professionals,
-        {
-          name: "",
-          professionalFunction: "",
-        },
-      ]);
     }
 
     handleInit();
@@ -37,8 +31,23 @@ export default function Professionals() {
     console.log(professionals);
   }, [professionals]);
 
-  function handleSubmit() {
-    //
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const partner_id = localStorage.getItem("partner");
+    try {
+      const response = await api.put(`/professional/massive/${partner_id}`, {
+        professionals,
+      });
+
+      if (response.status === 200) {
+        setWasRequestSent(true);
+        setWasUpdateSuccessful(true);
+      }
+    } catch (error) {
+      setWasRequestSent(true);
+      setWasUpdateSuccessful(false);
+    }
   }
 
   return (
@@ -81,6 +90,9 @@ export default function Professionals() {
               />
             </div>
           ))}
+        {wasUpdateSuccessful && (
+          <p className="success">Profissionais atualizados com sucesso!</p>
+        )}
         <button type="submit" className="btn">
           Atualizar
         </button>
