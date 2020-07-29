@@ -14,6 +14,7 @@ import Delete from "./pages/Delete";
 // Criadas recentemente, podem conter erros :)
 import PartnerUpdate from "./pages/PartnerUpdate";
 import BusinessHoursUpdate from "./pages/BusinessHoursUpdate";
+import ProfessionalsUpdate from "./pages/ProfessionalsUpdate";
 
 export default function Routes() {
   return (
@@ -27,6 +28,7 @@ export default function Routes() {
         <Route path="/delete" component={Delete} />
         <Route path="/partner-update" component={PartnerUpdate} />
         <Route path="/business-hours-update" component={BusinessHoursUpdate} />
+        <Route path="/professionals-update" component={ProfessionalsUpdate} />
 
         <Route path="/admin" component={Admin} />
         <Route path="/showusers" component={DashUsers} />

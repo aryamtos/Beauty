@@ -121,7 +121,7 @@ export default function Dashboard({ navigation }) {
             </ImageBackground>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handleNavigation("Depila")}
+            onPress={() => handleNavigation("Depilação")}
             style={styles.categoria}
           >
             <ImageBackground source={depila} style={styles.categoriaImage}>
@@ -134,7 +134,7 @@ export default function Dashboard({ navigation }) {
             </ImageBackground>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handleNavigation("Manicure")}
+            onPress={() => handleNavigation("Manicure e pedicure")}
             style={styles.categoria}
           >
             <ImageBackground source={manicure} style={styles.categoriaImage}>

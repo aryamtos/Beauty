@@ -33,6 +33,9 @@ export default function Dashboard({ history }) {
       case 2:
         history.push("/business-hours-update");
         break;
+      case 3:
+        history.push("/professionals-update");
+        break;
       default:
         break;
     }
@@ -42,10 +45,13 @@ export default function Dashboard({ history }) {
     <>
       <div className="headerButtonsContainer">
         <button className="headerButton" onClick={() => handleNavigate(1)}>
-          Alterar Perfil
+          Perfil
         </button>
         <button className="headerButton" onClick={() => handleNavigate(2)}>
-          Alterar Horários
+          Horários
+        </button>
+        <button className="headerButton" onClick={() => handleNavigate(3)}>
+          Profissionais
         </button>
       </div>
       <h2>Seus serviços</h2>
