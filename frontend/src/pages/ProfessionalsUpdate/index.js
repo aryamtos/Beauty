@@ -4,7 +4,7 @@ import "./styles.css";
 
 import api from "../../services/api";
 
-export default function Professionals() {
+export default function Professionals({ history }) {
   const [professionals, setProfessionals] = useState([]);
   const [wasUpdateSuccessful, setWasUpdateSuccessful] = useState(false);
   const [wasRequestSent, setWasRequestSent] = useState(false);
@@ -50,9 +50,16 @@ export default function Professionals() {
     }
   }
 
+  function handleNavigation() {
+    history.push("/professional-store");
+  }
+
   return (
     <div>
       <h2>Profissionais</h2>
+      <button onClick={handleNavigation} className="btn">
+        Novo Profissional
+      </button>
       <form onSubmit={handleSubmit}>
         {professionals[0] &&
           professionals.map((professional, index) => (

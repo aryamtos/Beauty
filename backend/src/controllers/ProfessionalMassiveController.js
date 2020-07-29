@@ -2,10 +2,6 @@ const Professional = require("../models/Professional");
 const UserPartner = require("../models/UserPartner");
 
 module.exports = {
-  async store(req, res) {
-    //
-  },
-
   async update(req, res) {
     const { professionals } = req.body;
     const { id } = req.params;
