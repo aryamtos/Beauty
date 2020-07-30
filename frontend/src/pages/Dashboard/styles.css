@@ -110,3 +110,7 @@ h2 {
 .headerButton:hover {
   background: #993399b9;
 }
+
+.serviceName {
+  font-size: 15pt;
+}

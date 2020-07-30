@@ -59,7 +59,7 @@ export default function Dashboard({ history }) {
         {services.map((service) => (
           <div className="item" key={service._id}>
             <div>
-              <h3>{service.nomeService}</h3>
+              <h3 className="serviceName">{service.nomeService}</h3>
               <span>{service.parte}</span>
             </div>
 

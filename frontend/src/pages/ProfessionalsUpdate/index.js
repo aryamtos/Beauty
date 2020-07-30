@@ -64,7 +64,7 @@ export default function Professionals({ history }) {
         {professionals[0] &&
           professionals.map((professional, index) => (
             <div className="inputContainer">
-              <h3>Profissional #{index + 1}</h3>
+              <h3 className="professional-label">Profissional #{index + 1}</h3>
               <label htmlFor="name">Nome</label>
               <input
                 type="text"
