@@ -43,6 +43,14 @@ userController.prototype.post = async (req, res) => {
       validation: _validationContract.errors(),
     });
   }
+
+  if (_validationContract.errors().length > 0) {
+    return res.status(400).send({
+      message: "Não foi possível efetuar o login",
+      validation: _validationContract.errors(),
+    });
+  }
+
   req.body.senha = md5(req.body.senha);
   const { nome, cpf, telefone, email, senha } = req.body;
   const { partner_id } = req.headers;

@@ -7,7 +7,7 @@ const UserAcess = new schema(
   {
     nome: { type: String, required: true, trim: true },
     cpf: { type: String, required: true },
-    telefone: { type: Number },
+    telefone: { type: String },
     foto: { type: String },
     ativo: { type: Boolean },
     email: { type: String, required: true, unique: true },
