@@ -51,15 +51,18 @@ partnerController.prototype.post = async (req, res) => {
 
   //Criptografa a senha do usuário
   req.body.senha = md5(req.body.senha);
-  const { filename } = req.file;
-  console.log(req);
+  if (req.file) {
+    const { filename } = req.file;
+  } else {
+    const filename = undefined;
+  }
 
   if (!_validationContract.isValid()) {
     res
       .status(400)
       .send({
         message: "Existem dados inválidos na sua requisição",
-        validation: validationContract.errors(),
+        validation: _validationContract.errors(),
       })
       .end();
     return;

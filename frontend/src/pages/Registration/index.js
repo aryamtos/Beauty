@@ -18,8 +18,11 @@ export default function Registration({ history }) {
   const [senhaConfirmacao, setSenhaConfirmacao] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
 
+  // Erros
+  const [requestFailed, setRequestFailed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const preview = useMemo(() => {
-    console.log(thumbnail);
     return thumbnail ? URL.createObjectURL(thumbnail) : null;
   }, [thumbnail]);
 
@@ -55,7 +58,8 @@ export default function Registration({ history }) {
         }
       }
     } catch (error) {
-      console.log(error.response);
+      setRequestFailed(true);
+      setErrorMessage(error.response.data.validation[0].message);
     }
   }
   return (
@@ -209,6 +213,7 @@ export default function Registration({ history }) {
           value={senhaConfirmacao}
           onChange={(event) => setSenhaConfirmacao(event.target.value)}
         />
+        {requestFailed && <p className="error">*{errorMessage}</p>}
         <button type="submit" className="btn">
           ENTRAR
         </button>
