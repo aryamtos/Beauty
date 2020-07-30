@@ -120,6 +120,7 @@ routes.delete("/partner/service/delete/:id", auth, _product.delete);
 routes.get("/partner/service/showuservices", DashboardController.getAll);
 
 //Rotas de recuperação de senha
+routes.put("/password-reset/:id", PasswordController.update);
 routes.post("/password-reset", PasswordController.store);
 
 module.exports = routes;

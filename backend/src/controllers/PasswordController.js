@@ -1,6 +1,7 @@
 const User = require("../models/UserAcess");
 const UserPartner = require("../models/UserPartner");
 const PasswordReset = require("../models/PasswordReset");
+const md5 = require("md5");
 
 const nodemailer = require("nodemailer");
 
@@ -14,7 +15,7 @@ module.exports = {
       passwordReset = await PasswordReset.create({ type: "user", user });
     } else if (type === "partner") {
       const user = await UserPartner.findOne({ email });
-      passwordReset = await PasswordReset.create({ type: "user", user });
+      passwordReset = await PasswordReset.create({ type: "partner", user });
     }
 
     if (passwordReset) {
@@ -52,7 +53,34 @@ module.exports = {
   },
 
   async update(req, res) {
-    //
+    const { id } = req.params;
+    let { password } = req.body;
+
+    password = md5(password);
+
+    try {
+      const resetRequest = await PasswordReset.findById(id);
+
+      if (resetRequest.type === "user") {
+        const user = await User.findById(resetRequest.user);
+        user.senha = password;
+        await user.save();
+
+        await resetRequest.remove();
+        return res.status(200).json(user);
+      } else if (resetRequest.type === "partner") {
+        const user = await UserPartner.findById(resetRequest.user);
+        user.senha = password;
+        await user.save();
+
+        await resetRequest.remove();
+        return res.status(200).json(user);
+      }
+    } catch (error) {
+      return res
+        .status(400)
+        .json({ message: "Não foi possível alterar a senha!" });
+    }
   },
 
   async destroy(req, res) {

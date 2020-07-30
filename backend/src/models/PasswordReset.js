@@ -7,10 +7,6 @@ const PasswordResetSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    partner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "UserPartner",
-    },
   },
   { timestamps: true }
 );
