@@ -5,6 +5,8 @@ import "./styles.css";
 export default function Login({ history }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [requestFailed, setRequestFailed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -24,7 +26,8 @@ export default function Login({ history }) {
         history.push("/admin");
       }
     } catch (error) {
-      console.log(error.response);
+      setRequestFailed(true);
+      setErrorMessage(error.response.data.validation[0].message);
     }
   }
   return (
@@ -42,7 +45,6 @@ export default function Login({ history }) {
           placeholder="Seu email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          required
         />
         <label htmlFor="senha">Senha</label>
         <input
@@ -51,8 +53,8 @@ export default function Login({ history }) {
           placeholder="Sua senha"
           value={senha}
           onChange={(event) => setSenha(event.target.value)}
-          required
         />
+        {requestFailed && <p className="error">*{errorMessage}</p>}
         <button type="submit" className="btn">
           ENTRAR
         </button>
