@@ -1,20 +1,23 @@
 const User = require("../models/UserAcess");
 const UserPartner = require("../models/UserPartner");
+const PasswordReset = require("../models/PasswordReset");
 
 const nodemailer = require("nodemailer");
 
 module.exports = {
   async store(req, res) {
     const { email, type } = req.body;
-    var user;
+    let passwordReset;
 
     if (type === "user") {
-      user = await User.findOne({ email });
+      const user = await User.findOne({ email });
+      passwordReset = await PasswordReset.create({ type: "user", user });
     } else if (type === "partner") {
-      user = await UserPartner.findOne({ email });
+      const user = await UserPartner.findOne({ email });
+      passwordReset = await PasswordReset.create({ type: "user", user });
     }
 
-    if (user) {
+    if (passwordReset) {
       let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -29,8 +32,7 @@ module.exports = {
         from: "Beauty Menu <beautymenumessages@gmail.com>",
         to: "bvds494@gmail.com",
         subject: "Recuperação de senha",
-        html:
-          "<h1 style='color:#000;'>Olá,</h1><br/><br/><p style='font-size:14pt;color:#000;'>Recebemos sua solicitação de recuperação da conta, e pedimos que acesse <a href='www.google.com'>este link</a> para redefinir sua senha.</p>",
+        html: `<h1 style='color:#000;'>Olá,</h1><br/><br/><p style='font-size:14pt;color:#000;'>Recebemos sua solicitação de recuperação da conta, e pedimos que acesse <a href='http://localhost:3000/reset/${passwordReset._id}'>este link</a> para redefinir sua senha.</p>`,
       });
 
       if (info) {
