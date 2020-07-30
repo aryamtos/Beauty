@@ -16,6 +16,7 @@ const BookingController = require("./controllers/BookingController");
 const PartnerController = require("./controllers/PartnerRegisController");
 const BusinessHourMassiveController = require("./controllers/BusinessHourMassiveController");
 const ProfessionalMassiveController = require("./controllers/ProfessionalMassiveController");
+const PasswordController = require("./controllers/PasswordController");
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -117,5 +118,8 @@ routes.get("/partner/service/index", auth, DashboardController.show);
 routes.put("/partner/service/:id", auth, _product.put);
 routes.delete("/partner/service/delete/:id", auth, _product.delete);
 routes.get("/partner/service/showuservices", DashboardController.getAll);
+
+//Rotas de recuperação de senha
+routes.post("/password-reset", PasswordController.store);
 
 module.exports = routes;
