@@ -1,9 +1,11 @@
-{ "main": "src/server.js",
+{
+  "main": "src/server.js",
   "scripts": {
     "dev": "nodemon"
   },
   "dependencies": {
     "date-fns": "^2.13.0",
+    "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
     "md5": "^2.2.1",
     "node-filter": "0.0.1",

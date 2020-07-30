@@ -8,6 +8,7 @@ const path = require("path");
 const http = require("http");
 const routes = require("./routers");
 const variables = require("../src/config/variables");
+require("dotenv").config();
 
 //importando o express
 

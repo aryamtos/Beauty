@@ -20,8 +20,8 @@ module.exports = {
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-          user: "beautymenumessages@gmail.com",
-          pass: "dAqvQDzf5UScDQ7",
+          user: `${process.env.EMAIL_USER}`,
+          pass: `${process.env.EMAIL_PASS}`,
         },
       });
 
