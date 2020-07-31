@@ -17,6 +17,7 @@ import BusinessHoursUpdate from "./pages/BusinessHoursUpdate";
 import ProfessionalsUpdate from "./pages/ProfessionalsUpdate";
 import NewProfessional from "./pages/NewProfessional";
 import Forgot from "./pages/Forgot";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function Routes() {
   return (
@@ -24,6 +25,7 @@ export default function Routes() {
       <Switch>
         <Route path="/" exact component={Login} />
         <Route path="/forgot" component={Forgot} />
+        <Route path="/reset/:id" component={ResetPassword} />
         <Route path="/register" component={Registration} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/new" component={New} />
