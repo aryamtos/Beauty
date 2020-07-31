@@ -12,10 +12,14 @@ module.exports = {
 
     if (type === "user") {
       const user = await User.findOne({ email });
-      passwordReset = await PasswordReset.create({ type: "user", user });
+      if (user) {
+        passwordReset = await PasswordReset.create({ type: "user", user });
+      }
     } else if (type === "partner") {
       const user = await UserPartner.findOne({ email });
-      passwordReset = await PasswordReset.create({ type: "partner", user });
+      if (user) {
+        passwordReset = await PasswordReset.create({ type: "partner", user });
+      }
     }
 
     if (passwordReset) {
