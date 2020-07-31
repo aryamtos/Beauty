@@ -1,25 +1,25 @@
-.link{
-    margin-top: -70px !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.link {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-a{  
-    text-align: center;
-    margin-right: 10px;
-    border: 100px;
-    font-weight: bold;
-   
-    cursor: pointer;
-    background-color: white;
+.link button {
+  text-align: center;
+  /*margin-right: 10px;*/
+  margin-bottom: 5px;
+  border: 100px;
+  font-weight: bold;
+
+  cursor: pointer;
+  background-color: white;
 }
-a:link {
-    color:#993399;
-    text-decoration:none;
+.link button:link {
+  color: #993399;
+  text-decoration: none;
 }
-  
-a:hover {
-    color:#000000;
-    text-decoration:underline;
+
+.link button:hover {
+  color: #000000;
+  text-decoration: underline;
 }
- 

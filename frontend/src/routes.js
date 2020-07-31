@@ -16,12 +16,14 @@ import PartnerUpdate from "./pages/PartnerUpdate";
 import BusinessHoursUpdate from "./pages/BusinessHoursUpdate";
 import ProfessionalsUpdate from "./pages/ProfessionalsUpdate";
 import NewProfessional from "./pages/NewProfessional";
+import Forgot from "./pages/Forgot";
 
 export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Login} />
+        <Route path="/forgot" component={Forgot} />
         <Route path="/register" component={Registration} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/new" component={New} />

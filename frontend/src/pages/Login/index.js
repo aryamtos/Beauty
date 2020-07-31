@@ -60,7 +60,10 @@ export default function Login({ history }) {
         </button>
       </form>
       <div className="link">
-        <a href="http://localhost:3000/register">Não tenho cadastro</a>
+        <button onClick={() => history.push("Register")}>
+          Não tenho cadastro
+        </button>
+        <button onClick={() => history.push("Forgot")}>Esqueci a senha</button>
       </div>
     </>
   );
