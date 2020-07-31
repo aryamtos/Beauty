@@ -52,9 +52,9 @@ partnerController.prototype.post = async (req, res) => {
   //Criptografa a senha do usuário
   req.body.senha = md5(req.body.senha);
   if (req.file) {
-    const { filename } = req.file;
+    var { filename } = req.file;
   } else {
-    const filename = undefined;
+    var filename = undefined;
   }
 
   if (!_validationContract.isValid()) {

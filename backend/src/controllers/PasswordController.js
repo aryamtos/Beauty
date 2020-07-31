@@ -35,7 +35,7 @@ module.exports = {
 
       let info = await transporter.sendMail({
         from: "Beauty Menu <beautymenumessages@gmail.com>",
-        to: "bvds494@gmail.com",
+        to: `${email}`,
         subject: "Recuperação de senha",
         html: `<h1 style='color:#000;'>Olá,</h1><br/><br/><p style='font-size:14pt;color:#000;'>Recebemos sua solicitação de recuperação da conta, e pedimos que acesse <a href='http://localhost:3000/reset/${passwordReset._id}'>este link</a> para redefinir sua senha.</p>`,
       });
