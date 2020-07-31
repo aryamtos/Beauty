@@ -124,7 +124,9 @@ export default function Login({ navigation }) {
             <TouchableOpacity onPress={handleRegister}>
               <Text style={styles.footerText}>Criar conta</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={signIn}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Forgot", { type: "user" })}
+            >
               <Text style={styles.footerText}>Esqueci minha senha</Text>
             </TouchableOpacity>
           </View>

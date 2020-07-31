@@ -101,7 +101,9 @@ export default function Login({ navigation }) {
             <Text style={styles.textRegister}>CADASTRAR MEU NEGÓCIO</Text>
           </TouchableOpacity>
           <View style={styles.footer}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Forgot", { type: "partner" })}
+            >
               <Text style={styles.footerText}>Esqueci minha senha</Text>
             </TouchableOpacity>
           </View>

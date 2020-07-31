@@ -31,6 +31,7 @@ import BookRequest from "./pages/BookRequest";
 import ListAgendamentos from "./pages/ListAgendamentos";
 import Profile from "./pages/Profile";
 import HistoryAgendamentos from "./pages/HistoryAgendamentos";
+import Forgot from "./pages/Forgot";
 
 import SpotList from "./components/SpotList";
 
@@ -331,6 +332,7 @@ function Routes({ navigation }) {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Index" component={Index} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Forgot" component={Forgot} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="PartnerLogin" component={PartnerLogin} />
         <Stack.Screen name="CategoryPage" component={categoryNave} />
