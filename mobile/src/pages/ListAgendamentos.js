@@ -138,6 +138,9 @@ export default function ListAgendamentos({ navigation }) {
                     <Text style={styles.listName}>{item.nameService}</Text>
                     <Text style={styles.listDate}>{item.date}</Text>
                   </View>
+                  <Text style={styles.listStatus}>
+                    {item.isApproved ? "Aprovado" : "Pendente"}
+                  </Text>
                   <TouchableOpacity
                     style={styles.cancelBtn}
                     onPress={() => handleCancelVerify(item._id)}
@@ -192,5 +195,10 @@ const styles = StyleSheet.create({
   },
   cancelBtn: {
     padding: 5,
+  },
+  listStatus: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#777",
   },
 });
