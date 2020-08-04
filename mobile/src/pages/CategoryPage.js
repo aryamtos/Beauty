@@ -40,6 +40,7 @@ export default function CategoryPage({ navigation }) {
       });
       let partners = response.data;
 
+      console.log(partners);
       // for (let servico of servicos) {
       //   const user = await api.get(`/partner/${servico.user}`, {
       //     headers: {

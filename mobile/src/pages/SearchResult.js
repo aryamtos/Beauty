@@ -76,10 +76,22 @@ export default function SearchResult({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.containerText}>Resultados</Text>
       <View style={styles.optionsContainer}>
-        <TouchableOpacity style={styles.btn} onPress={() => handleListShow(1)}>
+        <TouchableOpacity
+          style={[
+            styles.btn,
+            showServices && { borderBottomColor: "#ccc", borderBottomWidth: 1 },
+          ]}
+          onPress={() => handleListShow(1)}
+        >
           <Text style={styles.btnText}>Serviços</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={() => handleListShow(2)}>
+        <TouchableOpacity
+          style={[
+            styles.btn,
+            showStores && { borderBottomColor: "#ccc", borderBottomWidth: 1 },
+          ]}
+          onPress={() => handleListShow(2)}
+        >
           <Text style={styles.btnText}>Estabelecimentos</Text>
         </TouchableOpacity>
       </View>
