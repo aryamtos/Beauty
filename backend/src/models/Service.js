@@ -21,7 +21,7 @@ const serviceModel = new mongoose.Schema(
 );
 
 serviceModel.virtual("foto_url").get(function () {
-  return `http://192.168.1.109:3000/files/${this.foto}`;
+  return `http://192.168.0.106:3000/files/${this.foto}`;
 });
 serviceModel.pre("save", (next) => {
   let agora = new Date();
