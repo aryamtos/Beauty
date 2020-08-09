@@ -20,13 +20,14 @@ const serviceModel = new mongoose.Schema(
   { versionKey: false }
 );
 
-serviceModel.virtual("foto_url").get(function () {
-  return `http://192.168.0.106:3000/files/${this.foto}`;
-});
 serviceModel.pre("save", (next) => {
   let agora = new Date();
   if (!this.dataCriacao) this.dataCriacao = agora;
   next();
+});
+
+serviceModel.virtual("foto_url").get(function () {
+  return `http://192.168.0.106:3000/files/${this.foto}`;
 });
 
 module.exports = mongoose.model("Service", serviceModel);

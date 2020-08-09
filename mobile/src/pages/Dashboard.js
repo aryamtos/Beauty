@@ -26,6 +26,8 @@ import api from "../services/api";
 export default function Dashboard({ navigation }) {
   const [isTokenValid, setIsTokenValid] = useState(null);
   const [nomeService, setNomeService] = useState("");
+  const [serviceType, setServiceType] = useState("");
+  const [wasTypeSet, setWasTypeSet] = useState(false);
 
   useEffect(() => {
     async function handleInit() {
@@ -61,6 +63,12 @@ export default function Dashboard({ navigation }) {
     }
   }, [isTokenValid]);
 
+  useEffect(() => {
+    if (serviceType !== "") {
+      setWasTypeSet(true);
+    }
+  }, [serviceType]);
+
   const route = useRoute();
   const [categoriaServico, setCategoria] = useState([]);
 
@@ -68,7 +76,10 @@ export default function Dashboard({ navigation }) {
     navigation.navigate("Services");
   }
   async function handleNavigation(type) {
-    navigation.navigate("CategoryPage", { screen: "Início", params: { type } });
+    navigation.navigate("CategoryPage", {
+      screen: "Início",
+      params: { type, serviceType },
+    });
   }
 
   async function handleSubmit() {
@@ -81,71 +92,94 @@ export default function Dashboard({ navigation }) {
     <>
       {isTokenValid ? (
         <View style={styles.container}>
-          <View style={styles.busca}>
-            <TouchableOpacity onPress={handleSubmit} style={styles.btnLupa}>
-              <Image source={lupa} style={styles.buscaIcon} />
-            </TouchableOpacity>
-            <TextInput
-              style={styles.buscaText}
-              placeholder="Buscar serviços ou estabelecimentos"
-              value={nomeService}
-              onChangeText={setNomeService}
-              onSubmitEditing={handleSubmit}
-            />
-          </View>
-          <Text style={styles.containerText}>Categorias</Text>
-          <TouchableOpacity
-            onPress={() => handleNavigation("Cabelo")}
-            style={styles.categoria}
-          >
-            <ImageBackground source={corte} style={styles.categoriaImage}>
-              <LinearGradient
-                colors={["transparent", "white"]}
-                style={styles.gradientEffect}
+          {wasTypeSet ? (
+            <>
+              <View style={styles.busca}>
+                <TouchableOpacity onPress={handleSubmit} style={styles.btnLupa}>
+                  <Image source={lupa} style={styles.buscaIcon} />
+                </TouchableOpacity>
+                <TextInput
+                  style={styles.buscaText}
+                  placeholder="Buscar serviços ou estabelecimentos"
+                  value={nomeService}
+                  onChangeText={setNomeService}
+                  onSubmitEditing={handleSubmit}
+                />
+              </View>
+              <Text style={styles.containerText}>Categorias</Text>
+              <TouchableOpacity
+                onPress={() => handleNavigation("Cabelo")}
+                style={styles.categoria}
               >
-                <Text style={styles.categoriaText}>Corte</Text>
-              </LinearGradient>
-            </ImageBackground>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleNavigation("Rosto")}
-            style={styles.categoria}
-          >
-            <ImageBackground source={barba} style={styles.categoriaImage}>
-              <LinearGradient
-                colors={["transparent", "white"]}
-                style={styles.gradientEffect}
+                <ImageBackground source={corte} style={styles.categoriaImage}>
+                  <LinearGradient
+                    colors={["transparent", "white"]}
+                    style={styles.gradientEffect}
+                  >
+                    <Text style={styles.categoriaText}>Corte</Text>
+                  </LinearGradient>
+                </ImageBackground>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleNavigation("Rosto")}
+                style={styles.categoria}
               >
-                <Text style={styles.categoriaText}>Barba</Text>
-              </LinearGradient>
-            </ImageBackground>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleNavigation("Depilação")}
-            style={styles.categoria}
-          >
-            <ImageBackground source={depila} style={styles.categoriaImage}>
-              <LinearGradient
-                colors={["transparent", "white"]}
-                style={styles.gradientEffect}
+                <ImageBackground source={barba} style={styles.categoriaImage}>
+                  <LinearGradient
+                    colors={["transparent", "white"]}
+                    style={styles.gradientEffect}
+                  >
+                    <Text style={styles.categoriaText}>Barba</Text>
+                  </LinearGradient>
+                </ImageBackground>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleNavigation("Depilação")}
+                style={styles.categoria}
               >
-                <Text style={styles.categoriaText}>Depilação</Text>
-              </LinearGradient>
-            </ImageBackground>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleNavigation("Manicure e pedicure")}
-            style={styles.categoria}
-          >
-            <ImageBackground source={manicure} style={styles.categoriaImage}>
-              <LinearGradient
-                colors={["transparent", "white"]}
-                style={styles.gradientEffect}
+                <ImageBackground source={depila} style={styles.categoriaImage}>
+                  <LinearGradient
+                    colors={["transparent", "white"]}
+                    style={styles.gradientEffect}
+                  >
+                    <Text style={styles.categoriaText}>Depilação</Text>
+                  </LinearGradient>
+                </ImageBackground>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleNavigation("Manicure e pedicure")}
+                style={styles.categoria}
               >
-                <Text style={styles.categoriaText}>Manicure</Text>
-              </LinearGradient>
-            </ImageBackground>
-          </TouchableOpacity>
+                <ImageBackground
+                  source={manicure}
+                  style={styles.categoriaImage}
+                >
+                  <LinearGradient
+                    colors={["transparent", "white"]}
+                    style={styles.gradientEffect}
+                  >
+                    <Text style={styles.categoriaText}>Manicure</Text>
+                  </LinearGradient>
+                </ImageBackground>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <Text style={styles.typeTitle}>Que tipo de serviço procura?</Text>
+              <TouchableOpacity
+                style={styles.type}
+                onPress={() => setServiceType("Salão")}
+              >
+                <Text style={styles.typeText}>Salão</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.type}
+                onPress={() => setServiceType("Autônomo")}
+              >
+                <Text style={styles.typeText}>Delivery de Beleza</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       ) : null}
     </>
@@ -216,5 +250,25 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     alignItems: "flex-end",
     justifyContent: "flex-start",
+  },
+  typeTitle: {
+    alignSelf: "center",
+    fontSize: 30,
+    color: "#511d68",
+    marginBottom: 40,
+  },
+  type: {
+    height: 40,
+    marginBottom: 20,
+    borderColor: "#511d68",
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    justifyContent: "center",
+  },
+  typeText: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#777",
   },
 });

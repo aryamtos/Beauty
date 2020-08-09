@@ -20,10 +20,12 @@ module.exports = {
    * Att, brenu
    */
   async getAll(req, res) {
-    const { type } = req.query;
+    const { type, serviceType } = req.query;
 
     if (type) {
-      const services = await Service.find({ parte: type }).populate(
+      const services = await Service.find({
+        parte: type,
+      }).populate(
         "user",
         "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail servicos"
       );
@@ -38,7 +40,7 @@ module.exports = {
               break;
             }
           }
-          if (isRepeated === false) {
+          if (isRepeated === false && service.user.category === serviceType) {
             partners.push(service.user);
           }
         })

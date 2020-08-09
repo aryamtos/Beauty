@@ -32,24 +32,13 @@ export default function CategoryPage({ navigation }) {
 
   useEffect(() => {
     async function loadProducts() {
-      const { type } = route.params;
+      const { type, serviceType } = route.params;
       const token = await AsyncStorage.getItem("token");
 
       const response = await api.get("/partner/service/showuservices", {
-        params: { type },
+        params: { type, serviceType },
       });
       let partners = response.data;
-
-      console.log(partners);
-      // for (let servico of servicos) {
-      //   const user = await api.get(`/partner/${servico.user}`, {
-      //     headers: {
-      //       token_access: token,
-      //     },
-      //   });
-
-      //   servico.user = user.data;
-      // }
 
       setServicos(partners);
     }
