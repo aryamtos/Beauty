@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useReducer } from "react";
 import { Image, StyleSheet, AsyncStorage } from "react-native";
 import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -336,7 +336,6 @@ function Routes({ navigation }) {
 
       if (token) {
         const user_type = await AsyncStorage.getItem("user_type");
-        console.log(user_type);
 
         if (user_type === "partner") {
           setIsPartner(true);
@@ -346,23 +345,32 @@ function Routes({ navigation }) {
           setHasToken(true);
         } else {
           setHasToken(false);
-          await AsyncStorage.removeItem("token");
+        }
+        while (token) {
+          let tokenRefresh = await AsyncStorage.getItem("token");
+
+          if (!tokenRefresh) {
+            setHasToken(false);
+            setIsPartner(false);
+            token = tokenRefresh;
+          }
         }
       } else {
+        setHasToken(false);
         while (!token) {
           token = await AsyncStorage.getItem("token");
         }
-        const user_type = await AsyncStorage.getItem("user_type");
-        if (user_type === "partner") {
-          setIsPartner(true);
-          setHasToken(true);
-        } else if (user_type === "user") {
-          setIsPartner(false);
-          setHasToken(true);
+        if (token) {
+          const user_type = await AsyncStorage.getItem("user_type");
+          if (user_type === "partner") {
+            setIsPartner(true);
+            setHasToken(true);
+          } else if (user_type === "user") {
+            setIsPartner(false);
+            setHasToken(true);
+          }
         }
       }
-
-      console.log(token);
     }
 
     verifyToken();
@@ -370,7 +378,12 @@ function Routes({ navigation }) {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        initialRouteName={
+          hasToken ? (isPartner ? "PartnerDashboard" : "Dashboard") : "Index"
+        }
+        screenOptions={{ headerShown: false }}
+      >
         {!hasToken && (
           <>
             <Stack.Screen name="Index" component={Index} />
@@ -379,23 +392,15 @@ function Routes({ navigation }) {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="PartnerLogin" component={PartnerLogin} />
             <Stack.Screen name="PartnerRegister" component={PartnerRegister} />
-            <Stack.Screen
-              name="PartnerDashboard"
-              component={partnerDashboardNav}
-            />
           </>
         )}
         {hasToken && (
           <>
-            {!isPartner && (
-              <Stack.Screen name="Dashboard" component={dashboardNav} />
-            )}
-            {isPartner && (
-              <Stack.Screen
-                name="PartnerDashboard"
-                component={partnerDashboardNav}
-              />
-            )}
+            <Stack.Screen
+              name="PartnerDashboard"
+              component={partnerDashboardNav}
+            />
+            <Stack.Screen name="Dashboard" component={dashboardNav} />
 
             <Stack.Screen name="CategoryPage" component={categoryNave} />
             <Stack.Screen name="Manicure" component={manicureNav} />
