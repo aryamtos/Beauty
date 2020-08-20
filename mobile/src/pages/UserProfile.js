@@ -60,13 +60,6 @@ export default function UserProfile({ navigation }) {
   function handlePerfil() {
     navigation.navigate("Profile");
   }
-
-  async function handleLogout() {
-    await AsyncStorage.removeItem("token");
-    await AsyncStorage.removeItem("user_type");
-    navigation.goBack();
-  }
-
   return (
     <>
       <View style={styles.header}>
@@ -86,9 +79,6 @@ export default function UserProfile({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handlePerfil()} style={styles.btn}>
           <Text style={styles.btnText}>Alterar Perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleLogout()} style={styles.btn}>
-          <Text style={styles.btnText}>Logout</Text>
         </TouchableOpacity>
       </View>
     </>

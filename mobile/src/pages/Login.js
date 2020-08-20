@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
+import PropTypes from "prop-types";
 import {
   Image,
   ImageBackground,
@@ -15,13 +16,13 @@ import {
 import background from "../assets/fundo2.png";
 import logo from "../assets/beautymenu1.png";
 import { TextInput } from "react-native-gesture-handler";
-import api from "../services/api";
 import {
-  useNavigation,
-  useRoute,
-  NavigationAction,
-} from "@react-navigation/native";
-import { NavigationActions } from "react-navigation";
+  StackActions,
+  StackNavigator,
+  NavigationActions,
+} from "react-navigation";
+import api from "../services/api";
+import { useNavigation, useRoute } from "@react-navigation/native";
 export default function Login({ navigation }) {
   const route = useRoute();
   const servico = route.params;
@@ -45,13 +46,12 @@ export default function Login({ navigation }) {
       await AsyncStorage.removeItem("user");
       await AsyncStorage.setItem("user", JSON.stringify(user));
       //await AsyncStorage.setItem('@user',user)
-      await AsyncStorage.setItem("user_type", "user");
       await AsyncStorage.setItem("token", token);
 
       setIsFormIncorret(false);
+      navigation.navigate("Dashboard");
     } catch (error) {
       setIsFormIncorret(true);
-      console.log(error);
       setErrorMessage(error.response.data.validation[0].message);
     }
   }
