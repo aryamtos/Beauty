@@ -38,10 +38,10 @@ export default function Login({ navigation }) {
       await AsyncStorage.removeItem("user");
       await AsyncStorage.setItem("user", JSON.stringify(user));
       //await AsyncStorage.setItem('@user',user)
+      await AsyncStorage.setItem("user_type", "partner");
       await AsyncStorage.setItem("token", token);
 
       setIsFormIncorret(false);
-      navigation.navigate("PartnerDashboard");
     } catch (error) {
       console.log(error.response.data);
       setIsFormIncorret(true);

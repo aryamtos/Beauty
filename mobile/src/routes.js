@@ -1,6 +1,6 @@
-import React from "react";
-import { Image, StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, AsyncStorage } from "react-native";
+import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -327,37 +327,101 @@ function searchNav() {
 
 // Listagem das rotas do app, com um Stack Navigator como navegação principal do App
 function Routes({ navigation }) {
+  const [hasToken, setHasToken] = useState(false);
+  const [isPartner, setIsPartner] = useState(false);
+
+  useEffect(() => {
+    async function verifyToken() {
+      let token = await AsyncStorage.getItem("token");
+
+      if (token) {
+        const user_type = await AsyncStorage.getItem("user_type");
+        console.log(user_type);
+
+        if (user_type === "partner") {
+          setIsPartner(true);
+          setHasToken(true);
+        } else if (user_type === "user") {
+          setIsPartner(false);
+          setHasToken(true);
+        } else {
+          setHasToken(false);
+          await AsyncStorage.removeItem("token");
+        }
+      } else {
+        while (!token) {
+          token = await AsyncStorage.getItem("token");
+        }
+        const user_type = await AsyncStorage.getItem("user_type");
+        if (user_type === "partner") {
+          setIsPartner(true);
+          setHasToken(true);
+        } else if (user_type === "user") {
+          setIsPartner(false);
+          setHasToken(true);
+        }
+      }
+
+      console.log(token);
+    }
+
+    verifyToken();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Index" component={Index} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Forgot" component={Forgot} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="PartnerLogin" component={PartnerLogin} />
-        <Stack.Screen name="CategoryPage" component={categoryNave} />
-        <Stack.Screen name="Manicure" component={manicureNav} />
-        <Stack.Screen name="Depilacao" component={depilNav} />
-        <Stack.Screen name="BeardPage" component={beardNav} />
-        <Stack.Screen name="PartnerRegister" component={PartnerRegister} />
-        <Stack.Screen name="Dashboard" component={dashboardNav} />
-        <Stack.Screen name="Search" component={Search} />
-        <Stack.Screen name="SearchResult" component={SearchResult} />
-        <Stack.Screen name="UserProfile" component={UserProfile} />
-        <Stack.Screen name="PartnerDashboard" component={partnerDashboardNav} />
-        <Stack.Screen name="PartnerProfile" component={PartnerProfile} />
-        <Stack.Screen name="Customers" component={Customers} />
-        <Stack.Screen name="NewCustomer" component={NewCustomer} />
-        <Stack.Screen name="BusinessHours" component={BusinessHours} />
-        <Stack.Screen name="Services" component={Services} />
-        <Stack.Screen name="CategoriaTeste" component={CategoriaTeste} />
-        <Stack.Screen name="Location" component={Location} />
-        <Stack.Screen name="NewService" component={NewService} />
-        <Stack.Screen name="StoreProfile" component={StoreProfile} />
-        <Stack.Screen name="BookRequest" component={BookRequest} />
-        <Stack.Screen name="ListAgendamentos" component={ListAgendamentos} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="History" component={HistoryAgendamentos} />
+        {!hasToken && (
+          <>
+            <Stack.Screen name="Index" component={Index} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Forgot" component={Forgot} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="PartnerLogin" component={PartnerLogin} />
+            <Stack.Screen name="PartnerRegister" component={PartnerRegister} />
+            <Stack.Screen
+              name="PartnerDashboard"
+              component={partnerDashboardNav}
+            />
+          </>
+        )}
+        {hasToken && (
+          <>
+            {!isPartner && (
+              <Stack.Screen name="Dashboard" component={dashboardNav} />
+            )}
+            {isPartner && (
+              <Stack.Screen
+                name="PartnerDashboard"
+                component={partnerDashboardNav}
+              />
+            )}
+
+            <Stack.Screen name="CategoryPage" component={categoryNave} />
+            <Stack.Screen name="Manicure" component={manicureNav} />
+            <Stack.Screen name="Depilacao" component={depilNav} />
+            <Stack.Screen name="BeardPage" component={beardNav} />
+            <Stack.Screen name="Search" component={Search} />
+            <Stack.Screen name="SearchResult" component={SearchResult} />
+            <Stack.Screen name="UserProfile" component={UserProfile} />
+            <Stack.Screen name="PartnerProfile" component={PartnerProfile} />
+            <Stack.Screen name="Customers" component={Customers} />
+            <Stack.Screen name="NewCustomer" component={NewCustomer} />
+            <Stack.Screen name="BusinessHours" component={BusinessHours} />
+            <Stack.Screen name="Services" component={Services} />
+            <Stack.Screen name="CategoriaTeste" component={CategoriaTeste} />
+            <Stack.Screen name="Location" component={Location} />
+            <Stack.Screen name="NewService" component={NewService} />
+            <Stack.Screen name="StoreProfile" component={StoreProfile} />
+            <Stack.Screen name="BookRequest" component={BookRequest} />
+            <Stack.Screen
+              name="ListAgendamentos"
+              component={ListAgendamentos}
+            />
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="History" component={HistoryAgendamentos} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
