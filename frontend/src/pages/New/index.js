@@ -51,15 +51,12 @@ export default function New({ history }) {
       >
         <option value="null">Selecione a categoria</option>
         <option value="Cabelo">Cabelo</option>
+        <option value="Rosto">Rosto</option>
         <option value="Depilação">Depilação</option>
-        <option value="Estética corporal">Estética corporal</option>
-        <option value="Sobrancelha">Sobrancelha</option>
-        <option value="Estética facial"> Estética facial</option>
         <option value="Manicure e pedicure">Manicure e pedicure</option>
-        <option value="Maquiagem">Maquiagem</option>
-        <option value="Massagem">Massagem</option>
-        <option value="Podologia">Podologia</option>
-        <option value="Outros">Outros</option>
+        <option value="Estética">Estética</option>
+        <option value="Spa day">Spa day</option>
+        <option value="Crespas e cacheadas">Crespas e Cacheadas</option>
       </select>
       <br></br>
       <label htmlFor="preco">PREÇO *</label>

@@ -24,7 +24,7 @@ module.exports = {
 
     if (type) {
       const services = await Service.find({
-        parte: type,
+        category: type,
       }).populate(
         "user",
         "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail servicos"

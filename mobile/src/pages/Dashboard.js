@@ -118,7 +118,7 @@ export default function Dashboard({ navigation }) {
                       colors={["transparent", "white"]}
                       style={styles.gradientEffect}
                     >
-                      <Text style={styles.categoriaText}>Corte</Text>
+                      <Text style={styles.categoriaText}>Cabelo</Text>
                     </LinearGradient>
                   </ImageBackground>
                 </TouchableOpacity>
@@ -131,7 +131,7 @@ export default function Dashboard({ navigation }) {
                       colors={["transparent", "white"]}
                       style={styles.gradientEffect}
                     >
-                      <Text style={styles.categoriaText}>Barba</Text>
+                      <Text style={styles.categoriaText}>Rosto</Text>
                     </LinearGradient>
                   </ImageBackground>
                 </TouchableOpacity>
@@ -163,7 +163,9 @@ export default function Dashboard({ navigation }) {
                       colors={["transparent", "white"]}
                       style={styles.gradientEffect}
                     >
-                      <Text style={styles.categoriaText}>Manicure</Text>
+                      <Text style={styles.categoriaText}>
+                        Manicure e Pedicure
+                      </Text>
                     </LinearGradient>
                   </ImageBackground>
                 </TouchableOpacity>
@@ -200,7 +202,7 @@ export default function Dashboard({ navigation }) {
                   </ImageBackground>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => handleNavigation("Crespas e Cacheadas")}
+                  onPress={() => handleNavigation("Crespas e cacheadas")}
                   style={styles.categoria}
                 >
                   <ImageBackground
