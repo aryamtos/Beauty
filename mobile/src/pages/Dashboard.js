@@ -71,7 +71,6 @@ export default function Dashboard({ navigation }) {
   }, [serviceType]);
 
   const route = useRoute();
-  const [categoriaServico, setCategoria] = useState([]);
 
   async function handleSearchable() {
     navigation.navigate("Services");

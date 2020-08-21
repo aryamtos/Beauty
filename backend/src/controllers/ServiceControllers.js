@@ -29,8 +29,8 @@ function serviceController() {}
 serviceController.prototype.post = async (req, res) => {
   let _validationContract = new validation();
   _validationContract.isRequired(
-    req.body.nome,
-    "O nome do produto é obrigatorio"
+    req.body.nomeService,
+    "O nome do serviço é obrigatorio"
   );
   _validationContract.isRequired(
     req.body.descricao,
@@ -48,7 +48,7 @@ serviceController.prototype.post = async (req, res) => {
     );
 
   // ctrlBase.post(_repo, _validationContract, req, res);
-  const { nomeService, nome, parte, tempo, preco } = req.body;
+  const { nomeService, nome, parte, tempo, preco, category } = req.body;
   const { user_id } = req.headers;
 
   const user = await UserPartner.findById(user_id);
@@ -57,6 +57,7 @@ serviceController.prototype.post = async (req, res) => {
     nomeService,
     user: user_id,
     nome,
+    category,
     parte,
     tempo,
     preco,

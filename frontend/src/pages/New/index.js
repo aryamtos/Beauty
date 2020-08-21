@@ -6,7 +6,7 @@ import "./styles.css";
 export default function New({ history }) {
   const [nomeService, setNomeService] = useState("");
   const [tempo, setTempo] = useState("");
-  const [nome, setNomes] = useState("");
+  const [category, setCategory] = useState("");
   const [preco, setPreco] = useState("");
   const [parte, setParte] = useState("");
 
@@ -16,15 +16,19 @@ export default function New({ history }) {
 
     const token_access = localStorage.getItem("token-access");
 
-    const response = await api.post(
-      "/partner/service/registrationservice",
-      { nomeService, nome, tempo, preco, parte },
-      {
-        headers: { user_id, token_access },
-      }
-    );
-    console.log(response);
-    history.push("/dashboard");
+    try {
+      const response = await api.post(
+        "/partner/service/registrationservice",
+        { nomeService, category, tempo, preco, parte },
+        {
+          headers: { user_id, token_access },
+        }
+      );
+      console.log(response);
+      history.push("/dashboard");
+    } catch (error) {
+      console.log(error.response);
+    }
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -46,8 +50,8 @@ export default function New({ history }) {
         name="category"
         className="minimal"
         required
-        value={nome}
-        onChange={(event) => setNomes(event.target.value)}
+        value={category}
+        onChange={(event) => setCategory(event.target.value)}
       >
         <option value="null">Selecione a categoria</option>
         <option value="Cabelo">Cabelo</option>
