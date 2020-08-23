@@ -168,15 +168,31 @@ const saveToken = (token) => {
 };
 
 routes.post("/token", (req, res) => {
-  saveToken(req.body.token.value);
-  console.log(`Received push token, ${req.body.token.value}`);
-  res.send(`Received push token, ${req.body.token.value}`);
+  try {
+    saveToken(req.body.token.value);
+    console.log(`Received push token, ${req.body.token.value}`);
+    res
+      .status(200)
+      .json({ message: `Received push token, ${req.body.token.value}` });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: "Tentativa falha de armazenar o token" });
+  }
 });
 
 routes.post("/message", (req, res) => {
-  handlePushTokens(req.body);
-  console.log(`Received message, with title: ${req.body.title}`);
-  res.send(`Received message, with title: ${req.body.title}`);
+  try {
+    handlePushTokens(req.body);
+    console.log(`Received message, with title: ${req.body.title}`);
+    res
+      .status(200)
+      .json({ message: `Received message, with title: ${req.body.title}` });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: "Não foi possível enviar a notificação no momento" });
+  }
 });
 
 module.exports = routes;
