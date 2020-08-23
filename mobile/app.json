@@ -18,6 +18,9 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "useNextNotificationsApi": true
+    },
     "androidNavigationBar": {
       "bar-style": "light-content",
       "backgroundColor": "#511D68"
