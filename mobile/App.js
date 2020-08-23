@@ -1,6 +1,12 @@
-import React from 'react';
-import Routes from './src/routes.js';
+import React, { useEffect } from "react";
+import Routes from "./src/routes.js";
 
-export default function App(){
-  return <Routes />
+import registerForPushNotifications from "./src/services/registerForPushNotifications";
+
+export default function App() {
+  useEffect(() => {
+    registerForPushNotifications();
+  }, []);
+
+  return <Routes />;
 }

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "BeautyMenu",
+    "slug": "beautymenu",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,9 +18,6 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": {
-      "useNextNotificationsApi": true
-    },
     "androidNavigationBar": {
       "bar-style": "light-content",
       "backgroundColor": "#511D68"
@@ -28,6 +25,11 @@
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#511D68"
+    },
+    "notification": {
+      "icon": "./src/assets/bmlogo_notify.png",
+      "color": "#511D68",
+      "androidMode": "default"
     }
   }
 }
