@@ -20,6 +20,9 @@ import corte from "../assets/cabelo.png";
 import barba from "../assets/barba.png";
 import depila from "../assets/depil.png";
 import manicure from "../assets/manicure.png";
+import estetica from "../assets/estetica.png";
+import spaday from "../assets/spaday.png";
+import crespas from "../assets/crespo.png";
 
 // API
 import api from "../services/api";
@@ -173,7 +176,7 @@ export default function Dashboard({ navigation }) {
                   style={styles.categoria}
                 >
                   <ImageBackground
-                    source={manicure}
+                    source={estetica}
                     style={styles.categoriaImage}
                   >
                     <LinearGradient
@@ -189,7 +192,7 @@ export default function Dashboard({ navigation }) {
                   style={styles.categoria}
                 >
                   <ImageBackground
-                    source={manicure}
+                    source={spaday}
                     style={styles.categoriaImage}
                   >
                     <LinearGradient
@@ -205,7 +208,7 @@ export default function Dashboard({ navigation }) {
                   style={styles.categoria}
                 >
                   <ImageBackground
-                    source={manicure}
+                    source={crespas}
                     style={styles.categoriaImage}
                   >
                     <LinearGradient
