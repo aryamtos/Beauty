@@ -22,10 +22,26 @@ module.exports = {
     const { user_id } = req.headers;
     const service_id = req.params.id; //spot_id
     const { date } = req.body;
-
+    const { paymentMethod } = req.body;
+    const { street } = req.body;
+    const { numberHouse } = req.body;
+    const { neighborhood } = req.body;
+    const { city } = req.body;
+    const { cep } = req.body;
+    const { reference } = req.body;
+    
     const service = await Service.findById(service_id);
     const user = await User.findById(user_id);
     const partner = await UserPartner.findById(service.user);
+
+    console.log(
+      paymentMethod,
+      street,
+      numberHouse,
+      neighborhood,
+      city,
+      cep,
+      reference)
 
     const booking = await Booking.create({
       user: user_id,
@@ -34,7 +50,14 @@ module.exports = {
       nameService: service.nomeService,
       nameCustomer: user.nome,
       date,
+      street,
+      numberHouse,
+      neighborhood,
+      city,
+      cep,
+      reference,
     });
+
 
     /**
      * ------------------------------------------------
