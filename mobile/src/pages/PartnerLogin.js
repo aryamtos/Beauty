@@ -48,9 +48,9 @@ export default function Login({ navigation }) {
         },
       });
 
-      if (tokenResponse.status === 204) {
-        registerForPushNotifications(user._id, "partner");
-      }
+      //if (tokenResponse.status === 204) {
+      registerForPushNotifications(user._id, "partner");
+      //}
 
       setIsFormIncorret(false);
       navigation.navigate("PartnerDashboard");

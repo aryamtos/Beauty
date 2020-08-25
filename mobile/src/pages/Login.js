@@ -51,9 +51,9 @@ export default function Login({ navigation }) {
         },
       });
 
-      if (tokenResponse.status === 204) {
-        registerForPushNotifications(user._id, "user");
-      }
+      //if (tokenResponse.status === 204) {
+      registerForPushNotifications(user._id, "user");
+      //}
 
       setIsFormIncorret(false);
       navigation.navigate("Dashboard");
