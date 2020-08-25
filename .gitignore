@@ -1,5 +1,5 @@
-- Beauty/
-  |- package.json
-  |- node_modules/
-  |- package-lock.json
-  |- yarn.lock
+.gitignore
+node_modules
+package.json
+package-lock.json
+yarn.lock
