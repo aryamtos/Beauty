@@ -16,11 +16,8 @@ import {
 import background from "../assets/fundo2.png";
 import logo from "../assets/beautymenu1.png";
 import { TextInput } from "react-native-gesture-handler";
-import {
-  StackActions,
-  StackNavigator,
-  NavigationActions,
-} from "react-navigation";
+import registerForPushNotifications from "../services/registerForPushNotifications";
+
 import api from "../services/api";
 import { useNavigation, useRoute } from "@react-navigation/native";
 export default function Login({ navigation }) {
@@ -47,6 +44,16 @@ export default function Login({ navigation }) {
       await AsyncStorage.setItem("user", JSON.stringify(user));
       //await AsyncStorage.setItem('@user',user)
       await AsyncStorage.setItem("token", token);
+
+      const tokenResponse = await api.get("/tokens", {
+        headers: {
+          user: user._id,
+        },
+      });
+
+      if (tokenResponse.status === 204) {
+        registerForPushNotifications(user._id, "user");
+      }
 
       setIsFormIncorret(false);
       navigation.navigate("Dashboard");

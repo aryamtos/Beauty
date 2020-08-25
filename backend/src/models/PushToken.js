@@ -15,4 +15,4 @@ const PushToken = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("PasswordReset", PushToken);
+module.exports = mongoose.model("PushToken", PushToken);

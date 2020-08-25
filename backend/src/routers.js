@@ -3,6 +3,8 @@ const multer = require("multer");
 const uploadConfig = require("./config/upload");
 const auth = require("./middleware/authentification");
 
+const PushToken = require("./models/PushToken");
+
 const SearchController = require("./controllers/SearchController");
 const UserController = require("./controllers/UserRegisController");
 const ServiceController = require("./controllers/ServiceControllers");
@@ -17,6 +19,7 @@ const PartnerController = require("./controllers/PartnerRegisController");
 const BusinessHourMassiveController = require("./controllers/BusinessHourMassiveController");
 const ProfessionalMassiveController = require("./controllers/ProfessionalMassiveController");
 const PasswordController = require("./controllers/PasswordController");
+const PushTokensController = require("./controllers/PushTokensController");
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -123,6 +126,8 @@ routes.get("/partner/service/showuservices", DashboardController.getAll);
 routes.put("/password-reset/:id", PasswordController.update);
 routes.post("/password-reset", PasswordController.store);
 
+routes.get("/tokens", PushTokensController.show);
+
 // Testando push notifications
 const { Expo } = require("expo-server-sdk");
 const expo = new Expo();
@@ -167,10 +172,18 @@ const saveToken = (token) => {
   }
 };
 
-routes.post("/token", (req, res) => {
+routes.post("/token", async (req, res) => {
+  const { user, partner } = req.body;
+
   try {
     saveToken(req.body.token.value);
     console.log(`Received push token, ${req.body.token.value}`);
+    await PushToken.create({
+      user,
+      partner,
+      token: req.body.token.value,
+    });
+
     res
       .status(200)
       .json({ message: `Received push token, ${req.body.token.value}` });

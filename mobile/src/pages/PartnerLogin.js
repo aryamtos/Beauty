@@ -15,6 +15,8 @@ import background from "../assets/fundo2.png";
 import logo from "../assets/beautymenu1.png";
 import { TextInput } from "react-native-gesture-handler";
 
+import registerForPushNotifications from "../services/registerForPushNotifications";
+
 import api from "../services/api";
 
 export default function Login({ navigation }) {
@@ -39,6 +41,16 @@ export default function Login({ navigation }) {
       await AsyncStorage.setItem("user", JSON.stringify(user));
       //await AsyncStorage.setItem('@user',user)
       await AsyncStorage.setItem("token", token);
+
+      const tokenResponse = await api.get("/tokens", {
+        headers: {
+          partner: user._id,
+        },
+      });
+
+      if (tokenResponse.status === 204) {
+        registerForPushNotifications(user._id, "partner");
+      }
 
       setIsFormIncorret(false);
       navigation.navigate("PartnerDashboard");
