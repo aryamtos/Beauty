@@ -24,6 +24,9 @@ import estetica from "../assets/estetica.png";
 import spaday from "../assets/spaday.png";
 import crespas from "../assets/crespo.png";
 
+import salaoImage from "../assets/salao.png";
+import deliveryImage from "../assets/delivery.png";
+
 // API
 import api from "../services/api";
 
@@ -92,8 +95,8 @@ export default function Dashboard({ navigation }) {
   }
 
   async function handleServiceType(typeOfService) {
-    setServiceType(typeOfService)
-    console.log(serviceType)
+    setServiceType(typeOfService);
+    console.log(serviceType);
     await AsyncStorage.setItem("serviceType", typeOfService);
   }
 
@@ -231,19 +234,29 @@ export default function Dashboard({ navigation }) {
             </>
           ) : (
             <>
-              <Text style={styles.typeTitle}>Que tipo de serviço procura?</Text>
-              <TouchableOpacity
-                style={styles.type}
-                onPress={() => handleServiceType("Salão")}
-              >
-                <Text style={styles.typeText}>Salão</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.type}
-                onPress={() => handleServiceType("Autônomo")}
-              >
-                <Text style={styles.typeText}>Delivery de Beleza</Text>
-              </TouchableOpacity>
+              <Text style={styles.typeTitle}>
+                Que tipo de serviço você procura?
+              </Text>
+              <View style={styles.typesContainer}>
+                <TouchableOpacity
+                  style={styles.type}
+                  onPress={() => handleServiceType("Salão")}
+                >
+                  <View style={styles.typeImageContainer}>
+                    <Image source={salaoImage} style={styles.typeImage} />
+                  </View>
+                  <Text style={styles.typeText}>Salão</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.type}
+                  onPress={() => handleServiceType("Autônomo")}
+                >
+                  <View style={styles.typeImageContainer}>
+                    <Image source={deliveryImage} style={styles.typeImage} />
+                  </View>
+                  <Text style={styles.typeText}>Delivery de Beleza</Text>
+                </TouchableOpacity>
+              </View>
             </>
           )}
         </View>
@@ -318,24 +331,42 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "flex-start",
   },
+  typesContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+  typeImageContainer: {
+    alignSelf: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 50,
+    elevation: 10,
+    marginBottom: 10,
+  },
+  typeImage: {
+    alignSelf: "center",
+    width: 100,
+    resizeMode: "contain",
+  },
   typeTitle: {
+    textAlign: "center",
     alignSelf: "center",
     fontSize: 30,
     color: "#511d68",
     marginBottom: 40,
   },
   type: {
-    height: 40,
+    padding: 20,
+    alignSelf: "center",
+    width: 150,
     marginBottom: 20,
-    borderColor: "#511d68",
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
     justifyContent: "center",
   },
   typeText: {
     textAlign: "center",
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#777",
+    fontWeight: "normal",
+    color: "#511d68",
   },
 });
