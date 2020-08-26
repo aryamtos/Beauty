@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Component } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect, useContext } from "react";
+import { useRoute } from "@react-navigation/native";
 import {
   Image,
   ImageBackground,
@@ -13,16 +13,18 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from "react-native";
-import background from "../assets/fundo2.png";
-import logo from "../assets/beautymenu1.png";
 import { TextInput } from "react-native-gesture-handler";
 import registerForPushNotifications from "../services/registerForPushNotifications";
 
+import background from "../assets/fundo2.png";
+import logo from "../assets/beautymenu1.png";
+
 import api from "../services/api";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import AuthContext from "../contexts/auth";
+
 export default function Login({ navigation }) {
   const route = useRoute();
-  const servico = route.params;
+  const { signIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -30,7 +32,7 @@ export default function Login({ navigation }) {
   const [isFormIncorret, setIsFormIncorret] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function signIn() {
+  async function login() {
     try {
       const response = await api.post("/auth", {
         email,
@@ -55,8 +57,9 @@ export default function Login({ navigation }) {
       registerForPushNotifications(user._id, "user");
       //}
 
+      signIn(token, "user");
       setIsFormIncorret(false);
-      navigation.navigate("Dashboard");
+      //navigation.navigate("Dashboard");
     } catch (error) {
       setIsFormIncorret(true);
       setErrorMessage(error.response.data.validation[0].message);
@@ -113,7 +116,7 @@ export default function Login({ navigation }) {
               <Text style={styles.errorMessage}>*{errorMessage}</Text>
             </View>
           )}
-          <TouchableOpacity onPress={signIn} style={styles.btn}>
+          <TouchableOpacity onPress={login} style={styles.btn}>
             <Text style={styles.btnText}>LOGIN</Text>
           </TouchableOpacity>
         </View>

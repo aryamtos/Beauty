@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Image,
   StyleSheet,
@@ -8,12 +8,14 @@ import {
   StatusBar,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import AuthContext from "../contexts/auth";
 
 import thumbnail from "../assets/perfil_.png";
 
 export default function UserProfile({ navigation }) {
   const [user, setUser] = useState({});
   const [name, setName] = useState("");
+  const { signOut } = useContext(AuthContext);
 
   useEffect(() => {
     async function handleInit() {
@@ -60,6 +62,10 @@ export default function UserProfile({ navigation }) {
   function handlePerfil() {
     navigation.navigate("Profile");
   }
+
+  function handleLogout() {
+    signOut();
+  }
   return (
     <>
       <View style={styles.header}>
@@ -79,6 +85,9 @@ export default function UserProfile({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handlePerfil()} style={styles.btn}>
           <Text style={styles.btnText}>Alterar Perfil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout} style={styles.btn}>
+          <Text style={styles.btnText}>Logout</Text>
         </TouchableOpacity>
       </View>
     </>

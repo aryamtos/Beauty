@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Alert,
   AsyncStorage,
@@ -16,10 +16,12 @@ import logo from "../assets/beautymenu1.png";
 import { TextInput } from "react-native-gesture-handler";
 
 import registerForPushNotifications from "../services/registerForPushNotifications";
+import AuthContext from "../contexts/auth";
 
 import api from "../services/api";
 
 export default function Login({ navigation }) {
+  const { signIn } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -52,6 +54,7 @@ export default function Login({ navigation }) {
       registerForPushNotifications(user._id, "partner");
       //}
 
+      signIn(token, "partner");
       setIsFormIncorret(false);
       navigation.navigate("PartnerDashboard");
     } catch (error) {
