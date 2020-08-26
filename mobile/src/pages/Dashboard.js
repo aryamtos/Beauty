@@ -91,6 +91,12 @@ export default function Dashboard({ navigation }) {
     navigation.navigate("SearchResult");
   }
 
+  async function handleServiceType(typeOfService) {
+    setServiceType(typeOfService)
+    console.log(serviceType)
+    await AsyncStorage.setItem("serviceType", typeOfService);
+  }
+
   return (
     <>
       {isTokenValid ? (
@@ -228,13 +234,13 @@ export default function Dashboard({ navigation }) {
               <Text style={styles.typeTitle}>Que tipo de serviço procura?</Text>
               <TouchableOpacity
                 style={styles.type}
-                onPress={() => setServiceType("Salão")}
+                onPress={() => handleServiceType("Salão")}
               >
                 <Text style={styles.typeText}>Salão</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.type}
-                onPress={() => setServiceType("Autônomo")}
+                onPress={() => handleServiceType("Autônomo")}
               >
                 <Text style={styles.typeText}>Delivery de Beleza</Text>
               </TouchableOpacity>
