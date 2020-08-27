@@ -27,6 +27,7 @@ export default function PartnerDashboard({ navigation }) {
   const [isDateHandled, setIsDateHandled] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isServiceInfoVisible, setIsServiceInfoVisible] = useState(false);
+  const [userCategory, setUserCategory] = useState("");
 
   // Função que inicializa tudo
   async function handleInit() {
@@ -39,6 +40,8 @@ export default function PartnerDashboard({ navigation }) {
       const token = await AsyncStorage.getItem("token");
       let user = await AsyncStorage.getItem("user");
       user = JSON.parse(user);
+
+      setUserCategory(user.category);
 
       await api.get("/dashboard", {
         headers: { token_access: token, user_id: user._id },
@@ -312,7 +315,7 @@ export default function PartnerDashboard({ navigation }) {
         <Modal
           animationType="slide"
           transparent={true}
-          visible={isServiceInfoVisible}
+          visible={isServiceInfoVisible && userCategory === "Autônomo"}
           onRequestClose={() => {
             setIsServiceInfoVisible(!isServiceInfoVisible);
           }}
