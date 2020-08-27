@@ -79,33 +79,36 @@ module.exports = {
     let notifications = [];
 
     const foundUser = await PushToken.findOne({ partner: partner._id });
-    const userToken = foundUser.token;
 
-    notifications.push({
-      to: userToken,
-      sound: "default",
-      title: "Agendamento novo 😊",
-      body: "Dá uma conferida lá!",
-      data: {
+    if (foundUser) {
+      const userToken = foundUser.token;
+
+      notifications.push({
         to: userToken,
         sound: "default",
         title: "Agendamento novo 😊",
         body: "Dá uma conferida lá!",
-      },
-    });
+        data: {
+          to: userToken,
+          sound: "default",
+          title: "Agendamento novo 😊",
+          body: "Dá uma conferida lá!",
+        },
+      });
 
-    let chunks = expo.chunkPushNotifications(notifications);
+      let chunks = expo.chunkPushNotifications(notifications);
 
-    (async () => {
-      for (let chunk of chunks) {
-        try {
-          let receipts = await expo.sendPushNotificationsAsync(chunk);
-          console.log(receipts);
-        } catch (error) {
-          console.error(error);
+      (async () => {
+        for (let chunk of chunks) {
+          try {
+            let receipts = await expo.sendPushNotificationsAsync(chunk);
+            console.log(receipts);
+          } catch (error) {
+            console.error(error);
+          }
         }
-      }
-    })();
+      })();
+    }
 
     return res.json(booking);
   },

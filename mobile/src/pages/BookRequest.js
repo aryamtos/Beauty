@@ -38,7 +38,7 @@ export default function BookRequest({ navigation }) {
   const [services, setServices] = useState([]);
   const [service, setService] = useState(null);
   const [isDelivery, setIsDelivery] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("money");
+  const [paymentMethod, setPaymentMethod] = useState("Dinheiro");
   const [street, setStreet] = useState("");
   const [numberHouse, setNumberHouse] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
@@ -121,7 +121,7 @@ export default function BookRequest({ navigation }) {
       Alert.alert("Sucesso!", "Solicitação de serviço enviada");
       navigation.goBack();
     } catch (error) {
-      f(error.response.data.message);
+      console.log(error.response.data.message);
     }
   }
 
@@ -179,9 +179,9 @@ export default function BookRequest({ navigation }) {
                   setPaymentMethod(itemValue)
                 }
               >
-                <Picker.Item color="#777" label="Dinheiro" value="money" />
-                <Picker.Item color="#777" label="Debito" value="debit" />
-                <Picker.Item color="#777" label="Credito" value="credit" />
+                <Picker.Item color="#777" label="Dinheiro" value="Dinheiro" />
+                <Picker.Item color="#777" label="Débito" value="Débito" />
+                <Picker.Item color="#777" label="Crédito" value="Crédito" />
               </Picker>
               <Text style={styles.inputText}>Informe sua Rua</Text>
               <TouchableOpacity style={styles.input}>

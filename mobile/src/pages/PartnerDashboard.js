@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Alert,
   AsyncStorage,
@@ -21,9 +22,11 @@ import api from "../services/api";
 export default function PartnerDashboard({ navigation }) {
   const [name, setName] = useState("");
   const [bookings, setBookings] = useState([]);
+  const [selectedBooking, setSelectedBooking] = useState({});
   const [isTokenValid, setIsTokenValid] = useState(true);
   const [isDateHandled, setIsDateHandled] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isServiceInfoVisible, setIsServiceInfoVisible] = useState(false);
 
   // Função que inicializa tudo
   async function handleInit() {
@@ -43,7 +46,7 @@ export default function PartnerDashboard({ navigation }) {
 
       setIsTokenValid(true);
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
       setIsTokenValid(false);
       return;
     }
@@ -60,7 +63,7 @@ export default function PartnerDashboard({ navigation }) {
   }
 
   // Chamando a função para inicializar
-  useEffect(() => {
+  useFocusEffect(() => {
     handleInit();
   }, []);
 
@@ -153,6 +156,14 @@ export default function PartnerDashboard({ navigation }) {
         service: date.service,
         isApproved: date.isApproved,
         wasCanceled: date.wasCanceled,
+        cep: date.cep,
+        city: date.city,
+        nameCustomer: date.nameCustomer,
+        neighborhood: date.neighborhood,
+        street: date.street,
+        numberHouse: date.numberHouse,
+        reference: date.reference,
+        paymentMethod: date.paymentMethod,
       });
     }
     return bookings;
@@ -219,7 +230,13 @@ export default function PartnerDashboard({ navigation }) {
             renderItem={({ item }) => (
               <>
                 {!item.wasCanceled && item.isApproved && (
-                  <TouchableOpacity style={styles.listItem}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedBooking(item);
+                      setIsServiceInfoVisible(!isServiceInfoVisible);
+                    }}
+                    style={styles.listItem}
+                  >
                     <View>
                       <Text style={styles.listName}>{item.nameService}</Text>
                       <Text style={styles.listDate}>{item.date}</Text>
@@ -290,6 +307,34 @@ export default function PartnerDashboard({ navigation }) {
                 </>
               )}
             />
+          </View>
+        </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isServiceInfoVisible}
+          onRequestClose={() => {
+            setIsServiceInfoVisible(!isServiceInfoVisible);
+          }}
+        >
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Informações</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.BookingModalText}>
+                Cliente: {selectedBooking.nameCustomer}
+              </Text>
+              <Text style={styles.BookingModalText}>
+                Endereço: {selectedBooking.street},{" "}
+                {selectedBooking.numberHouse}. {selectedBooking.neighborhood},{" "}
+                {selectedBooking.city}.
+              </Text>
+              <Text style={styles.BookingModalText}>
+                CEP: {selectedBooking.cep}
+              </Text>
+              <Text style={styles.BookingModalText}>
+                Pagamento: {selectedBooking.paymentMethod}
+              </Text>
+            </View>
           </View>
         </Modal>
         <TouchableOpacity
@@ -409,5 +454,10 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  BookingModalText: {
+    fontSize: 16,
+    fontWeight: "normal",
+    marginBottom: 5,
   },
 });

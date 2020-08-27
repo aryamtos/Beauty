@@ -56,7 +56,7 @@ export default function Login({ navigation }) {
 
       signIn(token, "partner");
       setIsFormIncorret(false);
-      navigation.navigate("PartnerDashboard");
+      //navigation.navigate("PartnerDashboard");
     } catch (error) {
       console.log(error.response.data);
       setIsFormIncorret(true);
