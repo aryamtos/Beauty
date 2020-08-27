@@ -33,19 +33,10 @@ module.exports = {
     const { city } = req.body;
     const { cep } = req.body;
     const { reference } = req.body;
-    
+
     const service = await Service.findById(service_id);
     const user = await User.findById(user_id);
     const partner = await UserPartner.findById(service.user);
-
-    console.log(
-      paymentMethod,
-      street,
-      numberHouse,
-      neighborhood,
-      city,
-      cep,
-      reference)
 
     const booking = await Booking.create({
       user: user_id,
@@ -60,8 +51,8 @@ module.exports = {
       city,
       cep,
       reference,
+      paymentMethod,
     });
-
 
     /**
      * ------------------------------------------------

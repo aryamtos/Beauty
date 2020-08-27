@@ -38,7 +38,7 @@ export default function BookRequest({ navigation }) {
   const [services, setServices] = useState([]);
   const [service, setService] = useState(null);
   const [isDelivery, setIsDelivery] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("Dinherio");
+  const [paymentMethod, setPaymentMethod] = useState("money");
   const [street, setStreet] = useState("");
   const [numberHouse, setNumberHouse] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
@@ -46,7 +46,6 @@ export default function BookRequest({ navigation }) {
   const [cep, setCep] = useState("");
   const [reference, setReference] = useState("");
 
-  
   useEffect(() => {
     const { services } = route.params;
 
@@ -56,15 +55,15 @@ export default function BookRequest({ navigation }) {
   useEffect(() => {
     async function loadType() {
       const serviceType = await AsyncStorage.getItem("serviceType");
-      console.log(serviceType)
+      console.log(serviceType);
       if (serviceType == "Autônomo") {
         setIsDelivery(true);
       }
     }
     loadType();
   }, []);
-    
-    // Funções para lidar com o picker de data e hora
+
+  // Funções para lidar com o picker de data e hora
   const onChange = (event, selectedDate) => {
     setShow(Platform.OS === "ios");
     if (selectedDate) {
@@ -105,7 +104,14 @@ export default function BookRequest({ navigation }) {
       const response = await api.post(
         `/service/${service._id}/bookings`,
         {
-          date, paymentMethod, street, numberHouse, neighborhood, city, cep, reference,
+          date,
+          paymentMethod,
+          street,
+          numberHouse,
+          neighborhood,
+          city,
+          cep,
+          reference,
         },
         {
           headers: { "Content-Type": "application/json", user_id: user_id },
@@ -115,7 +121,7 @@ export default function BookRequest({ navigation }) {
       Alert.alert("Sucesso!", "Solicitação de serviço enviada");
       navigation.goBack();
     } catch (error) {
-      console.log(error.response.data.message);
+      f(error.response.data.message);
     }
   }
 
@@ -126,141 +132,136 @@ export default function BookRequest({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-      <Text style={styles.inputText}>Selecione o serviço</Text>
-      <Picker
-        selectedValue={service}
-        style={{ height: 50, width: "100%" }}
-        onValueChange={(itemValue, itemIndex) => {
-          setService(itemValue);
-        }}
-      >
-        {services.map((service) => (
-          <Picker.Item
-            color="#777"
-            key={service._id}
-            label={service.nomeService}
-            value={service}
+        <Text style={styles.inputText}>Selecione o serviço</Text>
+        <Picker
+          selectedValue={service}
+          style={{ height: 50, width: "100%" }}
+          onValueChange={(itemValue, itemIndex) => {
+            setService(itemValue);
+          }}
+        >
+          {services.map((service) => (
+            <Picker.Item
+              color="#777"
+              key={service._id}
+              label={service.nomeService}
+              value={service}
+            />
+          ))}
+        </Picker>
+
+        <TouchableOpacity style={styles.input} onPress={showDatepicker}>
+          <Text style={styles.inputText}>Selecione a Data</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.input} onPress={showTimepicker}>
+          <Text style={styles.inputText}>Selecione a Hora</Text>
+        </TouchableOpacity>
+        {show && (
+          <DateTimePicker
+            mode={mode}
+            value={date}
+            minimumDate={new Date()}
+            is24Hour={true}
+            onChange={onChange} // Use "en_GB" here
           />
-        ))}
-      </Picker>
+        )}
 
-      <TouchableOpacity style={styles.input} onPress={showDatepicker}>
-        <Text style={styles.inputText}>Selecione a Data</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.input} onPress={showTimepicker}>
-        <Text style={styles.inputText}>Selecione a Hora</Text>
-      </TouchableOpacity>
-      {show && (
-        <DateTimePicker
-          mode={mode}
-          value={date}
-          minimumDate={new Date()}
-          is24Hour={true}
-          onChange={onChange} // Use "en_GB" here
-        />
-      )}
+        {isDelivery ? (
+          <>
+            <View>
+              <Text style={styles.inputText}>
+                Selecione o Método de Pagamento
+              </Text>
+              <Picker
+                selectedValue={paymentMethod}
+                style={{ height: 50, width: "100%" }}
+                onValueChange={(itemValue, itemIndex) =>
+                  setPaymentMethod(itemValue)
+                }
+              >
+                <Picker.Item color="#777" label="Dinheiro" value="money" />
+                <Picker.Item color="#777" label="Debito" value="debit" />
+                <Picker.Item color="#777" label="Credito" value="credit" />
+              </Picker>
+              <Text style={styles.inputText}>Informe sua Rua</Text>
+              <TouchableOpacity style={styles.input}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="Ex: Travessa Uruguaiana"
+                  placeholderTextColor="#A5A5A5"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={setStreet}
+                />
+              </TouchableOpacity>
+              <Text style={styles.inputText}>Informe o Número da Casa</Text>
+              <TouchableOpacity style={styles.input}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="Ex: 435"
+                  placeholderTextColor="#A5A5A5"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={setNumberHouse}
+                />
+              </TouchableOpacity>
+              <Text style={styles.inputText}>Informe o Bairro</Text>
+              <TouchableOpacity style={styles.input}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="Ex: Malhado"
+                  placeholderTextColor="#A5A5A5"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={setNeighborhood}
+                />
+              </TouchableOpacity>
+              <Text style={styles.inputText}>Informe a Cidade</Text>
+              <TouchableOpacity style={styles.input}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="Ex: Malhado"
+                  placeholderTextColor="#A5A5A5"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={setCity}
+                />
+              </TouchableOpacity>
+              <Text style={styles.inputText}>Informe o CEP</Text>
+              <TouchableOpacity style={styles.input}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="Ex: Malhado"
+                  placeholderTextColor="#A5A5A5"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={setCep}
+                />
+              </TouchableOpacity>
+              <Text style={styles.inputText}>
+                Informe um Ponto de Referência
+              </Text>
+              <TouchableOpacity style={styles.input}>
+                <TextInput
+                  style={styles.inputText}
+                  placeholder="Ex: em frente a oficina mecânica"
+                  placeholderTextColor="#A5A5A5"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={setReference}
+                />
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : null}
 
-      {isDelivery ? (
-        <>
-          <View>
-            <Text style={styles.inputText}>Selecione o Método de Pagamento</Text>
-            <Picker
-              selectedValue={paymentMethod}
-              style={{ height: 50, width: "100%" }}
-              onValueChange={(itemValue, itemIndex) => setPaymentMethod(itemValue)}
-            >
-              <Picker.Item 
-                color="#777"
-                label="Dinheiro" 
-                value="money" />
-              <Picker.Item 
-                color="#777"
-                label="Debito" 
-                value="debit" 
-              />
-              <Picker.Item 
-                color="#777"
-                label="Credito" 
-                value="credit" 
-              />
-            </Picker>
-            <Text style={styles.inputText}>Informe sua Rua</Text>
-            <TouchableOpacity style={styles.input}>
-              <TextInput
-                style={styles.inputText}
-                placeholder="Ex: Travessa Uruguaiana"
-                placeholderTextColor="#A5A5A5"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={setStreet}
-              />
-            </TouchableOpacity>
-            <Text style={styles.inputText}>Informe o Número da Casa</Text>
-            <TouchableOpacity style={styles.input}>
-              <TextInput
-                style={styles.inputText}
-                placeholder="Ex: 435"
-                placeholderTextColor="#A5A5A5"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={setNumberHouse}
-              />
-            </TouchableOpacity>
-            <Text style={styles.inputText}>Informe o Bairro</Text>
-            <TouchableOpacity style={styles.input}>
-              <TextInput
-                style={styles.inputText}
-                placeholder="Ex: Malhado"
-                placeholderTextColor="#A5A5A5"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={setNeighborhood}
-              />
-            </TouchableOpacity>        
-            <Text style={styles.inputText}>Informe a Cidade</Text>
-            <TouchableOpacity style={styles.input}>
-              <TextInput
-                style={styles.inputText}
-                placeholder="Ex: Malhado"
-                placeholderTextColor="#A5A5A5"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={setCity}
-              />
-            </TouchableOpacity>
-            <Text style={styles.inputText}>Informe o CEP</Text>
-            <TouchableOpacity style={styles.input}>
-              <TextInput
-                style={styles.inputText}
-                placeholder="Ex: Malhado"
-                placeholderTextColor="#A5A5A5"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={setCep}
-              />
-            </TouchableOpacity>        
-            <Text style={styles.inputText}>Informe um Ponto de Referência</Text>
-            <TouchableOpacity style={styles.input}>
-              <TextInput
-                style={styles.inputText}
-                placeholder="Ex: em frente a oficina mecânica"
-                placeholderTextColor="#A5A5A5"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={setReference}
-              />
-            </TouchableOpacity>
-          </View>
-        </>
-      ) : null}
+        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+          <Text style={styles.buttonText}>Solicitar Serviço</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-        <Text style={styles.buttonText}>Solicitar Serviço</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
-        <Text style={styles.buttonText}>Cancelar </Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
+          <Text style={styles.buttonText}>Cancelar </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
