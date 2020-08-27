@@ -65,6 +65,9 @@ export default function SearchResult({ navigation }) {
   }
 
   async function handleNavigate(servico) {
+    await AsyncStorage.setItem("serviceType", servico.user.category);
+    console.log(servico);
+
     if (!servico.user) {
       navigation.navigate("StoreProfile", { servico });
     } else {
