@@ -1,4 +1,5 @@
 const UserPartner = require("../models/UserPartner");
+const Rating = require("../models/Rating");
 
 module.exports = {
   async index(req, res) {
@@ -10,7 +11,7 @@ module.exports = {
   },
 
   async store(req, res) {
-    const { rate, partner_id } = req.body;
+    const { rate, partner_id, user_id, service_id } = req.body;
 
     try {
       const partner = await UserPartner.findById(partner_id);
@@ -27,7 +28,14 @@ module.exports = {
       }
       await partner.save();
 
-      return res.status(200).json(partner);
+      const rating = await await Rating.create({
+        rate,
+        partner: partner_id,
+        user: user_id,
+        service: service_id,
+      });
+
+      return res.status(200).json(rating);
     } catch (error) {
       console.log(error.response);
       return res
