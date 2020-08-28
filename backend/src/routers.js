@@ -127,6 +127,7 @@ routes.get("/partner/service/showuservices", DashboardController.getAll);
 routes.put("/password-reset/:id", PasswordController.update);
 routes.post("/password-reset", PasswordController.store);
 
+routes.get("/rating", RatingController.show);
 routes.post("/rating", RatingController.store);
 
 routes.get("/tokens", PushTokensController.show);

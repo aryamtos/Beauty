@@ -7,7 +7,24 @@ module.exports = {
   },
 
   async show(req, res) {
-    //
+    const { user_id, service_id } = req.headers;
+
+    try {
+      const rating = await Rating.findOne({
+        user: user_id,
+        service: service_id,
+      });
+
+      if (rating) {
+        return res.status(200).json(rating);
+      }
+
+      return res.status(204).json({});
+    } catch (error) {
+      return res
+        .status(400)
+        .json({ message: "Não foi possível realizar a operação no momento." });
+    }
   },
 
   async store(req, res) {
