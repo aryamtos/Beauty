@@ -20,7 +20,7 @@ const UserPartnerSchema = new mongoose.Schema(
     createdAt: { type: Date, default: Date.now },
     isAdmin: { type: Boolean, default: false },
     rate: { type: Number, default: 5.0 },
-    evaluations: { type: Number, default: 1 },
+    evaluations: { type: Number, default: 0 },
     servicos: [
       {
         type: mongoose.Schema.Types.ObjectId,
