@@ -30,6 +30,17 @@ module.exports = {
   async store(req, res) {
     const { rate, partner_id, user_id, service_id } = req.body;
 
+    const foundRating = await Rating.findOne({
+      user: user_id,
+      service: service_id,
+    });
+
+    if (foundRating) {
+      return res
+        .status(401)
+        .json({ message: "Você não pode avaliar esse serviço novamente" });
+    }
+
     try {
       const partner = await UserPartner.findById(partner_id);
 
@@ -52,7 +63,7 @@ module.exports = {
         service: service_id,
       });
 
-      return res.status(200).json(rating);
+      return res.status(201).json(rating);
     } catch (error) {
       console.log(error.response);
       return res
