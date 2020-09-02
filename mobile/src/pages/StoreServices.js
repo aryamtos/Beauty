@@ -1,126 +1,138 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 //import socketio from 'socket.io-client';
-import { StyleSheet, View, Text, StatusBar, ImageBackground, SafeAreaView,ScrollView, AsyncStorage } from 'react-native';
-import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
-import { LinearGradient } from 'expo-linear-gradient';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Icon } from 'react-native-elements';
-import { useNavigation, useRoute } from '@react-navigation/native'
-import api from '../services/api';
-import BookingComponent from '../components/BookingComponent';
+import {
+  StyleSheet,
+  View,
+  Text,
+  StatusBar,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  AsyncStorage,
+} from "react-native";
+import { TouchableOpacity, FlatList } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { Icon } from "react-native-elements";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import api from "../services/api";
+import BookingComponent from "../components/BookingComponent";
 
 export default function StoreServices({ navigation }) {
+  const route = useRoute();
+  const [categoria, setCategoria] = useState([]);
+  const [tipos, setTipos] = useState([]);
+  const [date, setDate] = useState("");
+  const [services, setServices] = useState([]);
+  const servico = route.params.servico;
 
-    const route = useRoute();
-    const [categoria, setCategoria] = useState([]);
-    const [tipos, setTipos] = useState([]);
-    const [date, setDate] = useState('');
-    const servico = route.params.servico;
-    //console.log(servico._id)
-   /* useEffect(() => {
+  useEffect(() => {
+    async function handleInit() {
+      const token = await AsyncStorage.getItem("token");
 
-        handleSubmit();
-    }, []);*/
-    async function handleSubmit() {
-        const response = await api.get(`/service/${servico._id}`)
-        const {user} = response.data
-        const {_id} = response.data
-        const {servicos} = response.data
-        //console.log(response.data)
-        await AsyncStorage.setItem('user',JSON.stringify(user));
-        await AsyncStorage.setItem('_id',JSON.stringify(_id));
-        await AsyncStorage.setItem('servicos', JSON.stringify(servicos))
-        navigation.navigate('BookRequest', {_id,servicos,user});
-            //params: servico.tipos
-        //setTipos(response.data)
+      try {
+        const response = await api.get("/partner/service/index", {
+          headers: { user_id: servico._id, token_access: token },
+        });
+
+        if (response.data) {
+          setServices(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
-    useEffect(() => {
-        AsyncStorage.getItem('tipos').then(storageCategoria => {
-            const categoriaArray = storageCategoria.split(",").map(tipos => tipos.trim());
-            setTipos(categoriaArray);
-        })
 
-    }, []);
+    handleInit();
+  }, []);
 
-    /*function handleNavigate(_id,servicos,user) {
+  async function handleSubmit() {
+    navigation.navigate("BookRequest", { services });
+  }
+
+  /*function handleNavigate(_id,servicos,user) {
         navigation.navigate('BookRequest', {_id,servicos,user});
     }*/
-    return (
-
-<View style={styles.container}>
-
-            <View style={styles.service}>
-                <View style={styles.leftSide}>
-                    <Text style={styles.serviceBoldText}>{servico.servicos.servicos}</Text>                      
-                    <Text style={styles.serviceNormalText}>{servico.servicos.tempo}</Text>
-                    <Text style={styles.serviceNormalText}>{servico.categoria}</Text>
-                </View>
-                <View style={styles.rightSide}>
-                    <Text style={styles.servicePrice}>R${servico.servicos.preco}</Text>
-                </View>
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+        <Text style={styles.buttonText}>Solicitar Serviço</Text>
+      </TouchableOpacity>
+      <FlatList
+        data={services}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View style={styles.service}>
+            <View style={styles.leftSide}>
+              <Text style={styles.serviceBoldText}>{item.nomeService}</Text>
+              <Text style={styles.serviceNormalText}>{item.parte}</Text>
+              <Text style={styles.serviceNormalText}></Text>
             </View>
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-                <Text style={styles.buttonText}>Solicitar Serviço</Text>
-            </TouchableOpacity>
-
-        </View>
-                  
-    );
+            <View style={styles.rightSide}>
+              <Text style={styles.servicePrice}>R${item.preco}</Text>
+              <Text style={styles.servicePrice}>{item.tempo} min</Text>
+            </View>
+          </View>
+        )}
+      />
+    </View>
+  );
 }
 //servico._id,servico.servicos._id,servico.user   <TouchableOpacity onPress={() => handleNavigate()} style={styles.button}>
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignSelf: 'stretch',
-        paddingHorizontal: 30,
-        marginTop: 10,
-    },
-    service: {
-        flexDirection: 'row',
-        alignSelf: 'stretch',
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-        justifyContent: 'space-between',
-        marginBottom: 10,
-    },
-    serviceBoldText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#747474',
-    },
-    serviceNormalText: {
-        fontSize: 14,
-        fontWeight: 'normal',
-        color: '#A5A5A5',
-    },
-    servicePrice: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#747474',
-        alignSelf: 'flex-end',
-        justifyContent: 'flex-end',
-    },
-    leftSide: {
-        flexDirection: 'column',
-        alignSelf: 'stretch',
-    },
-    rightSide: {
-        flex: 1,
-        flexDirection: 'column',
-        alignSelf: 'stretch',
-    },
-    buttonText: {
-        color: '#FFF',
-        fontWeight: 'bold',
-        fontSize: 15,
-    },
+  container: {
+    flex: 1,
+    alignSelf: "stretch",
+    paddingHorizontal: 30,
+    marginTop: 10,
+  },
+  service: {
+    flexDirection: "row",
+    alignSelf: "stretch",
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  serviceBoldText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#747474",
+  },
+  serviceNormalText: {
+    fontSize: 14,
+    fontWeight: "normal",
+    color: "#A5A5A5",
+  },
+  servicePrice: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#747474",
+    alignSelf: "flex-end",
+    justifyContent: "flex-end",
+  },
+  leftSide: {
+    flexDirection: "column",
+    alignSelf: "stretch",
+  },
+  rightSide: {
+    flex: 1,
+    flexDirection: "column",
+    alignSelf: "stretch",
+  },
+  buttonText: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 15,
+  },
 
-    button: {
-        height: 32,
-        backgroundColor: '#483D8B',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 2,
-        marginTop: 15,
-    }
+  button: {
+    height: 32,
+    backgroundColor: "#483D8B",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 2,
+    marginTop: 15,
+    marginBottom: 15,
+  },
 });

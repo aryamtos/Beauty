@@ -1,0 +1,25 @@
+.link {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.link button {
+  text-align: center;
+  /*margin-right: 10px;*/
+  margin-bottom: 5px;
+  border: 100px;
+  font-weight: bold;
+
+  cursor: pointer;
+  background-color: white;
+}
+.link button:link {
+  color: #993399;
+  text-decoration: none;
+}
+
+.link button:hover {
+  color: #000000;
+  text-decoration: underline;
+}

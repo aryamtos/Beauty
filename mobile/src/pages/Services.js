@@ -1,95 +1,98 @@
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  AsyncStorage,
+  StyleSheet,
+  StatusBar,
+} from "react-native";
+import { ListItem, SearchBar } from "react-native-elements";
+import api from "../services/api";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
+/**
+ * ---------------------------------------------------------
+ *    Alterações
+ * ---------------------------------------------------------
+ *
+ *  Tomei a liberdade de refazer a estrutura do presente
+ *  componente, visto que não conheço aquela sintaxe mais
+ *  antiga do React Native.
+ *
+ *  Acho que para esse componente faltaria uma opção de
+ *  editar os serviços, e não só poder ver uma mera lista
+ *  deles.
+ */
+export default function Services({ navigation }) {
+  const [nameList, setNameList] = useState([]);
 
-import React, { Component } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { ListItem, SearchBar } from 'react-native-elements';
-import api from '../services/api';
+  useEffect(() => {
+    async function handleInit() {
+      let user = await AsyncStorage.getItem("user");
+      user = JSON.parse(user);
+      const token = await AsyncStorage.getItem("token");
 
-class Services extends Component {
-  constructor(props) {
-    super(props);
+      try {
+        const response = await api.get("/partner/service/index", {
+          headers: { user_id: user._id, token_access: token },
+        });
 
-    this.state = {
-     loading : false,
-      nameList: [],
-      error: null,
-    
-    };
+        if (response.data) {
+          const nameList = response.data;
+          setNameList(nameList);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
-    this.arrayholder = [];
+    handleInit();
+  }, []);
+
+  function handleNavigate(service) {
+    navigation.navigate("StoreProfile", { servico: service });
   }
 
-  async componentDidMount() {
-     await api.get('/all')
-    .then(res =>{
-      const nameList = res.data;
-      this.setState({
-        nameList,
-        
-      });
-      console.log(nameList);
-    })
-  }
-  /*
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: '86%',
-          backgroundColor: '#CED0CE',
-          marginLeft: '14%',
-        }}
-      />
-    );
-  }
-  searchFilterFunction = text => {
-    this.setState({
-      value: text,
-    });
-
-    const newData = this.state.nameList.filter(item => {
-      const itemData = `${item.nome}`;
-      const textData = text;
-
-      return itemData.indexOf(textData) > -1;
-    });
-    this.setState({
-      nameList: newData,
-    });
-  };
-  renderHeader = () => {
-    return (
-      <SearchBar
-        placeholder="Type Here..."
-        lightTheme
-        round
-        onChangeText={text => this.searchFilterFunction(text)}
-        autoCorrect={false}
-        value={this.state.value}
-      />
-    );
-  };*/
-  render(){
- 
-    return(
-      <View style={{ flex: 1 }}>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.containerTitle}>Seus serviços</Text>
       <FlatList
-        data={this.state.nameList}
-        keyExtractor={item => item._id}
+        data={nameList}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <ListItem
-            leftAvatar={{ source: { uri: item.foto_url } }}
-            title={`${item.nome}`}
-            subtitle={item.categoria}
-          />
+          <>
+            <ListItem
+              onPress={() => handleNavigate(item)}
+              style={styles.listItem}
+              leftAvatar={{ source: { uri: item.foto_url } }}
+              title={`${item.nomeService}`}
+              subtitle={`${item.parte}`}
+            />
+          </>
         )}
-      /*  ItemSeparatorComponent={this.renderSeparator}
-        ListHeaderComponent={this.renderHeader}*/
       />
     </View>
-    );
-  }
-
+  );
 }
-export default Services;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "#fff",
+    paddingTop: StatusBar.currentHeight + 20,
+  },
+  containerTitle: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#511D68",
+    marginLeft: 20,
+    marginBottom: 20,
+  },
+  listItem: {
+    borderWidth: 1,
+    borderColor: "#eee",
+  },
+});

@@ -1,12 +1,14 @@
-//importando 
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const socketio = require('socket.io');
-const bodyParser = require('body-parser');
-const path = require('path');
-const http = require('http');
-const routes = require('./routers');
+//importando
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const socketio = require("socket.io");
+const bodyParser = require("body-parser");
+const path = require("path");
+const http = require("http");
+const routes = require("./routers");
+const variables = require("../src/config/variables");
+require("dotenv").config();
 
 //importando o express
 
@@ -14,31 +16,36 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server);
 
-mongoose.connect('mongodb+srv://Beauty:@r1adn3123@cluster0-k2kw0.mongodb.net/test?retryWrites=true&w=majority', {
+// mongoose.connect('mongodb+srv://Beauty:@r1adn3123@cluster0-k2kw0.mongodb.net/test?retryWrites=true&w=majority', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+// })
+mongoose.connect(
+  "mongodb+srv://BeautyMenu:carneiro2008@beautymenu-8o3sz.mongodb.net/aplicacion?retryWrites=true&w=majority",
+  {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-})
+  }
+);
 
-const connectedUsers ={};
+const connectedUsers = {};
 
-io.on('connection', socket => {
-
-    const {user_id} = socket.handshake.query;
-    connectedUsers[user_id] = socket.id;
+io.on("connection", (socket) => {
+  const { user_id } = socket.handshake.query;
+  connectedUsers[user_id] = socket.id;
 });
-app.use((req,res, next) =>{
+app.use((req, res, next) => {
+  req.io = io;
+  req.connectedUsers = connectedUsers;
 
-    req.io =io;
-    req.connectedUsers = connectedUsers;
-
-    return next();
-})
+  return next();
+});
 //require('./models/user-model');
 app.use(bodyParser.json());
-app.use(express.json());
 app.use(cors());
-app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
+app.use(express.json());
+app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));
 app.use(routes);
 
 //local host
-server.listen(3000);
+server.listen(variables.Api.port);

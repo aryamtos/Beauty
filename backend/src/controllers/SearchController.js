@@ -1,24 +1,43 @@
-const Service = require('../models/Service');
+const Service = require("../models/Service");
+const UserPartner = require("../models/UserPartner");
 
-module.exports ={
-async store(req,res){
+module.exports = {
+  async index(req, res) {
+    let { nomeService, neighborhood, city } = req.query;
+    var serviceQuery = {};
+    var storeQuery = {};
+    var results = {};
 
-        const {nome} = req.body;
-        //const{ nome} = req.body;
+    if (nomeService) {
+      serviceQuery.nomeService = { $regex: nomeService, $options: "i" };
 
-        let servicos = await Service.findOne({nome});
-        //let  estabelecimento = await Service.findOne({nome});
-        //let locais  = await Service.findOne({nome});
-        servicos = await Service.create({
-        //nome: nome.split(',').map(nome=> nome.trim()),
-        nome,
-        })
-       
-        return res.json(servicos);
+      var servicos = await Service.find(serviceQuery).populate(
+        "user",
+        "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail services"
+      );
+
+      results.services = servicos;
+    }
+    if (nomeService || neighborhood || city) {
+      if (nomeService) {
+        storeQuery.enterpriseName = { $regex: nomeService, $options: "i" };
+      }
+      if (neighborhood) {
+        storeQuery.neighborhood = { $regex: neighborhood, $options: "i" };
+      }
+      if (city) {
+        storeQuery.city = { $regex: city, $options: "i" };
+      }
+      var stores = await UserPartner.find(
+        storeQuery,
+        "enterpriseName category address neighborhood city thumbnail"
+      );
+      results.stores = stores;
     }
 
-
-}
+    return res.json(results);
+  },
+};
 
 /*
 

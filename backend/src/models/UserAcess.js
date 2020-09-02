@@ -1,29 +1,32 @@
-'use strict'
+"use strict";
 
-const mongoose = require('mongoose'); //importamos o mongoose
+const mongoose = require("mongoose"); //importamos o mongoose
 const schema = mongoose.Schema; // importamos o schema
 
-
-const UserAcess = new schema({
-
-
-    nome : {type: String, required: true, trim: true},
-    cpf:{type:Number, required:true},
-    telefone:{type:Number},
+const UserAcess = new schema(
+  {
+    nome: { type: String, required: true, trim: true },
+    cpf: { type: String, required: true },
+    telefone: { type: String },
     foto: { type: String },
-    ativo: { type: Boolean, required: true },
-    email:{type: String, required:true},
+    ativo: { type: Boolean },
+    email: { type: String, required: true, unique: true },
     dataCriacao: { type: Date, default: Date.now },
-    senha:{type:String, required: true},
-}, {versionKey: false});
+    senha: { type: String, required: true },
+    bookings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Booking",
+      },
+    ],
+  },
+  { versionKey: false }
+);
 
-UserAcess.pre('save', next =>{
+UserAcess.pre("save", (next) => {
+  let agora = new Date();
+  if (!this.dataCriacao) this.dataCriacao = agora;
+  next();
+});
 
-    let agora = new Date();
-    if(!this.dataCriacao)
-        this.dataCriacao = agora;
-    next();
-})
-
-module.exports = mongoose.model('User', UserAcess);
-
+module.exports = mongoose.model("User", UserAcess);
