@@ -60,7 +60,7 @@ UserPartnerSchema.pre("save", (next) => {
 });
 
 UserPartnerSchema.virtual("thumbnail_url").get(function () {
-  return `http://192.168.0.106:4444/files/${this.thumbnail}`;
+  return `http://192.168.15.41:4444/files/${this.thumbnail}`;
 });
 
 module.exports = mongoose.model("UserPartner", UserPartnerSchema);
