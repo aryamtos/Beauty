@@ -20,6 +20,7 @@ const BusinessHourMassiveController = require("./controllers/BusinessHourMassive
 const ProfessionalMassiveController = require("./controllers/ProfessionalMassiveController");
 const PasswordController = require("./controllers/PasswordController");
 const PushTokensController = require("./controllers/PushTokensController");
+const RatingController = require("./controllers/RatingController");
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -125,6 +126,9 @@ routes.get("/partner/service/showuservices", DashboardController.getAll);
 //Rotas de recuperação de senha
 routes.put("/password-reset/:id", PasswordController.update);
 routes.post("/password-reset", PasswordController.store);
+
+routes.get("/rating", RatingController.show);
+routes.post("/rating", RatingController.store);
 
 routes.get("/tokens", PushTokensController.show);
 
