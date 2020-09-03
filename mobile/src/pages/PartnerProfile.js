@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Image,
   StyleSheet,
@@ -10,8 +10,10 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import thumbnail from "../assets/perfil_.png";
+import AuthContext from "../contexts/auth";
 
 export default function PartnerProfile({ navigation }) {
+  const { signOut } = useContext(AuthContext);
   const [name, setName] = useState("");
   useEffect(() => {
     async function handleInit() {
@@ -35,6 +37,11 @@ export default function PartnerProfile({ navigation }) {
   function handleLocation() {
     navigation.navigate("Location");
   }
+
+  function handleLogout() {
+    signOut();
+  }
+
   return (
     <>
       <View style={styles.header}>
@@ -54,6 +61,9 @@ export default function PartnerProfile({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLocation} style={styles.btn}>
           <Text style={styles.btnText}>Localização</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout} style={styles.btn}>
+          <Text style={styles.btnText}>Logout</Text>
         </TouchableOpacity>
       </View>
     </>

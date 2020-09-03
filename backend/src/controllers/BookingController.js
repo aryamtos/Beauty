@@ -1,8 +1,12 @@
+const { Expo } = require("expo-server-sdk");
+const expo = new Expo();
+
 const Booking = require("../models/Booking");
 const Service = require("../models/Service");
 const UserPartner = require("../models/UserPartner");
 const User = require("../models/UserAcess");
 const { update } = require("../models/Booking");
+const PushToken = require("../models/PushToken");
 
 module.exports = {
   async index(req, res) {
@@ -22,6 +26,13 @@ module.exports = {
     const { user_id } = req.headers;
     const service_id = req.params.id; //spot_id
     const { date } = req.body;
+    const { paymentMethod } = req.body;
+    const { street } = req.body;
+    const { numberHouse } = req.body;
+    const { neighborhood } = req.body;
+    const { city } = req.body;
+    const { cep } = req.body;
+    const { reference } = req.body;
 
     const service = await Service.findById(service_id);
     const user = await User.findById(user_id);
@@ -34,6 +45,13 @@ module.exports = {
       nameService: service.nomeService,
       nameCustomer: user.nome,
       date,
+      street,
+      numberHouse,
+      neighborhood,
+      city,
+      cep,
+      reference,
+      paymentMethod,
     });
 
     /**
@@ -56,6 +74,40 @@ module.exports = {
 
     if (ownerSocket) {
       req.io.to(ownerSocket).emit("booking_request", booking);
+    }
+
+    let notifications = [];
+
+    const foundUser = await PushToken.findOne({ partner: partner._id });
+
+    if (foundUser) {
+      const userToken = foundUser.token;
+
+      notifications.push({
+        to: userToken,
+        sound: "default",
+        title: "Agendamento novo 😊",
+        body: "Dá uma conferida lá!",
+        data: {
+          to: userToken,
+          sound: "default",
+          title: "Agendamento novo 😊",
+          body: "Dá uma conferida lá!",
+        },
+      });
+
+      let chunks = expo.chunkPushNotifications(notifications);
+
+      (async () => {
+        for (let chunk of chunks) {
+          try {
+            let receipts = await expo.sendPushNotificationsAsync(chunk);
+            console.log(receipts);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      })();
     }
 
     return res.json(booking);

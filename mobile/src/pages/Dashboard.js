@@ -7,8 +7,9 @@ import {
   TextInput,
   View,
   AsyncStorage,
+  StatusBar,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -19,6 +20,12 @@ import corte from "../assets/cabelo.png";
 import barba from "../assets/barba.png";
 import depila from "../assets/depil.png";
 import manicure from "../assets/manicure.png";
+import estetica from "../assets/estetica.png";
+import spaday from "../assets/spaday.png";
+import crespas from "../assets/crespo.png";
+
+import salaoImage from "../assets/salao.png";
+import deliveryImage from "../assets/delivery.png";
 
 // API
 import api from "../services/api";
@@ -70,7 +77,6 @@ export default function Dashboard({ navigation }) {
   }, [serviceType]);
 
   const route = useRoute();
-  const [categoriaServico, setCategoria] = useState([]);
 
   async function handleSearchable() {
     navigation.navigate("Services");
@@ -86,6 +92,12 @@ export default function Dashboard({ navigation }) {
     await AsyncStorage.setItem("nomeService", nomeService);
 
     navigation.navigate("SearchResult");
+  }
+
+  async function handleServiceType(typeOfService) {
+    setServiceType(typeOfService);
+    console.log(serviceType);
+    await AsyncStorage.setItem("serviceType", typeOfService);
   }
 
   return (
@@ -107,77 +119,144 @@ export default function Dashboard({ navigation }) {
                 />
               </View>
               <Text style={styles.containerText}>Categorias</Text>
-              <TouchableOpacity
-                onPress={() => handleNavigation("Cabelo")}
-                style={styles.categoria}
-              >
-                <ImageBackground source={corte} style={styles.categoriaImage}>
-                  <LinearGradient
-                    colors={["transparent", "white"]}
-                    style={styles.gradientEffect}
-                  >
-                    <Text style={styles.categoriaText}>Corte</Text>
-                  </LinearGradient>
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleNavigation("Rosto")}
-                style={styles.categoria}
-              >
-                <ImageBackground source={barba} style={styles.categoriaImage}>
-                  <LinearGradient
-                    colors={["transparent", "white"]}
-                    style={styles.gradientEffect}
-                  >
-                    <Text style={styles.categoriaText}>Barba</Text>
-                  </LinearGradient>
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleNavigation("Depilação")}
-                style={styles.categoria}
-              >
-                <ImageBackground source={depila} style={styles.categoriaImage}>
-                  <LinearGradient
-                    colors={["transparent", "white"]}
-                    style={styles.gradientEffect}
-                  >
-                    <Text style={styles.categoriaText}>Depilação</Text>
-                  </LinearGradient>
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleNavigation("Manicure e pedicure")}
-                style={styles.categoria}
-              >
-                <ImageBackground
-                  source={manicure}
-                  style={styles.categoriaImage}
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <TouchableOpacity
+                  onPress={() => handleNavigation("Cabelo")}
+                  style={styles.categoria}
                 >
-                  <LinearGradient
-                    colors={["transparent", "white"]}
-                    style={styles.gradientEffect}
+                  <ImageBackground source={corte} style={styles.categoriaImage}>
+                    <LinearGradient
+                      colors={["transparent", "white"]}
+                      style={styles.gradientEffect}
+                    >
+                      <Text style={styles.categoriaText}>Cabelo</Text>
+                    </LinearGradient>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleNavigation("Rosto")}
+                  style={styles.categoria}
+                >
+                  <ImageBackground source={barba} style={styles.categoriaImage}>
+                    <LinearGradient
+                      colors={["transparent", "white"]}
+                      style={styles.gradientEffect}
+                    >
+                      <Text style={styles.categoriaText}>Rosto</Text>
+                    </LinearGradient>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleNavigation("Depilação")}
+                  style={styles.categoria}
+                >
+                  <ImageBackground
+                    source={depila}
+                    style={styles.categoriaImage}
                   >
-                    <Text style={styles.categoriaText}>Manicure</Text>
-                  </LinearGradient>
-                </ImageBackground>
-              </TouchableOpacity>
+                    <LinearGradient
+                      colors={["transparent", "white"]}
+                      style={styles.gradientEffect}
+                    >
+                      <Text style={styles.categoriaText}>Depilação</Text>
+                    </LinearGradient>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleNavigation("Manicure e pedicure")}
+                  style={styles.categoria}
+                >
+                  <ImageBackground
+                    source={manicure}
+                    style={styles.categoriaImage}
+                  >
+                    <LinearGradient
+                      colors={["transparent", "white"]}
+                      style={styles.gradientEffect}
+                    >
+                      <Text style={styles.categoriaText}>
+                        Manicure e Pedicure
+                      </Text>
+                    </LinearGradient>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleNavigation("Estética")}
+                  style={styles.categoria}
+                >
+                  <ImageBackground
+                    source={estetica}
+                    style={styles.categoriaImage}
+                  >
+                    <LinearGradient
+                      colors={["transparent", "white"]}
+                      style={styles.gradientEffect}
+                    >
+                      <Text style={styles.categoriaText}>Estética</Text>
+                    </LinearGradient>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleNavigation("Spa day")}
+                  style={styles.categoria}
+                >
+                  <ImageBackground
+                    source={spaday}
+                    style={styles.categoriaImage}
+                  >
+                    <LinearGradient
+                      colors={["transparent", "white"]}
+                      style={styles.gradientEffect}
+                    >
+                      <Text style={styles.categoriaText}>Spa day</Text>
+                    </LinearGradient>
+                  </ImageBackground>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleNavigation("Crespas e cacheadas")}
+                  style={styles.categoria}
+                >
+                  <ImageBackground
+                    source={crespas}
+                    style={styles.categoriaImage}
+                  >
+                    <LinearGradient
+                      colors={["transparent", "white"]}
+                      style={styles.gradientEffect}
+                    >
+                      <Text style={styles.categoriaText}>
+                        Crespas e Cacheadas
+                      </Text>
+                    </LinearGradient>
+                  </ImageBackground>
+                </TouchableOpacity>
+              </ScrollView>
             </>
           ) : (
             <>
-              <Text style={styles.typeTitle}>Que tipo de serviço procura?</Text>
-              <TouchableOpacity
-                style={styles.type}
-                onPress={() => setServiceType("Salão")}
-              >
-                <Text style={styles.typeText}>Salão</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.type}
-                onPress={() => setServiceType("Autônomo")}
-              >
-                <Text style={styles.typeText}>Delivery de Beleza</Text>
-              </TouchableOpacity>
+              <Text style={styles.typeTitle}>
+                Que tipo de serviço você procura?
+              </Text>
+              <View style={styles.typesContainer}>
+                <TouchableOpacity
+                  style={styles.type}
+                  onPress={() => handleServiceType("Salão")}
+                >
+                  <View style={styles.typeImageContainer}>
+                    <Image source={salaoImage} style={styles.typeImage} />
+                  </View>
+                  <Text style={styles.typeText}>Salão</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.type}
+                  onPress={() => handleServiceType("Autônomo")}
+                >
+                  <View style={styles.typeImageContainer}>
+                    <Image source={deliveryImage} style={styles.typeImage} />
+                  </View>
+                  <Text style={styles.typeText}>Delivery de Beleza</Text>
+                </TouchableOpacity>
+              </View>
             </>
           )}
         </View>
@@ -207,6 +286,7 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: StatusBar.currentHeight + 40,
   },
   buscaIcon: {
     height: 20,
@@ -251,24 +331,42 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "flex-start",
   },
+  typesContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+  typeImageContainer: {
+    alignSelf: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 50,
+    elevation: 10,
+    marginBottom: 10,
+  },
+  typeImage: {
+    alignSelf: "center",
+    width: 100,
+    resizeMode: "contain",
+  },
   typeTitle: {
+    textAlign: "center",
     alignSelf: "center",
     fontSize: 30,
     color: "#511d68",
     marginBottom: 40,
   },
   type: {
-    height: 40,
+    padding: 20,
+    alignSelf: "center",
+    width: 150,
     marginBottom: 20,
-    borderColor: "#511d68",
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
     justifyContent: "center",
   },
   typeText: {
     textAlign: "center",
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#777",
+    fontWeight: "normal",
+    color: "#511d68",
   },
 });

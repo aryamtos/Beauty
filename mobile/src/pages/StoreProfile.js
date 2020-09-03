@@ -30,6 +30,7 @@ function StoreNav() {
   const route = useRoute();
   const [date, setDate] = useState("");
   const [tipos, setTipos] = useState([]);
+  const [rating, setRating] = useState();
   // const servico = route.params;
   const servico = route.params.servico;
 
@@ -92,6 +93,26 @@ export default function StoreProfile({ navigation }) {
     handleInit();
   }, []);
 
+  useEffect(() => {
+    async function handleRatingInit() {
+      const token = await AsyncStorage.getItem("token");
+
+      try {
+        const response = await api.get("/rating/show", {
+          headers: { user: token, service: servico._id },
+        });
+
+        if (response.data) {
+          setServices(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    handleRatingInit();
+  }, []);
+
   async function handleSubmit() {
     const response = await api.get(`/service/${servico._id}`);
     setDate(response.data);
@@ -137,7 +158,9 @@ export default function StoreProfile({ navigation }) {
               size={12}
               style={{ marginTop: 2, marginRight: 2 }}
             />
-            <Text style={styles.resultText}>4,0</Text>
+            <Text style={styles.resultText}>
+              {servico.evaluations > 0 ? servico.rate.toFixed(1) : "novo"}
+            </Text>
             <Text style={styles.resultText}>{servico.category}</Text>
           </View>
         </View>

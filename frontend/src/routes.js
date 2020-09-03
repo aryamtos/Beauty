@@ -18,6 +18,7 @@ import ProfessionalsUpdate from "./pages/ProfessionalsUpdate";
 import NewProfessional from "./pages/NewProfessional";
 import Forgot from "./pages/Forgot";
 import ResetPassword from "./pages/ResetPassword";
+import SendNotification from "./pages/SendNotification";
 
 export default function Routes() {
   return (
@@ -39,6 +40,7 @@ export default function Routes() {
         <Route path="/admin" component={Admin} />
         <Route path="/showusers" component={DashUsers} />
         <Route path="/showpartners" component={DashPartners} />
+        <Route path="/send-notification" component={SendNotification} />
       </Switch>
     </BrowserRouter>
   );

@@ -6,7 +6,7 @@ import "./styles.css";
 export default function New({ history }) {
   const [nomeService, setNomeService] = useState("");
   const [tempo, setTempo] = useState("");
-  const [nome, setNomes] = useState("");
+  const [category, setCategory] = useState("");
   const [preco, setPreco] = useState("");
   const [parte, setParte] = useState("");
 
@@ -16,15 +16,19 @@ export default function New({ history }) {
 
     const token_access = localStorage.getItem("token-access");
 
-    const response = await api.post(
-      "/partner/service/registrationservice",
-      { nomeService, nome, tempo, preco, parte },
-      {
-        headers: { user_id, token_access },
-      }
-    );
-    console.log(response);
-    history.push("/dashboard");
+    try {
+      const response = await api.post(
+        "/partner/service/registrationservice",
+        { nomeService, category, tempo, preco, parte },
+        {
+          headers: { user_id, token_access },
+        }
+      );
+      console.log(response);
+      history.push("/dashboard");
+    } catch (error) {
+      console.log(error.response);
+    }
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -46,20 +50,17 @@ export default function New({ history }) {
         name="category"
         className="minimal"
         required
-        value={nome}
-        onChange={(event) => setNomes(event.target.value)}
+        value={category}
+        onChange={(event) => setCategory(event.target.value)}
       >
         <option value="null">Selecione a categoria</option>
         <option value="Cabelo">Cabelo</option>
+        <option value="Rosto">Rosto</option>
         <option value="Depilação">Depilação</option>
-        <option value="Estética corporal">Estética corporal</option>
-        <option value="Sobrancelha">Sobrancelha</option>
-        <option value="Estética facial"> Estética facial</option>
         <option value="Manicure e pedicure">Manicure e pedicure</option>
-        <option value="Maquiagem">Maquiagem</option>
-        <option value="Massagem">Massagem</option>
-        <option value="Podologia">Podologia</option>
-        <option value="Outros">Outros</option>
+        <option value="Estética">Estética</option>
+        <option value="Spa day">Spa day</option>
+        <option value="Crespas e cacheadas">Crespas e Cacheadas</option>
       </select>
       <br></br>
       <label htmlFor="preco">PREÇO *</label>

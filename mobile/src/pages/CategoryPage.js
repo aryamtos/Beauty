@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    alignSelf: "center",
+    alignSelf: "stretch",
     paddingHorizontal: 30,
     backgroundColor: "#fff",
     marginTop: StatusBar.currentHeight,

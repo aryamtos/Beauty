@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://beautymenuapp.tk",
+  baseURL: "https://beautymenuapp.tk/",
 });
 
 export default api;

@@ -5,7 +5,8 @@ const md5 = require("md5");
 class userPartnerRepository {
   constructor() {
     this._base = new base("UserPartner");
-    this._projection = "responsibleName enterpriseName email _id isAdmin";
+    this._projection =
+      "responsibleName enterpriseName email _id isAdmin category";
   }
 
   async IsEmailExiste(Email) {

@@ -2,6 +2,13 @@ const mongoose = require("mongoose");
 
 const BookingSchema = new mongoose.Schema(
   {
+    reference: { type: String },
+    cep: { type: String },
+    city: { type: String },
+    neighborhood: { type: String },
+    numberHouse: { type: Number },
+    street: { type: String },
+    paymentMethod: { type: String },
     date: { type: Date, required: true },
     isApproved: { type: Boolean, required: true, default: false },
     wasCanceled: { type: Boolean, required: true, default: false },
