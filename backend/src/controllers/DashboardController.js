@@ -27,7 +27,7 @@ module.exports = {
         category: type,
       }).populate(
         "user",
-        "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail servicos"
+        "_id email responsibleName enterpriseName category phone address neighborhood city about thumbnail servicos rate evaluations"
       );
       const partners = [];
 

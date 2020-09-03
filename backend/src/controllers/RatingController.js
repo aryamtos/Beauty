@@ -1,6 +1,7 @@
 const UserPartner = require("../models/UserPartner");
 const Rating = require("../models/Rating");
 const Booking = require("../models/Booking");
+const { getById } = require("../config/base/controller-base");
 
 module.exports = {
   async index(req, res) {
@@ -58,10 +59,10 @@ module.exports = {
         partner.evaluations = partner.evaluations + 1;
 
         const newRate = (totalSum + rate) / partner.evaluations;
-        partner.rate = Number(newRate.toFixed(1));
+        partner.rate = Number(newRate);
       } else {
         partner.evaluations = 1;
-        partner.rate = Number(rate.toFixed(1));
+        partner.rate = Number(rate);
       }
       await partner.save();
 

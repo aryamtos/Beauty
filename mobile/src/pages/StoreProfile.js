@@ -99,7 +99,7 @@ export default function StoreProfile({ navigation }) {
 
       try {
         const response = await api.get("/rating/show", {
-          headers: { user: token, service:  servico._id},
+          headers: { user: token, service: servico._id },
         });
 
         if (response.data) {
@@ -158,7 +158,9 @@ export default function StoreProfile({ navigation }) {
               size={12}
               style={{ marginTop: 2, marginRight: 2 }}
             />
-            <Text style={styles.resultText}>{rating}</Text>
+            <Text style={styles.resultText}>
+              {servico.evaluations > 0 ? servico.rate.toFixed(1) : "novo"}
+            </Text>
             <Text style={styles.resultText}>{servico.category}</Text>
           </View>
         </View>
