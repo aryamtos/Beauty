@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Rating, AirbnbRating } from "react-native-ratings";
 // import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 import { ListItem } from "react-native-elements";
@@ -32,10 +32,8 @@ export default function ListAgendamentos({ navigation }) {
   const [agendas, setAgendas] = useState([]);
   const [isDateHandled, setIsDateHandled] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [itemId, setItemId] = useState();  
-  const [rating, setRating] = useState();
-  
-
+  const [itemId, setItemId] = useState(0);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     async function handleInit() {
@@ -123,33 +121,30 @@ export default function ListAgendamentos({ navigation }) {
   }, [agendas]);
 
   async function modalActivate(itemId) {
-    setModalVisible(!modalVisible)
-    setItemId(itemId)
+    setModalVisible(!modalVisible);
+    setItemId(itemId);
   }
 
   async function handleSubmit() {
-
     try {
-      const response = await api.post(
-        `/rating`,
-        {
-          rate: rating,
-          booking_id: itemId
-        }
-      );
+      const response = await api.post(`/rating`, {
+        rate: rating,
+        booking_id: itemId,
+      });
 
-      Alert.alert("Sucesso!", "Avaliação enviada");
-      setModalVisible(!modalVisible);
+      if (response.status === 201) {
+        console.log(response.data);
+        Alert.alert("Sucesso!", "Avaliação enviada");
+        setModalVisible(!modalVisible);
+      }
     } catch (error) {
-      console.log(error.response.data.message);
+      Alert.alert("Oops!", error.response.data.message);
+      setModalVisible(!modalVisible);
     }
   }
 
-
-  
   return (
     <View style={styles.container}>
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -161,24 +156,25 @@ export default function ListAgendamentos({ navigation }) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Avalie o Estabelecimento!</Text>
- 
+
             <AirbnbRating
               count={5}
               showRating={false}
-              defaultRating={3}
+              defaultRating={0}
               size={40}
               onFinishRating={setRating}
             />
 
-            <TouchableHighlight
-              style={ styles.button }
-              onPress={handleSubmit}>
+            <TouchableHighlight style={styles.button} onPress={handleSubmit}>
               <Text style={styles.buttonText}>Avaliar</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
-              style={ styles.cancelButton }
-              onPress={() => { setModalVisible(!modalVisible); }}>
+              style={styles.cancelButton}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
               <Text style={styles.buttonText}>Cancelar</Text>
             </TouchableHighlight>
           </View>
@@ -192,18 +188,17 @@ export default function ListAgendamentos({ navigation }) {
           data={agendas}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-
             <TouchableHighlight
               onPress={() => {
                 modalActivate(item._id);
-              }}>
+              }}
+            >
               <ListItem
                 style={styles.listItem}
                 title={`${item.nameService}`}
                 subtitle={`${item.date}`}
               />
             </TouchableHighlight>
-
           )}
         />
       )}
@@ -256,7 +251,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -266,14 +261,14 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

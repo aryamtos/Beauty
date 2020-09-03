@@ -1,5 +1,6 @@
 const UserPartner = require("../models/UserPartner");
 const Rating = require("../models/Rating");
+const Booking = require("../models/Booking");
 
 module.exports = {
   async index(req, res) {
@@ -28,20 +29,28 @@ module.exports = {
   },
 
   async store(req, res) {
-    const { rate, partner_id, user_id, service_id } = req.body;
-
-    const foundRating = await Rating.findOne({
-      user: user_id,
-      service: service_id,
-    });
-
-    if (foundRating) {
-      return res
-        .status(401)
-        .json({ message: "Você não pode avaliar esse serviço novamente" });
-    }
+    const { rate, booking_id } = req.body;
 
     try {
+      const booking = await Booking.findById(booking_id);
+
+      const {
+        partner: partner_id,
+        user: user_id,
+        service: service_id,
+      } = booking;
+
+      const foundRating = await Rating.findOne({
+        user: user_id,
+        service: service_id,
+      });
+
+      if (foundRating) {
+        return res
+          .status(401)
+          .json({ message: "Você não pode avaliar esse serviço novamente" });
+      }
+
       const partner = await UserPartner.findById(partner_id);
 
       if (partner.evaluations !== 0) {
