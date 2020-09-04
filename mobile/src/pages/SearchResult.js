@@ -45,6 +45,8 @@ export default function SearchResult({ navigation }) {
       });
       settipo(response.data);
       setIsSearchDone(true);
+
+      console.log(response.data);
     }
     loadCategories();
   }, []);
@@ -65,11 +67,11 @@ export default function SearchResult({ navigation }) {
   }
 
   async function handleNavigate(servico) {
-    await AsyncStorage.setItem("serviceType", servico.user.category);
-
     if (!servico.user) {
+      await AsyncStorage.setItem("serviceType", servico.category);
       navigation.navigate("StoreProfile", { servico });
     } else {
+      await AsyncStorage.setItem("serviceType", servico.user.category);
       navigation.navigate("StoreProfile", { servico: servico.user });
     }
   }
@@ -101,7 +103,7 @@ export default function SearchResult({ navigation }) {
         <>
           {showServices && (
             <>
-              {spots.services[0] ? (
+              {spots.services && spots.services[0] ? (
                 <FlatList
                   style={styles.list}
                   data={spots.services}
@@ -143,7 +145,7 @@ export default function SearchResult({ navigation }) {
           )}
           {showStores && (
             <>
-              {spots.stores[0] ? (
+              {spots.stores && spots.stores[0] ? (
                 <FlatList
                   style={styles.list}
                   data={spots.stores}

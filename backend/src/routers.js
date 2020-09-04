@@ -192,6 +192,7 @@ routes.post("/token", async (req, res) => {
       .status(200)
       .json({ message: `Received push token, ${req.body.token.value}` });
   } catch (error) {
+    console.log(error.response);
     return res
       .status(400)
       .json({ message: "Tentativa falha de armazenar o token" });

@@ -19,6 +19,7 @@
       "supportsTablet": true
     },
     "android": {
+      "useNextNotificationsApi": true,
       "package": "com.lifejr.beautymenu",
       "versionCode": 1
     },

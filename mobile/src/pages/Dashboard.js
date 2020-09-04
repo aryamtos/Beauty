@@ -12,7 +12,11 @@ import {
 import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import lupa from "../assets/BUSCAR_cinza.png";
@@ -117,6 +121,32 @@ export default function Dashboard({ navigation }) {
                   onChangeText={setNomeService}
                   onSubmitEditing={handleSubmit}
                 />
+              </View>
+              <View style={styles.optionsContainer}>
+                <TouchableOpacity
+                  style={[
+                    styles.btn,
+                    serviceType === "Salão" && {
+                      borderBottomColor: "#ccc",
+                      borderBottomWidth: 1,
+                    },
+                  ]}
+                  onPress={() => setServiceType("Salão")}
+                >
+                  <Text style={styles.btnText}>Salão</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.btn,
+                    serviceType === "Autônomo" && {
+                      borderBottomColor: "#ccc",
+                      borderBottomWidth: 1,
+                    },
+                  ]}
+                  onPress={() => setServiceType("Autônomo")}
+                >
+                  <Text style={styles.btnText}>Delivery</Text>
+                </TouchableOpacity>
               </View>
               <Text style={styles.containerText}>Categorias</Text>
               <ScrollView showsVerticalScrollIndicator={false}>
@@ -368,5 +398,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "normal",
     color: "#511d68",
+  },
+  optionsContainer: {
+    height: 50,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  btn: {
+    padding: 10,
+  },
+  btnText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#511D68",
   },
 });
