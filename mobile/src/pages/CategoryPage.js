@@ -12,7 +12,7 @@ import {
   TextInput,
   AsyncStorage,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity, RectButton } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
 
@@ -27,6 +27,7 @@ export default function CategoryPage({ navigation }) {
   const route = useRoute();
   const [servicos, setServicos] = useState([]);
   const [tipos, setTipos] = useState([]);
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
   const servico = route.params;
   //console.log(servico._id)
 
@@ -45,6 +46,18 @@ export default function CategoryPage({ navigation }) {
 
     loadProducts();
   }, []);
+
+  async function reloadProducts(serviceType) {
+    const { type } = route.params;
+    const token = await AsyncStorage.getItem("token");
+
+    const response = await api.get("/partner/service/showuservices", {
+      params: { type, serviceType },
+    });
+    let partners = response.data;
+
+    setServicos(partners);
+  }
 
   function handleNavigate(servico) {
     navigation.navigate("StoreProfile", { servico });
@@ -71,42 +84,66 @@ export default function CategoryPage({ navigation }) {
         />
       </View>
       <Text style={styles.containerText}>Estabelecimentos encontrados</Text>
-      <FlatList
-        style={styles.list}
-        data={servicos}
-        keyExtractor={(servico) => String(servico._id)}
-        //horizontal
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item: servico }) => (
-          <ScrollView>
+      {servicos.length > 0 ? (
+        <FlatList
+          style={styles.list}
+          data={servicos}
+          keyExtractor={(servico) => String(servico._id)}
+          //horizontal
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item: servico }) => (
+            <ScrollView>
+              <TouchableOpacity
+                onPress={() => handleNavigate(servico)}
+                style={styles.result}
+              >
+                <View style={styles.resultData}>
+                  {servico.thumbnail_url ? (
+                    <View>
+                      <Image
+                        style={styles.thumbnail}
+                        source={{ uri: servico.thumbnail_url }}
+                      />
+                    </View>
+                  ) : (
+                    <Image style={styles.thumbnail} />
+                  )}
+                  <Text style={styles.resultNameText}>
+                    {servico.enterpriseName}
+                  </Text>
+                  <View style={styles.resultDataRate}></View>
+                  <Text style={styles.resultText}>{servico.category}</Text>
+                  <Text style={styles.resultText}>
+                    {servico.address}. {servico.neighborhood}, {servico.city}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          )}
+        />
+      ) : (
+        <View style={styles.emptyListContainer}>
+          <Text style={styles.emptyListText}>
+            Não encontramos nenhum serviço
+          </Text>
+          {isButtonVisible && (
             <TouchableOpacity
-              onPress={() => handleNavigate(servico)}
-              style={styles.result}
+              style={styles.btn}
+              onPress={() => {
+                reloadProducts(
+                  servico.serviceType === "Salão" ? "Autônomo" : "Salão"
+                );
+                setIsButtonVisible(!isButtonVisible);
+              }}
             >
-              <View style={styles.resultData}>
-                {servico.thumbnail_url ? (
-                  <View>
-                    <Image
-                      style={styles.thumbnail}
-                      source={{ uri: servico.thumbnail_url }}
-                    />
-                  </View>
-                ) : (
-                  <Image style={styles.thumbnail} />
-                )}
-                <Text style={styles.resultNameText}>
-                  {servico.enterpriseName}
-                </Text>
-                <View style={styles.resultDataRate}></View>
-                <Text style={styles.resultText}>{servico.category}</Text>
-                <Text style={styles.resultText}>
-                  {servico.address}. {servico.neighborhood}, {servico.city}
-                </Text>
-              </View>
+              <Text style={styles.btnText}>
+                Buscar por{" "}
+                {servico.serviceType === "Salão" ? "Delivery" : "Salão"}
+              </Text>
             </TouchableOpacity>
-          </ScrollView>
-        )}
-      />
+          )}
+        </View>
+      )}
     </View>
   );
 }
@@ -192,6 +229,28 @@ const styles = StyleSheet.create({
   resultDataRate: {
     flexDirection: "row",
     justifyContent: "flex-start",
+  },
+  emptyListContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyListText: {
+    fontSize: 16,
+    fontWeight: "normal",
+    color: "#999",
+  },
+  btn: {
+    marginTop: 15,
+    height: 44,
+    backgroundColor: "#511D68",
+    borderRadius: 2,
+    padding: 10,
+    justifyContent: "center",
+  },
+  btnText: {
+    color: "#fff",
+    fontSize: 14,
   },
 });
 

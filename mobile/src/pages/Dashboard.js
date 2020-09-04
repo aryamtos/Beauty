@@ -172,7 +172,7 @@ export default function Dashboard({ navigation }) {
                       colors={["transparent", "white"]}
                       style={styles.gradientEffect}
                     >
-                      <Text style={styles.categoriaText}>Rosto</Text>
+                      <Text style={styles.categoriaText}>Barba</Text>
                     </LinearGradient>
                   </ImageBackground>
                 </TouchableOpacity>

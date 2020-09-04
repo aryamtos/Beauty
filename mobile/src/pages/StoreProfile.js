@@ -86,31 +86,11 @@ export default function StoreProfile({ navigation }) {
           setServices(response.data);
         }
       } catch (error) {
-        console.log(error);
+        console.log(error, error.response);
       }
     }
 
     handleInit();
-  }, []);
-
-  useEffect(() => {
-    async function handleRatingInit() {
-      const token = await AsyncStorage.getItem("token");
-
-      try {
-        const response = await api.get("/rating/show", {
-          headers: { user: token, service: servico._id },
-        });
-
-        if (response.data) {
-          setServices(response.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    handleRatingInit();
   }, []);
 
   async function handleSubmit() {

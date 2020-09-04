@@ -20,6 +20,7 @@
     },
     "android": {
       "useNextNotificationsApi": true,
+      "googleServicesFile": "./google-services.json",
       "package": "com.lifejr.beautymenu",
       "versionCode": 1
     },
@@ -32,7 +33,7 @@
       "backgroundColor": "#511D68"
     },
     "notification": {
-      "icon": "./src/assets/bmlogo_notify.png",
+      "icon": "./src/assets/bmlogogray.png",
       "color": "#511D68",
       "androidMode": "default"
     }
