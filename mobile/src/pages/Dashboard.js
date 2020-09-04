@@ -122,32 +122,6 @@ export default function Dashboard({ navigation }) {
                   onSubmitEditing={handleSubmit}
                 />
               </View>
-              <View style={styles.optionsContainer}>
-                <TouchableOpacity
-                  style={[
-                    styles.btn,
-                    serviceType === "Salão" && {
-                      borderBottomColor: "#ccc",
-                      borderBottomWidth: 1,
-                    },
-                  ]}
-                  onPress={() => setServiceType("Salão")}
-                >
-                  <Text style={styles.btnText}>Salão</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.btn,
-                    serviceType === "Autônomo" && {
-                      borderBottomColor: "#ccc",
-                      borderBottomWidth: 1,
-                    },
-                  ]}
-                  onPress={() => setServiceType("Autônomo")}
-                >
-                  <Text style={styles.btnText}>Delivery</Text>
-                </TouchableOpacity>
-              </View>
               <Text style={styles.containerText}>Categorias</Text>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableOpacity
