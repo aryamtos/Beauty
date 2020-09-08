@@ -37,6 +37,7 @@ export default function BookRequest({ navigation }) {
   const [mode, setMode] = useState("");
   const [services, setServices] = useState([]);
   const [service, setService] = useState(null);
+  const [servicePrice, setServicePrice] = useState(null);
   const [isDelivery, setIsDelivery] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("Dinheiro");
   const [street, setStreet] = useState("");
@@ -138,6 +139,7 @@ export default function BookRequest({ navigation }) {
           style={{ height: 50, width: "100%" }}
           onValueChange={(itemValue, itemIndex) => {
             setService(itemValue);
+            setServicePrice(itemValue.preco);
           }}
         >
           {services.map((service) => (
@@ -220,7 +222,7 @@ export default function BookRequest({ navigation }) {
               <TouchableOpacity style={styles.input}>
                 <TextInput
                   style={styles.inputText}
-                  placeholder="Ex: Malhado"
+                  placeholder="Ex: Ilheus"
                   placeholderTextColor="#A5A5A5"
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -231,7 +233,7 @@ export default function BookRequest({ navigation }) {
               <TouchableOpacity style={styles.input}>
                 <TextInput
                   style={styles.inputText}
-                  placeholder="Ex: Malhado"
+                  placeholder="Ex: 45651-350"
                   placeholderTextColor="#A5A5A5"
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -244,13 +246,18 @@ export default function BookRequest({ navigation }) {
               <TouchableOpacity style={styles.input}>
                 <TextInput
                   style={styles.inputText}
-                  placeholder="Ex: em frente a oficina mecânica"
+                  placeholder="Ex: proximo ao mercado"
                   placeholderTextColor="#A5A5A5"
                   autoCapitalize="none"
                   autoCorrect={false}
                   onChangeText={setReference}
                 />
               </TouchableOpacity>
+
+              <View style={styles.precoField}>
+                <Text style={styles.precoText}>Total: R$ {servicePrice+10}</Text>
+              </View>
+
             </View>
           </>
         ) : null}
@@ -306,7 +313,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 2,
   },
-
   cancelButton: {
     height: 42,
     backgroundColor: "#ccc",
@@ -315,10 +321,16 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     marginTop: 10,
   },
-
   buttonText: {
     color: "#FFF",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  precoField: {
+    marginBottom: 10,
+  },
+  precoText: {
+    fontSize: 16,
+    color: "#8C8C8C",
   },
 });

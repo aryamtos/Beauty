@@ -24,6 +24,8 @@ export default function StoreServices({ navigation }) {
   const [tipos, setTipos] = useState([]);
   const [date, setDate] = useState("");
   const [services, setServices] = useState([]);
+  const [isDelivery, setIsDelivery] = useState(false);
+  const [taxa, setTaxa] = useState("");
   const servico = route.params.servico;
 
   useEffect(() => {
@@ -46,6 +48,18 @@ export default function StoreServices({ navigation }) {
     handleInit();
   }, []);
 
+  useEffect(() => {
+    async function loadType() {
+      const serviceType = await AsyncStorage.getItem("serviceType");
+      console.log(serviceType);
+      if (serviceType == "Autônomo") {
+        setTaxa("(+R$10 Delivery)")
+        setIsDelivery(true);
+      }
+    }
+    loadType();
+  }, []);
+
   async function handleSubmit() {
     navigation.navigate("BookRequest", { services });
   }
@@ -66,10 +80,13 @@ export default function StoreServices({ navigation }) {
             <View style={styles.leftSide}>
               <Text style={styles.serviceBoldText}>{item.nomeService}</Text>
               <Text style={styles.serviceNormalText}>{item.parte}</Text>
-              <Text style={styles.serviceNormalText}></Text>
             </View>
             <View style={styles.rightSide}>
-              <Text style={styles.servicePrice}>R${item.preco}</Text>
+              <Text style={styles.servicePrice}>R${item.preco}{isDelivery ? (
+          <>
+          <Text style={styles.serviceTax}>{taxa}</Text>
+          </>
+        ) : null}</Text>
               <Text style={styles.servicePrice}>{item.tempo} min</Text>
             </View>
           </View>
@@ -110,6 +127,10 @@ const styles = StyleSheet.create({
     color: "#747474",
     alignSelf: "flex-end",
     justifyContent: "flex-end",
+  },
+  serviceTax: {
+    fontSize: 12,
+    color: "#A2A2A2",
   },
   leftSide: {
     flexDirection: "column",
