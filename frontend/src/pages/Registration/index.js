@@ -53,16 +53,17 @@ export default function Registration({ history }) {
 
       if (response.status === 201) {
         if (category === "Autônomo") {
-          // history.push('http://pag.ae/7W6ds4vuo');
+          history.push('http://pag.ae/7W6ds4vuo');
           window.location.replace("http://pag.ae/7W6ds4vuo");
         } else {
-          // history.push('http://pag.ae/7W8s7gr9n');
+          history.push('http://pag.ae/7W8s7gr9n');
           window.location.replace("http://pag.ae/7W8s7gr9n");
         }
       }
     } catch (error) {
-      setRequestFailed(true);
-      setErrorMessage(error.response.data.validation[0].message);
+      console.log(error.response);
+      // setRequestFailed(true);
+      // setErrorMessage(error.response.data.validation[0].message);
     }
   }
 
@@ -137,9 +138,6 @@ export default function Registration({ history }) {
         {isDelivery &&
         <div>
         <label htmlFor="tax">Taxa de Delivery</label>
-        <p className="descricao">
-          Defina o Valor Cobrado por Delivery
-        </p>
         <input
           type="number"
           id="tax"
