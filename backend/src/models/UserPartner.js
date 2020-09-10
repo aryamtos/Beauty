@@ -8,6 +8,7 @@ const UserPartnerSchema = new mongoose.Schema(
     thumbnail: String,
     responsibleName: { type: String, required: true, trim: true, index: true },
     category: { trim: true, type: String },
+    tax: { type: Number },
     enterpriseName: { type: String, trim: true, index: true },
     cpf: { type: String, required: true },
     phone: { type: String, required: true },

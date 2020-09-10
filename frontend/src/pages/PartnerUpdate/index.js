@@ -4,6 +4,7 @@ import api from "../../services/api";
 
 export default function PartnerUpdate({ history }) {
   const [responsibleName, setRName] = useState("");
+  const [tax, setTax] = useState(0);
   const [enterpriseName, setEName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -15,6 +16,8 @@ export default function PartnerUpdate({ history }) {
   const [senha, setSenha] = useState("");
   const [senhaConfirmacao, setSenhaConfirmacao] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
+  const [isDelivery, setIsDelivery] = useState(true);
+
 
   var preview = useMemo(() => {
     if (typeof thumbnail !== "string") {
@@ -38,6 +41,7 @@ export default function PartnerUpdate({ history }) {
 
         if (response.data) {
           setRName(response.data.responsibleName);
+          setTax(response.data.tax)
           setEName(response.data.enterpriseName);
           setEmail(response.data.email);
           setAddress(response.data.address);
@@ -47,6 +51,9 @@ export default function PartnerUpdate({ history }) {
           setPhone(response.data.phone);
           setAbout(response.data.about);
           setThumbnail(response.data.thumbnail_url);
+        }
+        if (response.data.category === "Autônomo") {
+          setIsDelivery(true)
         }
       } catch (error) {
         console.log(error.response);
@@ -74,6 +81,7 @@ export default function PartnerUpdate({ history }) {
         data.append("thumbnail", thumbnail);
       }
       data.append("responsibleName", responsibleName);
+      data.append("tax", tax);
       data.append("enterpriseName", enterpriseName);
       data.append("email", email);
       data.append("phone", phone);
@@ -126,6 +134,21 @@ export default function PartnerUpdate({ history }) {
         value={responsibleName}
         onChange={(event) => setRName(event.target.value)}
       />
+      {/* ---------------Taxa de Delivery-------------------------- */}
+      {isDelivery &&
+      <div>
+      <label htmlFor="tax">Taxa de Delivery</label>
+      <p className="descricao">
+        Defina o Valor Cobrado por Delivery
+      </p>
+      <input
+        type="number"
+        id="tax"
+        value={tax}
+        onChange={(event) => setTax(event.target.value)}
+      />
+      </div>
+      }
       {/* ---------------nome do responsavel-------------------------- */}
       <label htmlFor="enterpriseName">NOME DO SALÃO</label>
       <input

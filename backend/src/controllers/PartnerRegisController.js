@@ -74,6 +74,7 @@ partnerController.prototype.post = async (req, res) => {
       email: req.body.email,
       responsibleName: req.body.responsibleName,
       category: req.body.category,
+      tax: req.body.tax,
       enterpriseName: req.body.enterpriseName,
       phone: req.body.phone,
       cpf: req.body.cpf,

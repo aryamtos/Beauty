@@ -6,6 +6,7 @@ import "./styles.css";
 export default function Registration({ history }) {
   const [responsibleName, setRName] = useState("");
   const [category, setCategory] = useState("autonomo");
+  const [tax, setTax] = useState(0);
   const [enterpriseName, setEName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -17,6 +18,7 @@ export default function Registration({ history }) {
   const [senha, setSenha] = useState("");
   const [senhaConfirmacao, setSenhaConfirmacao] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
+  const [isDelivery, setIsDelivery] = useState(true);
 
   // Erros
   const [requestFailed, setRequestFailed] = useState(false);
@@ -36,6 +38,7 @@ export default function Registration({ history }) {
       data.append("email", email);
       data.append("responsibleName", responsibleName);
       data.append("category", category);
+      data.append("tax", tax);
       data.append("enterpriseName", enterpriseName);
       data.append("phone", phone);
       data.append("cpf", cpf);
@@ -62,6 +65,16 @@ export default function Registration({ history }) {
       setErrorMessage(error.response.data.validation[0].message);
     }
   }
+
+  function handleRadio(category) {
+    if (category === "Autônomo") {
+      setCategory("Autônomo")
+      setIsDelivery(true)
+    } else {
+      setCategory("Salão")
+      setIsDelivery(false)
+    }
+  }
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -74,7 +87,7 @@ export default function Registration({ history }) {
         >
           <input
             type="file"
-            onChange={(event) => setThumbnail(event.target.files[0])}
+            onChange={(event) =>  setThumbnail(event.target.files[0])}
           />
           <FaCamera />
         </label>
@@ -99,10 +112,8 @@ export default function Registration({ history }) {
               id="autonomo"
               name="category"
               value={category}
-              onClick={(event) =>
-                setCategory((event.target.value = "Autônomo"))
-              }
-            ></input>
+              onClick={(event) => handleRadio((event.target.value = "Autônomo"))}>
+              </input>
             <label htmlFor="autonomo">Autônomo</label>
             <div className="check"></div>
           </li>
@@ -113,8 +124,8 @@ export default function Registration({ history }) {
               id="Salão"
               name="category"
               value={category}
-              onChange={(event) => setCategory((event.target.value = "Salão"))}
-            ></input>
+              onChange={(event) => handleRadio((event.target.value = "Salão"))}>
+              </input>
             <label htmlFor="Salão">Salão</label>
 
             <div className="check">
@@ -122,6 +133,21 @@ export default function Registration({ history }) {
             </div>
           </li>
         </ul>
+        {/* ---------------Taxa de Delivery-------------------------- */}
+        {isDelivery &&
+        <div>
+        <label htmlFor="tax">Taxa de Delivery</label>
+        <p className="descricao">
+          Defina o Valor Cobrado por Delivery
+        </p>
+        <input
+          type="number"
+          id="tax"
+          value={tax}
+          onChange={(event) => setTax(event.target.value)}
+        />
+        </div>
+        }
         {/* ---------------nome do responsavel-------------------------- */}
         <label htmlFor="enterpriseName">NOME DO SALÃO</label>
         <p className="descricao">
