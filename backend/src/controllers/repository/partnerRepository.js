@@ -38,7 +38,7 @@ class userPartnerRepository {
     return await this._base._model
       .findById(
         id,
-        "responsibleName enterpriseName category email cpf phone address neighborhood city about _id thumbnail customers businessHours"
+        "responsibleName enterpriseName tax category email cpf phone address neighborhood city about _id thumbnail customers businessHours"
       )
       .populate("customers");
   }
