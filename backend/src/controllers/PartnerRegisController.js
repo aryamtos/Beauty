@@ -15,6 +15,7 @@ partnerController.prototype.post = async (req, res) => {
   let _validationContract = new validation();
 
   _validationContract.isRequired(req.body.responsibleName, "Informe seu nome");
+  _validationContract.isRequired(req.body.enterpriseName, "Informe o nome do Salão");
   _validationContract.isRequired(req.body.phone, "Informe seu telefone");
   _validationContract.isRequired(req.body.cpf, "Informe seu cpf");
   _validationContract.isRequired(req.body.address, "Informe seu endereço");

@@ -18,7 +18,7 @@ export default function Registration({ history }) {
   const [senha, setSenha] = useState("");
   const [senhaConfirmacao, setSenhaConfirmacao] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
-  const [isDelivery, setIsDelivery] = useState(true);
+  const [isDelivery, setIsDelivery] = useState(false);
 
   // Erros
   const [requestFailed, setRequestFailed] = useState(false);
@@ -101,6 +101,15 @@ export default function Registration({ history }) {
           value={responsibleName}
           onChange={(event) => setRName(event.target.value)}
         />
+        {/* ---------------nome do salão-------------------------- */}
+        <label htmlFor="enterpriseName">Nome Comercial</label>
+        <input
+          type="text"
+          id="enterpriseName"
+          placeholder="Qual o nome da empresa?"
+          value={enterpriseName}
+          onChange={(event) => setEName(event.target.value)}
+        />
         {/* ---------------CATEGORIA------------------------------------ */}
         <label htmlFor="category">CATEGORIA</label>
         <p className="descricao">
@@ -134,30 +143,20 @@ export default function Registration({ history }) {
             </div>
           </li>
         </ul>
+
         {/* ---------------Taxa de Delivery-------------------------- */}
         {isDelivery &&
         <div>
         <label htmlFor="tax">Taxa de Delivery</label>
         <input
           type="number"
+          min="0"
           id="tax"
           value={tax}
           onChange={(event) => setTax(event.target.value)}
         />
         </div>
         }
-        {/* ---------------nome do responsavel-------------------------- */}
-        <label htmlFor="enterpriseName">NOME DO SALÃO</label>
-        <p className="descricao">
-          Se você possui um salão, coloque o nome dele no campo abaixo
-        </p>
-        <input
-          type="text"
-          id="enterpriseName"
-          placeholder="Qual o nome do responsável da empresa?"
-          value={enterpriseName}
-          onChange={(event) => setEName(event.target.value)}
-        />
         {/* -----------------EMAIL----------------------------------------- */}
         <label htmlFor="email">E-MAIL</label>
         <input

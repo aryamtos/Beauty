@@ -143,6 +143,7 @@ export default function PartnerUpdate({ history }) {
       </p>
       <input
         type="number"
+        min="0"
         id="tax"
         value={tax}
         onChange={(event) => setTax(event.target.value)}
@@ -150,7 +151,7 @@ export default function PartnerUpdate({ history }) {
       </div>
       }
       {/* ---------------nome do responsavel-------------------------- */}
-      <label htmlFor="enterpriseName">NOME DO SALÃO</label>
+      <label htmlFor="enterpriseName">Nome Comercial</label>
       <input
         type="text"
         id="enterpriseName"
