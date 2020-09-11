@@ -39,6 +39,7 @@ export default function BookRequest({ navigation }) {
   const [service, setService] = useState(null);
   const [servicePrice, setServicePrice] = useState(null);
   const [isDelivery, setIsDelivery] = useState(false);
+  const [tax, setTax] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("Dinheiro");
   const [street, setStreet] = useState("");
   const [numberHouse, setNumberHouse] = useState("");
@@ -54,14 +55,16 @@ export default function BookRequest({ navigation }) {
   }, []);
 
   useEffect(() => {
-    async function loadType() {
+    async function loadItens() {
       const serviceType = await AsyncStorage.getItem("serviceType");
-      console.log(serviceType);
+      const taxa = await AsyncStorage.getItem("tax");
+      setTax(Number(taxa));
+
       if (serviceType == "Autônomo") {
         setIsDelivery(true);
       }
     }
-    loadType();
+    loadItens();
   }, []);
 
   // Funções para lidar com o picker de data e hora
@@ -255,7 +258,7 @@ export default function BookRequest({ navigation }) {
               </TouchableOpacity>
 
               <View style={styles.precoField}>
-                <Text style={styles.precoText}>Total: R$ {servicePrice+10}</Text>
+                <Text style={styles.precoText}>Total: R$ {servicePrice+tax}</Text>
               </View>
 
             </View>

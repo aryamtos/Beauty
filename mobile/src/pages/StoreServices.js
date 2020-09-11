@@ -31,6 +31,10 @@ export default function StoreServices({ navigation }) {
   useEffect(() => {
     async function handleInit() {
       const token = await AsyncStorage.getItem("token");
+      if (servico.category == "Autônomo") {
+        setTaxa("(+R$"+servico.tax+" Delivery)")
+        setIsDelivery(true);
+      }
 
       try {
         const response = await api.get("/partner/service/index", {
@@ -49,18 +53,18 @@ export default function StoreServices({ navigation }) {
   }, []);
 
   useEffect(() => {
-    async function loadType() {
-      const serviceType = await AsyncStorage.getItem("serviceType");
-      console.log(serviceType);
-      if (serviceType == "Autônomo") {
-        setTaxa("(+R$10 Delivery)")
-        setIsDelivery(true);
-      }
+    async function storeTax() {
+      const tax = servico.tax.toString()
+      console.log(tax);
+      await AsyncStorage.setItem("tax", tax);
     }
-    loadType();
+
+    storeTax();
   }, []);
 
   async function handleSubmit() {
+
+
     navigation.navigate("BookRequest", { services });
   }
 
