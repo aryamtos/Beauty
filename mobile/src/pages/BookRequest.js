@@ -214,7 +214,7 @@ export default function BookRequest({ navigation }) {
               <TouchableOpacity style={styles.input}>
                 <TextInput
                   style={styles.inputText}
-                  placeholder="Centro"
+                  placeholder="Ex: Centro"
                   placeholderTextColor="#A5A5A5"
                   autoCapitalize="none"
                   autoCorrect={false}

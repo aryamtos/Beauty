@@ -62,7 +62,6 @@ export default function StoreServices({ navigation }) {
   useEffect(() => {
     async function storeTax() {
       const tax = servico.tax.toString()
-      console.log(tax);
       await AsyncStorage.setItem("tax", tax);
     }
 
