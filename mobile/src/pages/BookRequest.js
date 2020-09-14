@@ -192,7 +192,7 @@ export default function BookRequest({ navigation }) {
               <TouchableOpacity style={styles.input}>
                 <TextInput
                   style={styles.inputText}
-                  placeholder="Ex: Travessa Uruguaiana"
+                  placeholder="Ex: Av. Osvaldo Cruz"
                   placeholderTextColor="#A5A5A5"
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -214,7 +214,7 @@ export default function BookRequest({ navigation }) {
               <TouchableOpacity style={styles.input}>
                 <TextInput
                   style={styles.inputText}
-                  placeholder="Ex: Malhado"
+                  placeholder="Ex: Centro"
                   placeholderTextColor="#A5A5A5"
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -225,7 +225,7 @@ export default function BookRequest({ navigation }) {
               <TouchableOpacity style={styles.input}>
                 <TextInput
                   style={styles.inputText}
-                  placeholder="Ex: Ilheus"
+                  placeholder="Ex: Itabuna"
                   placeholderTextColor="#A5A5A5"
                   autoCapitalize="none"
                   autoCorrect={false}

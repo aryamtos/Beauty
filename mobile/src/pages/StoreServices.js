@@ -32,7 +32,14 @@ export default function StoreServices({ navigation }) {
     async function handleInit() {
       const token = await AsyncStorage.getItem("token");
       if (servico.category == "Autônomo") {
-        setTaxa("(+R$"+servico.tax+" Delivery)")
+        if (servico.tax == 0){
+            setTaxa("")
+        } else if (servico.tax == null) {
+            setTaxa("")
+        }
+        else {
+          setTaxa("(+R$"+servico.tax+" Delivery)")
+        }
         setIsDelivery(true);
       }
 
@@ -55,7 +62,6 @@ export default function StoreServices({ navigation }) {
   useEffect(() => {
     async function storeTax() {
       const tax = servico.tax.toString()
-      console.log(tax);
       await AsyncStorage.setItem("tax", tax);
     }
 
