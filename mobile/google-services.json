@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "484412245814",
-    "firebase_url": "https://beautymenu-f3674.firebaseio.com",
-    "project_id": "beautymenu-f3674",
-    "storage_bucket": "beautymenu-f3674.appspot.com"
+    "project_number": "71181018086",
+    "firebase_url": "https://lifejr-beautymenu.firebaseio.com",
+    "project_id": "lifejr-beautymenu",
+    "storage_bucket": "lifejr-beautymenu.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:484412245814:android:5b7345f040ffe1da6f1597",
+        "mobilesdk_app_id": "1:71181018086:android:f2e90f20cdbd570aa22c27",
         "android_client_info": {
           "package_name": "com.lifejr.beautymenu"
         }
       },
       "oauth_client": [
         {
-          "client_id": "484412245814-v8206q76j8u3fvb0pev0feoq154ivknh.apps.googleusercontent.com",
+          "client_id": "71181018086-ufhr8m45qhoqm9jgv0787lifvcp16kv0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBzqdhWxMz853RtBtQt9gMPc4cVfldpq5E"
+          "current_key": "AIzaSyD0cs559M734ap_7bIajYUHA9s8HDqyd1k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "484412245814-v8206q76j8u3fvb0pev0feoq154ivknh.apps.googleusercontent.com",
+              "client_id": "71181018086-ufhr8m45qhoqm9jgv0787lifvcp16kv0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
