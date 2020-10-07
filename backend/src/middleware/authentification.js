@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const variables = require("../config/variables");
 
 module.exports = async (req, res, next) => {
-  let token = req.body.token || req.query.query || req.headers["tokenaccess"];
+  let token = req.body.token || req.query.query || req.headers["token-access"];
   if (token) {
     try {
       let decoded = await jwt.verify(token, variables.Security.secretKey);
