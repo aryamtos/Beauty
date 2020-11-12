@@ -8,6 +8,8 @@ const PushToken = require("./models/PushToken");
 const SearchController = require("./controllers/SearchController");
 const UserController = require("./controllers/UserRegisController");
 const ServiceController = require("./controllers/ServiceControllers");
+const PaymentController = require('./controllers/PaymentController');
+
 
 // const ProdutosController = require('./controllers/ProdutosController');
 const Service = require("./controllers/ListController");
@@ -28,6 +30,7 @@ const upload = multer(uploadConfig);
 let _user = new UserController();
 let _product = new ServiceController();
 let _partner = new PartnerController();
+let _payment =  new PaymentController();
 // let _user = new UserController();
 
 //DASHBOARD
@@ -131,6 +134,16 @@ routes.get("/rating", RatingController.show);
 routes.post("/rating", RatingController.store);
 
 routes.get("/tokens", PushTokensController.show);
+
+//ROTAS DE PAGAMENTO======================================================
+
+//criar sessão
+routes.post('/partner/payment/session', _payment.createSession);
+//Aderindo ao plano
+routes.post('/partner/payment/joinplan', _payment.joinPlan);
+//Status da adesão
+routes.get('/partner/payment/statuspayment', _payment.status);
+
 
 // Testando push notifications
 const { Expo } = require("expo-server-sdk");

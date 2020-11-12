@@ -6,7 +6,7 @@ class userPartnerRepository {
   constructor() {
     this._base = new base("UserPartner");
     this._projection =
-      "responsibleName enterpriseName email _id isAdmin category";
+      "responsibleName enterpriseName email _id isAdmin category paymentCode";
   }
 
   async IsEmailExiste(Email) {

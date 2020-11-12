@@ -22,6 +22,8 @@ const UserPartnerSchema = new mongoose.Schema(
     isAdmin: { type: Boolean, default: false },
     rate: { type: Number, default: 5.0 },
     evaluations: { type: Number, default: 0 },
+    paymentCode: { type: String, default: 'none'},
+    planName: String,
     servicos: [
       {
         type: mongoose.Schema.Types.ObjectId,
